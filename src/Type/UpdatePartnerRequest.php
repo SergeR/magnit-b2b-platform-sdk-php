@@ -8,38 +8,30 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * UpdatePartnerRequest - Immutable DTO
+ * UpdatePartnerRequest - Запрос на обновление партнера
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class UpdatePartnerRequest implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private string $email;
+    private string $parent;
+    private array $config;
 
     /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $parent;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-            /**
      * Constructor
+     *
+     * @param string $name Название партнера
+     * @param string $email Email партнера
+     * @param string $parent Родительский партнер
+     * @param array $config Конфигурация
      */
     public function __construct(
         string $name,
@@ -52,18 +44,8 @@ class UpdatePartnerRequest implements \JsonSerializable
         $this->parent = $parent;
         $this->config = $config;
     }
-        if (isset($data['email'])) {
-            $this->email = $data['email'];
-        }
-        if (isset($data['parent'])) {
-            $this->parent = $data['parent'];
-        }
-        if (isset($data['config'])) {
-            $this->config = $data['config'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +54,11 @@ class UpdatePartnerRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['name'],
-            $data['email'],
-            $data['parent'],
-            $data['config']
+            $data['name'] ?? '',
+            $data['email'] ?? '',
+            $data['parent'] ?? '',
+            $data['config'] ?? []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +66,7 @@ class UpdatePartnerRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -106,7 +76,7 @@ class UpdatePartnerRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -116,7 +86,7 @@ class UpdatePartnerRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getParent()
+    public function getParent(): string
     {
         return $this->parent;
     }
@@ -126,7 +96,7 @@ class UpdatePartnerRequest implements \JsonSerializable
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -138,22 +108,12 @@ class UpdatePartnerRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->email)) {
-            $data['email'] = $this->email;
-        }
-        if (isset($this->parent)) {
-            $data['parent'] = $this->parent;
-        }
-        if (isset($this->config)) {
-            $data['config'] = $this->config;
-        }
-        
-        return $data;
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'parent' => $this->parent,
+            'config' => $this->config,
+        ];
     }
 
     /**
@@ -164,25 +124,5 @@ class UpdatePartnerRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

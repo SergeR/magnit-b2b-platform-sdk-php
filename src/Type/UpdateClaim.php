@@ -8,42 +8,35 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * UpdateClaim - Immutable DTO
+ * UpdateClaim - Запрос на обновление заявки
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class UpdateClaim implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $claimId;
+    private string $claimId;
+    /** @var UpdateClaimRoutePointsInner[] */
+    private array $routePoints;
 
     /**
-     * @var UpdateClaimRoutePointsInner[]
-     */
-    private $routePoints;
-
-            /**
      * Constructor
+     *
+     * @param string $claimId ID заявки
+     * @param UpdateClaimRoutePointsInner[] $routePoints Точки маршрута
      */
-    public function __construct(
-        string $claimId,
-        UpdateClaimRoutePointsInner[] $routePoints
-    ) {
+    public function __construct(string $claimId, array $routePoints)
+    {
         $this->claimId = $claimId;
         $this->routePoints = $routePoints;
     }
-        if (isset($data['route_points'])) {
-            $this->routePoints = $data['route_points'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -51,22 +44,17 @@ class UpdateClaim implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            $data['claim_id'],
-            isset($data['route_points']) ? array_map(fn($item) => UpdateClaimRoutePointsInner::fromArray($item), $data['route_points']) : []
-        );
-    }
+        $routePoints = [];
+        if (isset($data['route_points']) && is_array($data['route_points'])) {
+            foreach ($data['route_points'] as $item) {
+                $routePoints[] = UpdateClaimRoutePointsInner::fromArray($item);
+            }
+        }
 
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self(
+            $data['claim_id'] ?? '',
+            $routePoints
+        );
     }
 
     /**
@@ -74,7 +62,7 @@ class UpdateClaim implements \JsonSerializable
      *
      * @return string
      */
-    public function getClaimId()
+    public function getClaimId(): string
     {
         return $this->claimId;
     }
@@ -84,7 +72,7 @@ class UpdateClaim implements \JsonSerializable
      *
      * @return UpdateClaimRoutePointsInner[]
      */
-    public function getRoutePoints()
+    public function getRoutePoints(): array
     {
         return $this->routePoints;
     }
@@ -96,18 +84,10 @@ class UpdateClaim implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->claimId)) {
-            $data['claim_id'] = $this->claimId;
-        }
-        if (isset($this->routePoints)) {
-            $data['route_points'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->routePoints);
-        }
-        
-        return $data;
+        return [
+            'claim_id' => $this->claimId,
+            'route_points' => array_map(fn($item) => $item->toArray(), $this->routePoints),
+        ];
     }
 
     /**
@@ -118,25 +98,5 @@ class UpdateClaim implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

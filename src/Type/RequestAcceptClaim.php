@@ -8,32 +8,31 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * RequestAcceptClaim - Immutable DTO
+ * RequestAcceptClaim - Запрос на принятие заявки
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class RequestAcceptClaim implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $claimId;
+    private string $claimId;
 
-            /**
+    /**
      * Constructor
+     *
+     * @param string $claimId ID заявки
      */
-    public function __construct(
-        string $claimId
-    ) {
+    public function __construct(string $claimId)
+    {
         $this->claimId = $claimId;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -41,21 +40,7 @@ class RequestAcceptClaim implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            $data['claim_id']
-        );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self($data['claim_id'] ?? '');
     }
 
     /**
@@ -63,7 +48,7 @@ class RequestAcceptClaim implements \JsonSerializable
      *
      * @return string
      */
-    public function getClaimId()
+    public function getClaimId(): string
     {
         return $this->claimId;
     }
@@ -75,13 +60,9 @@ class RequestAcceptClaim implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->claimId)) {
-            $data['claim_id'] = $this->claimId;
-        }
-        
-        return $data;
+        return [
+            'claim_id' => $this->claimId,
+        ];
     }
 
     /**
@@ -92,25 +73,5 @@ class RequestAcceptClaim implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

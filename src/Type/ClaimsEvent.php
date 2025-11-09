@@ -8,38 +8,30 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * ClaimsEvent - Immutable DTO
+ * ClaimsEvent - Событие заявки
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class ClaimsEvent implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
+    private string $claimId;
+    private \DateTime $eventTime;
+    private ClaimsEventEvent $event;
 
     /**
-     * @var string
-     */
-    private $claimId;
-
-    /**
-     * @var \DateTime
-     */
-    private $eventTime;
-
-    /**
-     * @var ClaimsEventEvent
-     */
-    private $event;
-
-            /**
      * Constructor
+     *
+     * @param string $id ID события
+     * @param string $claimId ID заявки
+     * @param \DateTime $eventTime Время события
+     * @param ClaimsEventEvent $event Данные события
      */
     public function __construct(
         string $id,
@@ -52,43 +44,22 @@ class ClaimsEvent implements \JsonSerializable
         $this->eventTime = $eventTime;
         $this->event = $event;
     }
-        if (isset($data['claim_id'])) {
-            $this->claimId = $data['claim_id'];
-        }
-        if (isset($data['event_time'])) {
-            $this->eventTime = $data['event_time'];
-        }
-        if (isset($data['event'])) {
-            $this->event = $data['event'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
      * @return self
+     * @throws \Exception
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['id'],
-            $data['claim_id'],
-            \DateTime::fromArray($data['event_time']),
-            ClaimsEventEvent::fromArray($data['event'])
+            $data['id'] ?? '',
+            $data['claim_id'] ?? '',
+            new \DateTime($data['event_time'] ?? 'now'),
+            ClaimsEventEvent::fromArray($data['event'] ?? [])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +67,7 @@ class ClaimsEvent implements \JsonSerializable
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -106,7 +77,7 @@ class ClaimsEvent implements \JsonSerializable
      *
      * @return string
      */
-    public function getClaimId()
+    public function getClaimId(): string
     {
         return $this->claimId;
     }
@@ -116,7 +87,7 @@ class ClaimsEvent implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getEventTime()
+    public function getEventTime(): \DateTime
     {
         return $this->eventTime;
     }
@@ -126,7 +97,7 @@ class ClaimsEvent implements \JsonSerializable
      *
      * @return ClaimsEventEvent
      */
-    public function getEvent()
+    public function getEvent(): ClaimsEventEvent
     {
         return $this->event;
     }
@@ -138,22 +109,12 @@ class ClaimsEvent implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->id)) {
-            $data['id'] = $this->id;
-        }
-        if (isset($this->claimId)) {
-            $data['claim_id'] = $this->claimId;
-        }
-        if (isset($this->eventTime)) {
-            $data['event_time'] = $this->eventTime instanceof \JsonSerializable ? $this->eventTime->jsonSerialize() : $this->eventTime;
-        }
-        if (isset($this->event)) {
-            $data['event'] = $this->event;
-        }
-        
-        return $data;
+        return [
+            'id' => $this->id,
+            'claim_id' => $this->claimId,
+            'event_time' => $this->eventTime->format(\DateTimeInterface::ATOM),
+            'event' => $this->event->toArray(),
+        ];
     }
 
     /**
@@ -164,25 +125,5 @@ class ClaimsEvent implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

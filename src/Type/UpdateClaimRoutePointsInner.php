@@ -8,36 +8,31 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * UpdateClaimRoutePointsInner - Immutable DTO
+ * UpdateClaimRoutePointsInner - Точка маршрута для обновления заявки
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class UpdateClaimRoutePointsInner implements \JsonSerializable
 {
-    /**
-     * @var RoutePointType
-     */
-    private $pointType;
+    private string $pointType;
+    private string $transferCode;
+    private UpdateClaimRoutePointsInnerAddress $address;
 
     /**
-     * @var string
-     */
-    private $transferCode;
-
-    /**
-     * @var UpdateClaimRoutePointsInnerAddress
-     */
-    private $address;
-
-            /**
      * Constructor
+     *
+     * @param string $pointType Тип точки (source - получение, destination - доставка)
+     * @param string $transferCode Код передачи
+     * @param UpdateClaimRoutePointsInnerAddress $address Адрес точки
      */
     public function __construct(
-        RoutePointType $pointType,
+        string $pointType,
         string $transferCode,
         UpdateClaimRoutePointsInnerAddress $address
     ) {
@@ -45,15 +40,8 @@ class UpdateClaimRoutePointsInner implements \JsonSerializable
         $this->transferCode = $transferCode;
         $this->address = $address;
     }
-        if (isset($data['transfer_code'])) {
-            $this->transferCode = $data['transfer_code'];
-        }
-        if (isset($data['address'])) {
-            $this->address = $data['address'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,30 +50,18 @@ class UpdateClaimRoutePointsInner implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            RoutePointType::fromArray($data['point_type']),
-            $data['transfer_code'],
-            UpdateClaimRoutePointsInnerAddress::fromArray($data['address'])
+            $data['point_type'] ?? '',
+            $data['transfer_code'] ?? '',
+            UpdateClaimRoutePointsInnerAddress::fromArray($data['address'] ?? [])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
      * Gets pointType
      *
-     * @return RoutePointType
+     * @return string
      */
-    public function getPointType()
+    public function getPointType(): string
     {
         return $this->pointType;
     }
@@ -95,7 +71,7 @@ class UpdateClaimRoutePointsInner implements \JsonSerializable
      *
      * @return string
      */
-    public function getTransferCode()
+    public function getTransferCode(): string
     {
         return $this->transferCode;
     }
@@ -105,7 +81,7 @@ class UpdateClaimRoutePointsInner implements \JsonSerializable
      *
      * @return UpdateClaimRoutePointsInnerAddress
      */
-    public function getAddress()
+    public function getAddress(): UpdateClaimRoutePointsInnerAddress
     {
         return $this->address;
     }
@@ -117,19 +93,11 @@ class UpdateClaimRoutePointsInner implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->pointType)) {
-            $data['point_type'] = $this->pointType;
-        }
-        if (isset($this->transferCode)) {
-            $data['transfer_code'] = $this->transferCode;
-        }
-        if (isset($this->address)) {
-            $data['address'] = $this->address;
-        }
-        
-        return $data;
+        return [
+            'point_type' => $this->pointType,
+            'transfer_code' => $this->transferCode,
+            'address' => $this->address->toArray(),
+        ];
     }
 
     /**
@@ -140,25 +108,5 @@ class UpdateClaimRoutePointsInner implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

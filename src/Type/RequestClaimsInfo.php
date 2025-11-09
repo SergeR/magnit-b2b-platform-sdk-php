@@ -8,32 +8,32 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * RequestClaimsInfo - Immutable DTO
+ * RequestClaimsInfo - Запрос информации о заявках
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class RequestClaimsInfo implements \JsonSerializable
 {
-    /**
-     * @var string[]
-     */
-    private $claimIds;
+    /** @var string[] */
+    private array $claimIds;
 
-            /**
+    /**
      * Constructor
+     *
+     * @param string[] $claimIds Массив ID заявок
      */
-    public function __construct(
-        string[] $claimIds
-    ) {
+    public function __construct(array $claimIds)
+    {
         $this->claimIds = $claimIds;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -41,21 +41,7 @@ class RequestClaimsInfo implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            $data['claim_ids']
-        );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self($data['claim_ids'] ?? []);
     }
 
     /**
@@ -63,7 +49,7 @@ class RequestClaimsInfo implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getClaimIds()
+    public function getClaimIds(): array
     {
         return $this->claimIds;
     }
@@ -75,15 +61,9 @@ class RequestClaimsInfo implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->claimIds)) {
-            $data['claim_ids'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->claimIds);
-        }
-        
-        return $data;
+        return [
+            'claim_ids' => $this->claimIds,
+        ];
     }
 
     /**
@@ -94,25 +74,5 @@ class RequestClaimsInfo implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -8,42 +8,34 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * RequestCancelClaim - Immutable DTO
+ * RequestCancelClaim - Запрос на отмену заявки
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class RequestCancelClaim implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $claimId;
+    private string $claimId;
+    private CancelByPartnerReason $cancelReason;
 
     /**
-     * @var CancelByPartnerReason
-     */
-    private $cancelReason;
-
-            /**
      * Constructor
+     *
+     * @param string $claimId ID заявки
+     * @param CancelByPartnerReason $cancelReason Причина отмены
      */
-    public function __construct(
-        string $claimId,
-        CancelByPartnerReason $cancelReason
-    ) {
+    public function __construct(string $claimId, CancelByPartnerReason $cancelReason)
+    {
         $this->claimId = $claimId;
         $this->cancelReason = $cancelReason;
     }
-        if (isset($data['cancel_reason'])) {
-            $this->cancelReason = $data['cancel_reason'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +44,9 @@ class RequestCancelClaim implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['claim_id'],
-            CancelByPartnerReason::fromArray($data['cancel_reason'])
+            $data['claim_id'] ?? '',
+            CancelByPartnerReason::fromArray($data['cancel_reason'] ?? [])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +54,7 @@ class RequestCancelClaim implements \JsonSerializable
      *
      * @return string
      */
-    public function getClaimId()
+    public function getClaimId(): string
     {
         return $this->claimId;
     }
@@ -84,7 +64,7 @@ class RequestCancelClaim implements \JsonSerializable
      *
      * @return CancelByPartnerReason
      */
-    public function getCancelReason()
+    public function getCancelReason(): CancelByPartnerReason
     {
         return $this->cancelReason;
     }
@@ -96,16 +76,10 @@ class RequestCancelClaim implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->claimId)) {
-            $data['claim_id'] = $this->claimId;
-        }
-        if (isset($this->cancelReason)) {
-            $data['cancel_reason'] = $this->cancelReason;
-        }
-        
-        return $data;
+        return [
+            'claim_id' => $this->claimId,
+            'cancel_reason' => $this->cancelReason->toArray(),
+        ];
     }
 
     /**
@@ -116,25 +90,5 @@ class RequestCancelClaim implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -8,42 +8,34 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * ClaimsEventEvent - Immutable DTO
+ * ClaimsEventEvent - Данные события заявки
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class ClaimsEventEvent implements \JsonSerializable
 {
-    /**
-     * @var ClaimStatus
-     */
-    private $newStatus;
+    private string $newStatus;
+    private ClaimsEventStatusChangedPayload $payload;
 
     /**
-     * @var ClaimsEventStatusChangedPayload
-     */
-    private $payload;
-
-            /**
      * Constructor
+     *
+     * @param string $newStatus Новый статус (created, accepted, delivery_finished и т.д.)
+     * @param ClaimsEventStatusChangedPayload $payload Данные события
      */
-    public function __construct(
-        ClaimStatus $newStatus,
-        ClaimsEventStatusChangedPayload $payload
-    ) {
+    public function __construct(string $newStatus, ClaimsEventStatusChangedPayload $payload)
+    {
         $this->newStatus = $newStatus;
         $this->payload = $payload;
     }
-        if (isset($data['payload'])) {
-            $this->payload = $data['payload'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,29 +44,17 @@ class ClaimsEventEvent implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            ClaimStatus::fromArray($data['new_status']),
-            ClaimsEventStatusChangedPayload::fromArray($data['payload'])
+            $data['new_status'] ?? '',
+            ClaimsEventStatusChangedPayload::fromArray($data['payload'] ?? [])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
      * Gets newStatus
      *
-     * @return ClaimStatus
+     * @return string
      */
-    public function getNewStatus()
+    public function getNewStatus(): string
     {
         return $this->newStatus;
     }
@@ -84,7 +64,7 @@ class ClaimsEventEvent implements \JsonSerializable
      *
      * @return ClaimsEventStatusChangedPayload
      */
-    public function getPayload()
+    public function getPayload(): ClaimsEventStatusChangedPayload
     {
         return $this->payload;
     }
@@ -96,16 +76,10 @@ class ClaimsEventEvent implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->newStatus)) {
-            $data['new_status'] = $this->newStatus;
-        }
-        if (isset($this->payload)) {
-            $data['payload'] = $this->payload;
-        }
-        
-        return $data;
+        return [
+            'new_status' => $this->newStatus,
+            'payload' => $this->payload->toArray(),
+        ];
     }
 
     /**
@@ -116,25 +90,5 @@ class ClaimsEventEvent implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

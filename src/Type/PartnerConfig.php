@@ -8,58 +8,39 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * PartnerConfig - Immutable DTO
+ * PartnerConfig - Конфигурация партнера
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class PartnerConfig implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $expectedCourierArrival;
+    private string $expectedCourierArrival;
+    private string $maxPerformerSearchTime;
+    private string $sla;
+    private string $maxOrderAcceptTime;
+    private int $maxOrderWeight;
+    private int $maxDeliveryDistance;
+    private string $deliveryProvider;
+    /** @var PartnerConfigPickupPointArrivalInterval[] */
+    private array $deferredPickupPointArrivalIntervals;
 
     /**
-     * @var string
-     */
-    private $maxPerformerSearchTime;
-
-    /**
-     * @var string
-     */
-    private $sla;
-
-    /**
-     * @var string
-     */
-    private $maxOrderAcceptTime;
-
-    /**
-     * @var int
-     */
-    private $maxOrderWeight;
-
-    /**
-     * @var int
-     */
-    private $maxDeliveryDistance;
-
-    /**
-     * @var PartnerConfigDeliveryProvider
-     */
-    private $deliveryProvider;
-
-    /**
-     * @var PartnerConfigPickupPointArrivalInterval[]
-     */
-    private $deferredPickupPointArrivalIntervals;
-
-            /**
      * Constructor
+     *
+     * @param string $expectedCourierArrival Ожидаемое время прибытия курьера
+     * @param string $maxPerformerSearchTime Максимальное время поиска исполнителя
+     * @param string $sla SLA
+     * @param string $maxOrderAcceptTime Максимальное время принятия заказа
+     * @param int $maxOrderWeight Максимальный вес заказа
+     * @param int $maxDeliveryDistance Максимальная дистанция доставки
+     * @param string $deliveryProvider Провайдер доставки (delivery_service, proxy_dispatch)
+     * @param PartnerConfigPickupPointArrivalInterval[] $deferredPickupPointArrivalIntervals Интервалы прибытия в ПВЗ
      */
     public function __construct(
         string $expectedCourierArrival,
@@ -68,8 +49,8 @@ class PartnerConfig implements \JsonSerializable
         string $maxOrderAcceptTime,
         int $maxOrderWeight,
         int $maxDeliveryDistance,
-        PartnerConfigDeliveryProvider $deliveryProvider,
-        PartnerConfigPickupPointArrivalInterval[] $deferredPickupPointArrivalIntervals
+        string $deliveryProvider,
+        array $deferredPickupPointArrivalIntervals
     ) {
         $this->expectedCourierArrival = $expectedCourierArrival;
         $this->maxPerformerSearchTime = $maxPerformerSearchTime;
@@ -80,30 +61,8 @@ class PartnerConfig implements \JsonSerializable
         $this->deliveryProvider = $deliveryProvider;
         $this->deferredPickupPointArrivalIntervals = $deferredPickupPointArrivalIntervals;
     }
-        if (isset($data['max_performer_search_time'])) {
-            $this->maxPerformerSearchTime = $data['max_performer_search_time'];
-        }
-        if (isset($data['sla'])) {
-            $this->sla = $data['sla'];
-        }
-        if (isset($data['max_order_accept_time'])) {
-            $this->maxOrderAcceptTime = $data['max_order_accept_time'];
-        }
-        if (isset($data['max_order_weight'])) {
-            $this->maxOrderWeight = $data['max_order_weight'];
-        }
-        if (isset($data['max_delivery_distance'])) {
-            $this->maxDeliveryDistance = $data['max_delivery_distance'];
-        }
-        if (isset($data['delivery_provider'])) {
-            $this->deliveryProvider = $data['delivery_provider'];
-        }
-        if (isset($data['deferred_pickup_point_arrival_intervals'])) {
-            $this->deferredPickupPointArrivalIntervals = $data['deferred_pickup_point_arrival_intervals'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -111,28 +70,23 @@ class PartnerConfig implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            $data['expected_courier_arrival'],
-            $data['max_performer_search_time'],
-            $data['sla'],
-            $data['max_order_accept_time'],
-            $data['max_order_weight'],
-            $data['max_delivery_distance'],
-            PartnerConfigDeliveryProvider::fromArray($data['delivery_provider']),
-            isset($data['deferred_pickup_point_arrival_intervals']) ? array_map(fn($item) => PartnerConfigPickupPointArrivalInterval::fromArray($item), $data['deferred_pickup_point_arrival_intervals']) : []
-        );
-    }
+        $intervals = [];
+        if (isset($data['deferred_pickup_point_arrival_intervals']) && is_array($data['deferred_pickup_point_arrival_intervals'])) {
+            foreach ($data['deferred_pickup_point_arrival_intervals'] as $item) {
+                $intervals[] = PartnerConfigPickupPointArrivalInterval::fromArray($item);
+            }
+        }
 
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self(
+            $data['expected_courier_arrival'] ?? '',
+            $data['max_performer_search_time'] ?? '',
+            $data['sla'] ?? '',
+            $data['max_order_accept_time'] ?? '',
+            $data['max_order_weight'] ?? 0,
+            $data['max_delivery_distance'] ?? 0,
+            $data['delivery_provider'] ?? '',
+            $intervals
+        );
     }
 
     /**
@@ -140,7 +94,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return string
      */
-    public function getExpectedCourierArrival()
+    public function getExpectedCourierArrival(): string
     {
         return $this->expectedCourierArrival;
     }
@@ -150,7 +104,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return string
      */
-    public function getMaxPerformerSearchTime()
+    public function getMaxPerformerSearchTime(): string
     {
         return $this->maxPerformerSearchTime;
     }
@@ -160,7 +114,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return string
      */
-    public function getSla()
+    public function getSla(): string
     {
         return $this->sla;
     }
@@ -170,7 +124,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return string
      */
-    public function getMaxOrderAcceptTime()
+    public function getMaxOrderAcceptTime(): string
     {
         return $this->maxOrderAcceptTime;
     }
@@ -180,7 +134,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return int
      */
-    public function getMaxOrderWeight()
+    public function getMaxOrderWeight(): int
     {
         return $this->maxOrderWeight;
     }
@@ -190,7 +144,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return int
      */
-    public function getMaxDeliveryDistance()
+    public function getMaxDeliveryDistance(): int
     {
         return $this->maxDeliveryDistance;
     }
@@ -198,9 +152,9 @@ class PartnerConfig implements \JsonSerializable
     /**
      * Gets deliveryProvider
      *
-     * @return PartnerConfigDeliveryProvider
+     * @return string
      */
-    public function getDeliveryProvider()
+    public function getDeliveryProvider(): string
     {
         return $this->deliveryProvider;
     }
@@ -210,7 +164,7 @@ class PartnerConfig implements \JsonSerializable
      *
      * @return PartnerConfigPickupPointArrivalInterval[]
      */
-    public function getDeferredPickupPointArrivalIntervals()
+    public function getDeferredPickupPointArrivalIntervals(): array
     {
         return $this->deferredPickupPointArrivalIntervals;
     }
@@ -222,36 +176,19 @@ class PartnerConfig implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->expectedCourierArrival)) {
-            $data['expected_courier_arrival'] = $this->expectedCourierArrival;
-        }
-        if (isset($this->maxPerformerSearchTime)) {
-            $data['max_performer_search_time'] = $this->maxPerformerSearchTime;
-        }
-        if (isset($this->sla)) {
-            $data['sla'] = $this->sla;
-        }
-        if (isset($this->maxOrderAcceptTime)) {
-            $data['max_order_accept_time'] = $this->maxOrderAcceptTime;
-        }
-        if (isset($this->maxOrderWeight)) {
-            $data['max_order_weight'] = $this->maxOrderWeight;
-        }
-        if (isset($this->maxDeliveryDistance)) {
-            $data['max_delivery_distance'] = $this->maxDeliveryDistance;
-        }
-        if (isset($this->deliveryProvider)) {
-            $data['delivery_provider'] = $this->deliveryProvider;
-        }
-        if (isset($this->deferredPickupPointArrivalIntervals)) {
-            $data['deferred_pickup_point_arrival_intervals'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->deferredPickupPointArrivalIntervals);
-        }
-        
-        return $data;
+        return [
+            'expected_courier_arrival' => $this->expectedCourierArrival,
+            'max_performer_search_time' => $this->maxPerformerSearchTime,
+            'sla' => $this->sla,
+            'max_order_accept_time' => $this->maxOrderAcceptTime,
+            'max_order_weight' => $this->maxOrderWeight,
+            'max_delivery_distance' => $this->maxDeliveryDistance,
+            'delivery_provider' => $this->deliveryProvider,
+            'deferred_pickup_point_arrival_intervals' => array_map(
+                fn($item) => $item->toArray(),
+                $this->deferredPickupPointArrivalIntervals
+            ),
+        ];
     }
 
     /**
@@ -262,25 +199,5 @@ class PartnerConfig implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

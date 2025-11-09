@@ -8,32 +8,31 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * UpdateClaimRoutePointsInnerAddress - Immutable DTO
+ * UpdateClaimRoutePointsInnerAddress - Адрес точки маршрута
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class UpdateClaimRoutePointsInnerAddress implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $comment;
+    private string $comment;
 
-            /**
+    /**
      * Constructor
+     *
+     * @param string $comment Комментарий к адресу
      */
-    public function __construct(
-        string $comment
-    ) {
+    public function __construct(string $comment)
+    {
         $this->comment = $comment;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -41,21 +40,7 @@ class UpdateClaimRoutePointsInnerAddress implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            $data['comment']
-        );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self($data['comment'] ?? '');
     }
 
     /**
@@ -63,7 +48,7 @@ class UpdateClaimRoutePointsInnerAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->comment;
     }
@@ -75,13 +60,9 @@ class UpdateClaimRoutePointsInnerAddress implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->comment)) {
-            $data['comment'] = $this->comment;
-        }
-        
-        return $data;
+        return [
+            'comment' => $this->comment,
+        ];
     }
 
     /**
@@ -92,25 +73,5 @@ class UpdateClaimRoutePointsInnerAddress implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }
