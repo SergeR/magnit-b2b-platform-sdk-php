@@ -1,0 +1,36 @@
+{
+    "description": "PHP SDK для работы с Magnit B2B API",
+    "keywords": [
+        "магнит",
+        "magnit",
+        "php",
+        "sdk",
+        "rest",
+        "api"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Serge Rodovnichenko",
+            "email": "sergerod@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^7.3",
+        "guzzlehttp/psr7": "^1.7 || ^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "friendsofphp/php-cs-fixer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": { "SergeR\\MagintB2BPlatformSDK\\" : "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "SergeR\\MagintB2BPlatformSDK\\Test\\" : "test/" }
+    }
+}
