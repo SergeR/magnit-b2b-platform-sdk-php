@@ -8,74 +8,49 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * Claim - Immutable DTO
+ * Claim - Заявка на доставку
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class Claim implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $externalOrderId;
+    private string $externalOrderId;
+    private Items $items;
+    private \DateTime $dueTime;
+    /** @var RoutePoint[] */
+    private array $routePoints;
+    private ClaimState $state;
+    private CourierInfo $courierInfo;
+    private Estimation $estimation;
+    private bool $needReturn;
+    private string $comment;
+    private ClaimMeta $meta;
 
     /**
-     * @var Items
-     */
-    private $items;
-
-    /**
-     * @var \DateTime
-     */
-    private $dueTime;
-
-    /**
-     * @var RoutePoint[]
-     */
-    private $routePoints;
-
-    /**
-     * @var ClaimState
-     */
-    private $state;
-
-    /**
-     * @var CourierInfo
-     */
-    private $courierInfo;
-
-    /**
-     * @var Estimation
-     */
-    private $estimation;
-
-    /**
-     * @var bool
-     */
-    private $needReturn;
-
-    /**
-     * @var string
-     */
-    private $comment;
-
-    /**
-     * @var ClaimMeta
-     */
-    private $meta;
-
-            /**
      * Constructor
+     *
+     * @param string $externalOrderId Внешний ID заказа
+     * @param Items $items Товары
+     * @param \DateTime $dueTime Срок доставки
+     * @param RoutePoint[] $routePoints Точки маршрута
+     * @param ClaimState $state Состояние заявки
+     * @param CourierInfo $courierInfo Информация о курьере
+     * @param Estimation $estimation Оценка доставки
+     * @param bool $needReturn Нужен возврат
+     * @param string $comment Комментарий
+     * @param ClaimMeta $meta Метаданные
      */
     public function __construct(
         string $externalOrderId,
         Items $items,
         \DateTime $dueTime,
-        RoutePoint[] $routePoints,
+        array $routePoints,
         ClaimState $state,
         CourierInfo $courierInfo,
         Estimation $estimation,
@@ -94,36 +69,8 @@ class Claim implements \JsonSerializable
         $this->comment = $comment;
         $this->meta = $meta;
     }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-        if (isset($data['due_time'])) {
-            $this->dueTime = $data['due_time'];
-        }
-        if (isset($data['route_points'])) {
-            $this->routePoints = $data['route_points'];
-        }
-        if (isset($data['state'])) {
-            $this->state = $data['state'];
-        }
-        if (isset($data['courier_info'])) {
-            $this->courierInfo = $data['courier_info'];
-        }
-        if (isset($data['estimation'])) {
-            $this->estimation = $data['estimation'];
-        }
-        if (isset($data['need_return'])) {
-            $this->needReturn = $data['need_return'];
-        }
-        if (isset($data['comment'])) {
-            $this->comment = $data['comment'];
-        }
-        if (isset($data['meta'])) {
-            $this->meta = $data['meta'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -131,30 +78,25 @@ class Claim implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            $data['external_order_id'],
-            Items::fromArray($data['items']),
-            \DateTime::fromArray($data['due_time']),
-            isset($data['route_points']) ? array_map(fn($item) => RoutePoint::fromArray($item), $data['route_points']) : [],
-            ClaimState::fromArray($data['state']),
-            CourierInfo::fromArray($data['courier_info']),
-            Estimation::fromArray($data['estimation']),
-            $data['need_return'],
-            $data['comment'],
-            ClaimMeta::fromArray($data['meta'])
-        );
-    }
+        $routePoints = [];
+        if (isset($data['route_points']) && is_array($data['route_points'])) {
+            foreach ($data['route_points'] as $item) {
+                $routePoints[] = RoutePoint::fromArray($item);
+            }
+        }
 
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self(
+            $data['external_order_id'] ?? '',
+            Items::fromArray($data['items'] ?? []),
+            new \DateTime($data['due_time'] ?? 'now'),
+            $routePoints,
+            ClaimState::fromArray($data['state'] ?? []),
+            CourierInfo::fromArray($data['courier_info'] ?? []),
+            Estimation::fromArray($data['estimation'] ?? []),
+            $data['need_return'] ?? false,
+            $data['comment'] ?? '',
+            ClaimMeta::fromArray($data['meta'] ?? [])
+        );
     }
 
     /**
@@ -162,7 +104,7 @@ class Claim implements \JsonSerializable
      *
      * @return string
      */
-    public function getExternalOrderId()
+    public function getExternalOrderId(): string
     {
         return $this->externalOrderId;
     }
@@ -172,7 +114,7 @@ class Claim implements \JsonSerializable
      *
      * @return Items
      */
-    public function getItems()
+    public function getItems(): Items
     {
         return $this->items;
     }
@@ -182,7 +124,7 @@ class Claim implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getDueTime()
+    public function getDueTime(): \DateTime
     {
         return $this->dueTime;
     }
@@ -192,7 +134,7 @@ class Claim implements \JsonSerializable
      *
      * @return RoutePoint[]
      */
-    public function getRoutePoints()
+    public function getRoutePoints(): array
     {
         return $this->routePoints;
     }
@@ -202,7 +144,7 @@ class Claim implements \JsonSerializable
      *
      * @return ClaimState
      */
-    public function getState()
+    public function getState(): ClaimState
     {
         return $this->state;
     }
@@ -212,7 +154,7 @@ class Claim implements \JsonSerializable
      *
      * @return CourierInfo
      */
-    public function getCourierInfo()
+    public function getCourierInfo(): CourierInfo
     {
         return $this->courierInfo;
     }
@@ -222,7 +164,7 @@ class Claim implements \JsonSerializable
      *
      * @return Estimation
      */
-    public function getEstimation()
+    public function getEstimation(): Estimation
     {
         return $this->estimation;
     }
@@ -232,7 +174,7 @@ class Claim implements \JsonSerializable
      *
      * @return bool
      */
-    public function getNeedReturn()
+    public function getNeedReturn(): bool
     {
         return $this->needReturn;
     }
@@ -242,7 +184,7 @@ class Claim implements \JsonSerializable
      *
      * @return string
      */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->comment;
     }
@@ -252,7 +194,7 @@ class Claim implements \JsonSerializable
      *
      * @return ClaimMeta
      */
-    public function getMeta()
+    public function getMeta(): ClaimMeta
     {
         return $this->meta;
     }
@@ -264,42 +206,18 @@ class Claim implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->externalOrderId)) {
-            $data['external_order_id'] = $this->externalOrderId;
-        }
-        if (isset($this->items)) {
-            $data['items'] = $this->items;
-        }
-        if (isset($this->dueTime)) {
-            $data['due_time'] = $this->dueTime instanceof \JsonSerializable ? $this->dueTime->jsonSerialize() : $this->dueTime;
-        }
-        if (isset($this->routePoints)) {
-            $data['route_points'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->routePoints);
-        }
-        if (isset($this->state)) {
-            $data['state'] = $this->state;
-        }
-        if (isset($this->courierInfo)) {
-            $data['courier_info'] = $this->courierInfo;
-        }
-        if (isset($this->estimation)) {
-            $data['estimation'] = $this->estimation;
-        }
-        if (isset($this->needReturn)) {
-            $data['need_return'] = $this->needReturn;
-        }
-        if (isset($this->comment)) {
-            $data['comment'] = $this->comment;
-        }
-        if (isset($this->meta)) {
-            $data['meta'] = $this->meta;
-        }
-        
-        return $data;
+        return [
+            'external_order_id' => $this->externalOrderId,
+            'items' => $this->items->toArray(),
+            'due_time' => $this->dueTime->format(\DateTime::ATOM),
+            'route_points' => array_map(fn($item) => $item->toArray(), $this->routePoints),
+            'state' => $this->state->toArray(),
+            'courier_info' => $this->courierInfo->toArray(),
+            'estimation' => $this->estimation->toArray(),
+            'need_return' => $this->needReturn,
+            'comment' => $this->comment,
+            'meta' => $this->meta->toArray(),
+        ];
     }
 
     /**
@@ -310,25 +228,5 @@ class Claim implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

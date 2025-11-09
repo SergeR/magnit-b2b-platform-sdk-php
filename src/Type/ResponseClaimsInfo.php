@@ -8,32 +8,32 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * ResponseClaimsInfo - Immutable DTO
+ * ResponseClaimsInfo - Ответ с информацией о заявках
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class ResponseClaimsInfo implements \JsonSerializable
 {
-    /**
-     * @var Claim[]
-     */
-    private $claims;
+    /** @var Claim[] */
+    private array $claims;
 
-            /**
+    /**
      * Constructor
+     *
+     * @param Claim[] $claims Массив заявок
      */
-    public function __construct(
-        Claim[] $claims
-    ) {
+    public function __construct(array $claims)
+    {
         $this->claims = $claims;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -41,21 +41,14 @@ class ResponseClaimsInfo implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            isset($data['claims']) ? array_map(fn($item) => Claim::fromArray($item), $data['claims']) : []
-        );
-    }
+        $claims = [];
+        if (isset($data['claims']) && is_array($data['claims'])) {
+            foreach ($data['claims'] as $item) {
+                $claims[] = Claim::fromArray($item);
+            }
+        }
 
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
+        return new self($claims);
     }
 
     /**
@@ -63,7 +56,7 @@ class ResponseClaimsInfo implements \JsonSerializable
      *
      * @return Claim[]
      */
-    public function getClaims()
+    public function getClaims(): array
     {
         return $this->claims;
     }
@@ -75,15 +68,9 @@ class ResponseClaimsInfo implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->claims)) {
-            $data['claims'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->claims);
-        }
-        
-        return $data;
+        return [
+            'claims' => array_map(fn($item) => $item->toArray(), $this->claims),
+        ];
     }
 
     /**
@@ -94,25 +81,5 @@ class ResponseClaimsInfo implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }
