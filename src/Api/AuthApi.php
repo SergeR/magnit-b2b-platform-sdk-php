@@ -15,39 +15,29 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use SergeR\MagintB2BPlatformSDK\ApiException;
 use SergeR\MagintB2BPlatformSDK\Config;
-use SergeR\MagintB2BPlatformSDK\MagnitClient;
 use SergeR\MagintB2BPlatformSDK\Type\AuthRequest;
 use SergeR\MagintB2BPlatformSDK\Type\OauthToken;
 use SergeR\MagintB2BPlatformSDK\Type\OauthError;
 
 /**
- * AuthApi - API для аутентификации
+ * AuthApi - API для аутентификации (не использует middleware)
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
-class AuthApi extends AbstractApi
+class AuthApi
 {
-    protected Config $config;
+    private ClientInterface $client;
+    private Config $config;
 
     /**
-     * @param MagnitClient|ClientInterface $client Magnit API client or HTTP client
-     * @param Config|null $config Configuration (required if $client is ClientInterface)
+     * @param ClientInterface $client HTTP client (без middleware!)
+     * @param Config $config Configuration
      */
-    public function __construct($client, Config $config = null)
+    public function __construct(ClientInterface $client, Config $config)
     {
-        if ($client instanceof MagnitClient) {
-            parent::__construct($client);
-            $this->config = $client->getConfig();
-        } elseif ($client instanceof ClientInterface) {
-            if ($config === null) {
-                throw new \InvalidArgumentException('Configuration is required when using ClientInterface');
-            }
-            $this->client = $client;
-            $this->config = $config;
-        } else {
-            throw new \InvalidArgumentException('First parameter must be MagnitClient or ClientInterface');
-        }
+        $this->client = $client;
+        $this->config = $config;
     }
 
     /**
