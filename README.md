@@ -477,7 +477,7 @@ echo "Партнер обновлен\n";
 $config = $api->lastMile->partners->getLogzoneConfig(
     'partner-id',
     'logzone_id',  // Критерий выборки (logzone_id, store_id)
-    'default'      // Тип настроек (опциональн��)
+    'default'      // Тип настроек (опционально)
 );
 
 echo "SLA: {$config->getSla()}\n";
