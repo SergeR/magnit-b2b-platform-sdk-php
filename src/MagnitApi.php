@@ -14,6 +14,7 @@ namespace SergeR\MagintB2BPlatformSDK;
 
 use SergeR\MagintB2BPlatformSDK\Api\OrdersApi;
 use SergeR\MagintB2BPlatformSDK\Api\MagnitPostApi;
+use SergeR\MagintB2BPlatformSDK\Api\LastMileApi;
 
 /**
  * MagnitApi - Фасад для доступа ко всем API
@@ -23,12 +24,14 @@ use SergeR\MagintB2BPlatformSDK\Api\MagnitPostApi;
  * 
  * @property-read OrdersApi $orders API для работы с заказами
  * @property-read MagnitPostApi $magnitPost API для работы с Магнит Пост
+ * @property-read LastMileApi $lastMile API для работы с доставкой последней мили
  */
 class MagnitApi
 {
     private MagnitClient $client;
     private ?OrdersApi $ordersApi = null;
     private ?MagnitPostApi $magnitPostApi = null;
+    private ?LastMileApi $lastMileApi = null;
 
     /**
      * Constructor
@@ -67,10 +70,23 @@ class MagnitApi
     }
 
     /**
+     * Получить API для работы с доставкой последней мили
+     *
+     * @return LastMileApi
+     */
+    public function lastMile(): LastMileApi
+    {
+        if ($this->lastMileApi === null) {
+            $this->lastMileApi = new LastMileApi($this->client);
+        }
+        return $this->lastMileApi;
+    }
+
+    /**
      * Magic getter для доступа к API через свойства
      *
      * @param string $name
-     * @return OrdersApi|MagnitPostApi
+     * @return OrdersApi|MagnitPostApi|LastMileApi
      * @throws \InvalidArgumentException
      */
     public function __get(string $name)
@@ -80,6 +96,8 @@ class MagnitApi
                 return $this->orders();
             case 'magnitPost':
                 return $this->magnitPost();
+            case 'lastMile':
+                return $this->lastMile();
             default:
                 throw new \InvalidArgumentException("Unknown API: {$name}");
         }

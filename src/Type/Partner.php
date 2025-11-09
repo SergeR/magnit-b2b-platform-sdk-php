@@ -8,48 +8,34 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
- * Partner - Immutable DTO
+ * Partner - Партнер
  *
  * @category Class
  * @package  SergeR\MagintB2BPlatformSDK
  */
 class Partner implements \JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $partnerId;
+    private string $partnerId;
+    private string $name;
+    private string $email;
+    private string $parent;
+    private string $displayName;
+    private array $config;
 
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $parent;
-
-    /**
-     * @var string
-     */
-    private $displayName;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-            /**
      * Constructor
+     *
+     * @param string $partnerId ID партнера
+     * @param string $name Название
+     * @param string $email Email
+     * @param string $parent Родительский партнер
+     * @param string $displayName Отображаемое имя
+     * @param array $config Конфигурация
      */
     public function __construct(
         string $partnerId,
@@ -66,24 +52,8 @@ class Partner implements \JsonSerializable
         $this->displayName = $displayName;
         $this->config = $config;
     }
-        if (isset($data['name'])) {
-            $this->name = $data['name'];
-        }
-        if (isset($data['email'])) {
-            $this->email = $data['email'];
-        }
-        if (isset($data['parent'])) {
-            $this->parent = $data['parent'];
-        }
-        if (isset($data['display_name'])) {
-            $this->displayName = $data['display_name'];
-        }
-        if (isset($data['config'])) {
-            $this->config = $data['config'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -92,25 +62,13 @@ class Partner implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['partner_id'],
-            $data['name'],
-            $data['email'],
-            $data['parent'],
-            $data['display_name'],
-            $data['config']
+            $data['partner_id'] ?? '',
+            $data['name'] ?? '',
+            $data['email'] ?? '',
+            $data['parent'] ?? '',
+            $data['display_name'] ?? '',
+            $data['config'] ?? []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -118,7 +76,7 @@ class Partner implements \JsonSerializable
      *
      * @return string
      */
-    public function getPartnerId()
+    public function getPartnerId(): string
     {
         return $this->partnerId;
     }
@@ -128,7 +86,7 @@ class Partner implements \JsonSerializable
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -138,7 +96,7 @@ class Partner implements \JsonSerializable
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -148,7 +106,7 @@ class Partner implements \JsonSerializable
      *
      * @return string
      */
-    public function getParent()
+    public function getParent(): string
     {
         return $this->parent;
     }
@@ -158,7 +116,7 @@ class Partner implements \JsonSerializable
      *
      * @return string
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->displayName;
     }
@@ -168,7 +126,7 @@ class Partner implements \JsonSerializable
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -180,28 +138,14 @@ class Partner implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->partnerId)) {
-            $data['partner_id'] = $this->partnerId;
-        }
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->email)) {
-            $data['email'] = $this->email;
-        }
-        if (isset($this->parent)) {
-            $data['parent'] = $this->parent;
-        }
-        if (isset($this->displayName)) {
-            $data['display_name'] = $this->displayName;
-        }
-        if (isset($this->config)) {
-            $data['config'] = $this->config;
-        }
-        
-        return $data;
+        return [
+            'partner_id' => $this->partnerId,
+            'name' => $this->name,
+            'email' => $this->email,
+            'parent' => $this->parent,
+            'display_name' => $this->displayName,
+            'config' => $this->config,
+        ];
     }
 
     /**
@@ -212,25 +156,5 @@ class Partner implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

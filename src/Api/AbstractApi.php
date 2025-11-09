@@ -28,13 +28,25 @@ use SergeR\MagintB2BPlatformSDK\MagnitClient;
 abstract class AbstractApi
 {
     protected ClientInterface $client;
+    protected MagnitClient $magnitClient;
 
     /**
      * @param MagnitClient $client Magnit API client
      */
     public function __construct(MagnitClient $client)
     {
+        $this->magnitClient = $client;
         $this->client = $client->getHttpClient();
+    }
+
+    /**
+     * Получить MagnitClient
+     *
+     * @return MagnitClient
+     */
+    protected function getMagnitClient(): MagnitClient
+    {
+        return $this->magnitClient;
     }
 
     /**
@@ -71,5 +83,37 @@ abstract class AbstractApi
     {
         $response = $this->sendRequest($request);
         return json_decode((string) $response->getBody(), true);
+    }
+
+    /**
+     * Отправить multipart/form-data запрос
+     *
+     * @param string $method HTTP метод
+     * @param string $uri URI
+     * @param array $multipart Multipart данные
+     * @param array $headers Дополнительные заголовки
+     * @return ResponseInterface
+     * @throws ApiException
+     * @throws GuzzleException
+     */
+    protected function sendMultipartRequest(
+        string $method,
+        string $uri,
+        array $multipart,
+        array $headers = []
+    ): ResponseInterface {
+        try {
+            return $this->client->request($method, $uri, [
+                'multipart' => $multipart,
+                'headers' => $headers,
+            ]);
+        } catch (RequestException $e) {
+            throw new ApiException(
+                "[{$e->getCode()}] {$e->getMessage()}",
+                (int) $e->getCode(),
+                $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+            );
+        }
     }
 }
