@@ -1,19 +1,19 @@
 # Magnit B2B Platform SDK
 
-> ⚠️ **Work In Progress (WIP)** - SDK находится в активной разработке. На данный момент реализованы только **Orders API** и **Magnit Post API**. Остальные API будут добавлены в будущих версиях.
+> ⚠️ **Work In Progress (WIP)** - SDK находится в активной разработке. На данный момент реализованы **Orders API**, **Magnit Post API** и **Last Mile API**. Остальные API будут добавлены в будущих версиях.
 
 PHP SDK для интеграции с API платформы Магнит B2B.
 
 ## Статус реализации
 
-| API | Статус | Описание |
-|-----|--------|----------|
-| Orders API | ✅ Готово | Создание, получение, отмена заказов |
-| Magnit Post API | ✅ Готово | Доставка через Магнит Пост |
-| Nomenclature API | 🚧 В планах | Управление номенклатурой |
-| Last Mile API | 🚧 В планах | Доставка последней мили |
-| WebHook Events API | 🚧 В планах | Обработка вебхуков |
-| Другие API | 🚧 В планах | - |
+| API | Статус | Методов | Описание |
+|-----|--------|---------|----------|
+| Orders API | ✅ Готово | 5 | Создание, получение, отмена заказов |
+| Magnit Post API | ✅ Готово | 7 | Доставка через Магнит Пост |
+| Last Mile API | ✅ Готово | 11 | Доставка последней мили (заявки, партнеры) |
+| Nomenclature API | 🚧 В планах | - | Управление номенклатурой |
+| WebHook Events API | 🚧 В планах | - | Обработка вебхуков |
+| Другие API | 🚧 В планах | - | - |
 
 ## Требования
 
@@ -323,6 +323,208 @@ $api->magnitPost->deleteOrder('MP123456789');
 echo "Заказ отменен\n";
 ```
 
+### Last Mile API
+
+API для работы с доставкой последней мили. Разделен на два подраздела: **Claims** (заявки) и **Partners** (партнеры).
+
+#### Работа с заявками (Claims)
+
+##### Создать заявку
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\Claim;
+
+$claim = new Claim(/* параметры заявки */);
+$response = $api->lastMile->claims->create(
+    'partner-id',
+    'unique-request-id',  // Ключ идемпотентности
+    $claim
+);
+
+echo "ID заявки: {$response->getClaimId()}\n";
+// или
+echo "ID заявки: {$response->getId()}\n";
+```
+
+##### Принять заявку
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\RequestAcceptClaim;
+
+$acceptRequest = new RequestAcceptClaim('claim-id-123');
+$api->lastMile->claims->accept('partner-id', $acceptRequest);
+
+echo "Заявка принята\n";
+```
+
+##### Отменить заявку
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\RequestCancelClaim;
+use SergeR\MagintB2BPlatformSDK\Type\CancelByPartnerReason;
+
+$cancelReason = new CancelByPartnerReason(
+    'Отмена по просьбе клиента',
+    'client_request'
+);
+
+$cancelRequest = new RequestCancelClaim('claim-id-123', $cancelReason);
+$response = $api->lastMile->claims->cancel('partner-id', $cancelRequest);
+
+echo "Заявка отменена: {$response->getClaimId()}\n";
+```
+
+##### Обновить заявку
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\UpdateClaim;
+use SergeR\MagintB2BPlatformSDK\Type\UpdateClaimRoutePointsInner;
+use SergeR\MagintB2BPlatformSDK\Type\UpdateClaimRoutePointsInnerAddress;
+
+// Создаем точки маршрута
+$address1 = new UpdateClaimRoutePointsInnerAddress('Забрать у входа');
+$routePoint1 = new UpdateClaimRoutePointsInner('source', 'CODE-1', $address1);
+
+$address2 = new UpdateClaimRoutePointsInnerAddress('Доставить на 5 этаж');
+$routePoint2 = new UpdateClaimRoutePointsInner('destination', 'CODE-2', $address2);
+
+// Обновляем заявку
+$updateRequest = new UpdateClaim('claim-id-123', [$routePoint1, $routePoint2]);
+$api->lastMile->claims->update('partner-id', $updateRequest);
+
+echo "Заявка обновлена\n";
+```
+
+##### Получить информацию о заявках
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\RequestClaimsInfo;
+
+$infoRequest = new RequestClaimsInfo([
+    'claim-id-1',
+    'claim-id-2',
+    'claim-id-3'
+]);
+
+$info = $api->lastMile->claims->getInfo('partner-id', $infoRequest);
+
+// Обработка информации о заявках
+foreach ($info->getClaims() as $claim) {
+    echo "Заявка: {$claim->getId()}, Статус: {$claim->getStatus()}\n";
+}
+```
+
+##### Получить события заявок
+
+```php
+$events = $api->lastMile->claims->getEvents(
+    'partner-id',
+    'last-known-event-id',  // ID последнего известного события (опционально)
+    100                      // Лимит (по умолчанию 1000)
+);
+
+foreach ($events as $claimEvent) {
+    echo "Событие ID: {$claimEvent->getId()}\n";
+    echo "Заявка ID: {$claimEvent->getClaimId()}\n";
+    echo "Время: {$claimEvent->getEventTime()->format('Y-m-d H:i:s')}\n";
+    
+    $event = $claimEvent->getEvent();
+    echo "Новый статус: {$event->getNewStatus()}\n";
+    
+    $payload = $event->getPayload();
+    echo "Имя: {$payload->getName()}\n";
+    echo "Телефон: {$payload->getPhone()}\n";
+}
+```
+
+#### Работа с партнерами (Partners)
+
+##### Получить информацию о партнере
+
+```php
+$partner = $api->lastMile->partners->get('partner-id');
+
+echo "ID: {$partner->getPartnerId()}\n";
+echo "Название: {$partner->getName()}\n";
+echo "Email: {$partner->getEmail()}\n";
+echo "Отображаемое имя: {$partner->getDisplayName()}\n";
+echo "Родитель: {$partner->getParent()}\n";
+
+$config = $partner->getConfig();
+print_r($config);
+```
+
+##### Обновить партнера
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\UpdatePartnerRequest;
+
+$updateRequest = new UpdatePartnerRequest(
+    'Новое название',
+    'new-email@example.com',
+    'parent-partner-id',
+    ['setting1' => 'value1']
+);
+
+$api->lastMile->partners->update('partner-id', $updateRequest);
+
+echo "Партнер обновлен\n";
+```
+
+##### Получить конфиг партнера в логзоне
+
+```php
+$config = $api->lastMile->partners->getLogzoneConfig(
+    'partner-id',
+    'logzone_id',  // Критерий выборки (logzone_id, store_id)
+    'default'      // Тип настроек (опциональн��)
+);
+
+echo "SLA: {$config->getSla()}\n";
+echo "Макс. вес: {$config->getMaxOrderWeight()}\n";
+echo "Макс. дистанция: {$config->getMaxDeliveryDistance()}\n";
+echo "Провайдер: {$config->getDeliveryProvider()}\n";
+
+// Интервалы прибытия в ПВЗ
+foreach ($config->getDeferredPickupPointArrivalIntervals() as $interval) {
+    echo "Интервал: {$interval->getLowerBorder()} - {$interval->getUpperBorder()}\n";
+}
+```
+
+##### Обновить конфиг партнера в логзоне
+
+```php
+use SergeR\MagintB2BPlatformSDK\Type\PartnerConfig;
+use SergeR\MagintB2BPlatformSDK\Type\PartnerConfigPickupPointArrivalInterval;
+use SergeR\MagintB2BPlatformSDK\Type\PartnerConfigDeliveryProvider;
+
+$interval1 = new PartnerConfigPickupPointArrivalInterval('10:00', '12:00');
+$interval2 = new PartnerConfigPickupPointArrivalInterval('14:00', '16:00');
+
+$config = new PartnerConfig(
+    '30m',                                          // Ожидаемое время прибытия курьера
+    '15m',                                          // Макс. время поиска исполнителя
+    '2h',                                           // SLA
+    '10m',                                          // Макс. время принятия заказа
+    5000,                                           // Макс. вес (граммы)
+    10000,                                          // Макс. дистанция (метры)
+    PartnerConfigDeliveryProvider::DELIVERY_SERVICE, // Провайдер
+    [$interval1, $interval2]                        // Интервалы
+);
+
+$api->lastMile->partners->updateLogzoneConfig('partner-id', $config);
+
+echo "Конфиг обновлен\n";
+```
+
+##### Заменить тарифы партнера
+
+```php
+$api->lastMile->replaceRates('partner-id', '/path/to/rates.csv');
+
+echo "Тарифы обновлены\n";
+```
+
 ## Обработка ошибок
 
 SDK выбрасывает исключение `ApiException` при ошибках API:
@@ -398,8 +600,11 @@ src/
 ├── Api/
 │   ├── AbstractApi.php        # Базовый класс для API
 │   ├── AuthApi.php            # API авторизации (служебный)
-│   ├── OrdersApi.php          # API заказов
-│   └── MagnitPostApi.php      # API Магнит Пост
+│   ├── OrdersApi.php          # API заказов (5 методов)
+│   ├── MagnitPostApi.php      # API Магнит Пост (7 методов)
+│   ├── LastMileApi.php        # Фасад для Last Mile API
+│   ├── LastMileClaimsApi.php  # API заявок (6 методов)
+│   └── LastMilePartnersApi.php # API партнеров (4 метода)
 ├── TokenStorage/
 │   ├── TokenStorageInterface.php
 │   ├── MemoryTokenStorage.php
@@ -412,6 +617,9 @@ src/
     ├── Order.php
     ├── OrderStatus.php
     ├── EstimateOrderRequest.php
+    ├── Claim.php
+    ├── Partner.php
+    ├── PartnerConfig.php
     └── ...
 ```
 
