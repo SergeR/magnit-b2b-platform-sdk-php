@@ -22,12 +22,12 @@ class MemoryTokenStorage implements TokenStorageInterface
     /**
      * @var string|null
      */
-    private ?string $token;
+    private ?string $token = null;
 
     /**
      * @var int|null
      */
-    private ?int $expiresAt;
+    private ?int $expiresAt = null;
 
     /**
      * Get the current token
