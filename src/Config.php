@@ -141,6 +141,18 @@ class Config
     }
 
     /**
+     * Sets user agent
+     *
+     * @param string $userAgent
+     * @return self
+     */
+    public function setUserAgent(string $userAgent): self
+    {
+        $this->userAgent = $userAgent;
+        return $this;
+    }
+
+    /**
      * Gets logger
      *
      * @return \Psr\Log\LoggerInterface|null

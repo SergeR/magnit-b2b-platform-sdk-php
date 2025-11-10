@@ -80,6 +80,9 @@ class MagnitClient
         return new Client([
             'handler' => $stack,
             'base_uri' => $this->config->getHost(),
+            'headers' => [
+                'User-Agent' => $this->config->getUserAgent(),
+            ],
         ]);
     }
 
@@ -94,6 +97,9 @@ class MagnitClient
         // Создаём временный HTTP клиент без middleware для получения токена
         $tempClient = new Client([
             'base_uri' => $this->config->getHost(),
+            'headers' => [
+                'User-Agent' => $this->config->getUserAgent(),
+            ],
         ]);
 
         $authApi = new AuthApi($tempClient, $this->config);
