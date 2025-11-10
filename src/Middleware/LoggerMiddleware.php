@@ -198,7 +198,7 @@ class LoggerMiddleware
         foreach ($headers as $name => $values) {
             $lowerName = strtolower($name);
             if (in_array($lowerName, $sensitiveHeaders, true)) {
-                $sanitized[$name] = ['***REDACTED***'];
+                $sanitized[$name] = ['***DELETED SENSITIVE DATA***'];
             } else {
                 $sanitized[$name] = $values;
             }

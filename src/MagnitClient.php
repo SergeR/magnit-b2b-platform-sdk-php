@@ -59,23 +59,25 @@ class MagnitClient
     {
         $stack = HandlerStack::create();
 
-        // Добавляем middleware для логирования (если logger установлен)
+        // Порядок важен! Middleware выполняются в обратном порядке (LIFO)
+        // Поэтому добавляем в обратном порядке выполнения:
+
+        // 1. Добавляем middleware для автоматического обновления токена (выполнится первым)
+        $tokenRefreshCallback = function () {
+            return $this->refreshToken();
+        };
+        $tokenMiddleware = new TokenRefreshMiddleware($this->tokenStorage, $tokenRefreshCallback);
+        $stack->push($tokenMiddleware);
+
+        // 2. Добавляем middleware для автоматического добавления Authorization заголовка (выполнится вторым)
+        $authMiddleware = new AuthorizationMiddleware($this->tokenStorage);
+        $stack->push($authMiddleware);
+
+        // 3. Добавляем middleware для логирования (выполнится последним, увидит все заголовки)
         if ($this->config->getLogger()) {
             $loggerMiddleware = new LoggerMiddleware($this->config->getLogger());
             $stack->push($loggerMiddleware);
         }
-
-        // Добавляем middleware для автоматического добавления Authorization заголовка
-        $authMiddleware = new AuthorizationMiddleware($this->tokenStorage);
-        $stack->push($authMiddleware);
-
-        // Добавляем middleware для автоматического обновления токена
-        $tokenRefreshCallback = function () {
-            return $this->refreshToken();
-        };
-
-        $tokenMiddleware = new TokenRefreshMiddleware($this->tokenStorage, $tokenRefreshCallback);
-        $stack->push($tokenMiddleware);
 
         return new Client([
             'handler' => $stack,
