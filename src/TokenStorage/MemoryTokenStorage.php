@@ -7,6 +7,8 @@
  * @package  SergeR\MagintB2BPlatformSDK\TokenStorage
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\TokenStorage;
 
 /**
@@ -20,12 +22,12 @@ class MemoryTokenStorage implements TokenStorageInterface
     /**
      * @var string|null
      */
-    private $token;
+    private ?string $token;
 
     /**
      * @var int|null
      */
-    private $expiresAt;
+    private ?int $expiresAt;
 
     /**
      * Get the current token

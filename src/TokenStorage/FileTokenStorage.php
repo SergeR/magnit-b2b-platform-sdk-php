@@ -7,6 +7,8 @@
  * @package  SergeR\MagintB2BPlatformSDK\TokenStorage
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\TokenStorage;
 
 /**
@@ -20,7 +22,7 @@ class FileTokenStorage implements TokenStorageInterface
     /**
      * @var string
      */
-    private $filePath;
+    private string $filePath;
 
     /**
      * Constructor

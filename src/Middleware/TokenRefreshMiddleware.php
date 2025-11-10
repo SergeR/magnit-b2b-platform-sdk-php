@@ -7,6 +7,8 @@
  * @package  SergeR\MagintB2BPlatformSDK\Middleware
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Middleware;
 
 use Psr\Http\Message\RequestInterface;
