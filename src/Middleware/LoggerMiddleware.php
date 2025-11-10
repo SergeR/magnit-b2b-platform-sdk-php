@@ -76,25 +76,23 @@ class LoggerMiddleware
      */
     private function logRequest(RequestInterface $request): void
     {
+        $headers = $this->sanitizeHeaders($request->getHeaders());
+        $body = (string) $request->getBody();
+        
         $message = sprintf(
-            'HTTP Request: %s %s',
+            "HTTP Request: %s %s\nHeaders: %s",
             $request->getMethod(),
-            $request->getUri()
+            $request->getUri(),
+            json_encode($headers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
         );
 
-        $context = [
-            'method' => $request->getMethod(),
-            'uri' => (string) $request->getUri(),
-            'headers' => $this->sanitizeHeaders($request->getHeaders()),
-        ];
-
         // Добавляем тело запроса, если есть
-        $body = (string) $request->getBody();
         if ($body) {
-            $context['body'] = $this->sanitizeBody($body);
+            $sanitizedBody = $this->sanitizeBody($body);
+            $message .= "\nBody: " . $sanitizedBody;
         }
 
-        $this->logger->info($message, $context);
+        $this->logger->info($message);
     }
 
     /**
@@ -111,34 +109,28 @@ class LoggerMiddleware
         float $startTime
     ): void {
         $duration = round((microtime(true) - $startTime) * 1000, 2);
+        $headers = $response->getHeaders();
+        $body = (string) $response->getBody();
 
         $message = sprintf(
-            'HTTP Response: %s %s - %d %s (%s ms)',
+            "HTTP Response: %s %s - %d %s (%s ms)\nHeaders: %s",
             $request->getMethod(),
             $request->getUri(),
             $response->getStatusCode(),
             $response->getReasonPhrase(),
-            $duration
+            $duration,
+            json_encode($headers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
         );
 
-        $context = [
-            'method' => $request->getMethod(),
-            'uri' => (string) $request->getUri(),
-            'status_code' => $response->getStatusCode(),
-            'reason_phrase' => $response->getReasonPhrase(),
-            'duration_ms' => $duration,
-            'headers' => $response->getHeaders(),
-        ];
-
         // Добавляем тело ответа
-        $body = (string) $response->getBody();
         if ($body) {
-            $context['body'] = $this->sanitizeBody($body);
+            $sanitizedBody = $this->sanitizeBody($body);
+            $message .= "\nBody: " . $sanitizedBody;
         }
 
         // Выбираем уровень логирования в зависимости от статуса
         $level = $this->getLogLevel($response->getStatusCode());
-        $this->logger->log($level, $message, $context);
+        $this->logger->log($level, $message);
     }
 
     /**
@@ -157,26 +149,20 @@ class LoggerMiddleware
         $duration = round((microtime(true) - $startTime) * 1000, 2);
 
         $message = sprintf(
-            'HTTP Error: %s %s - %s (%s ms)',
+            "HTTP Error: %s %s - %s (%s ms)\nError: %s",
             $request->getMethod(),
             $request->getUri(),
             $reason instanceof \Exception ? $reason->getMessage() : 'Unknown error',
-            $duration
+            $duration,
+            $reason instanceof \Exception ? $reason->getMessage() : (string) $reason
         );
 
-        $context = [
-            'method' => $request->getMethod(),
-            'uri' => (string) $request->getUri(),
-            'duration_ms' => $duration,
-            'error' => $reason instanceof \Exception ? $reason->getMessage() : (string) $reason,
-        ];
-
         if ($reason instanceof \Exception) {
-            $context['exception'] = get_class($reason);
-            $context['trace'] = $reason->getTraceAsString();
+            $message .= "\nException: " . get_class($reason);
+            $message .= "\nTrace:\n" . $reason->getTraceAsString();
         }
 
-        $this->logger->error($message, $context);
+        $this->logger->error($message);
     }
 
     /**
