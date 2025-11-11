@@ -45,8 +45,8 @@ class PickupPointsResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         $pickupPoints = [];
-        if (isset($data['pickup_points']) && is_array($data['pickup_points'])) {
-            foreach ($data['pickup_points'] as $item) {
+        if (isset($data['pickupPoints']) && is_array($data['pickupPoints'])) {
+            foreach ($data['pickupPoints'] as $item) {
                 $pickupPoints[] = PickupPoint::fromArray($item);
             }
         }

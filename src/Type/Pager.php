@@ -54,10 +54,10 @@ class Pager implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['total_items'],
-            $data['total_pages'],
-            $data['current_page'],
-            $data['page_size']
+            $data['totalItems'],
+            $data['totalPages'],
+            $data['currentPage'],
+            $data['pageSize']
         );
     }
 

@@ -80,8 +80,8 @@ class PickupPoint implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         $workHours = [];
-        if (isset($data['work_hours']) && is_array($data['work_hours'])) {
-            foreach ($data['work_hours'] as $item) {
+        if (isset($data['workHours']) && is_array($data['workHours'])) {
+            foreach ($data['workHours'] as $item) {
                 $workHours[] = DayWorkHours::fromArray($item);
             }
         }
