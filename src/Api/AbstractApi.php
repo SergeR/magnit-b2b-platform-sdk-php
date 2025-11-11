@@ -64,9 +64,9 @@ abstract class AbstractApi
         } catch (RequestException $e) {
             throw new ApiException(
                 "[{$e->getCode()}] {$e->getMessage()}",
-                (int) $e->getCode(),
+                (int)$e->getCode(),
                 $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                $e->getResponse() ? (string)$e->getResponse()->getBody() : null
             );
         }
     }
@@ -82,7 +82,7 @@ abstract class AbstractApi
     protected function sendJsonRequest(RequestInterface $request): array
     {
         $response = $this->sendRequest($request);
-        return json_decode((string) $response->getBody(), true);
+        return json_decode((string)$response->getBody(), true);
     }
 
     /**
@@ -110,10 +110,15 @@ abstract class AbstractApi
         } catch (RequestException $e) {
             throw new ApiException(
                 "[{$e->getCode()}] {$e->getMessage()}",
-                (int) $e->getCode(),
+                (int)$e->getCode(),
                 $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                $e->getResponse() ? (string)$e->getResponse()->getBody() : null
             );
         }
+    }
+
+    protected function buildAbsoluteRequestUri(string $relative_uri): string
+    {
+        return $this->getMagnitClient()->getConfig()->getHost() . '/api' . $relative_uri;
     }
 }
