@@ -48,9 +48,9 @@ class Config
 
         // Устанавливаем host в зависимости от режима
         if ($mode === self::MODE_PRODUCTION) {
-            $this->host = 'https://b2b-api.magnit.ru/api';
+            $this->host = 'https://b2b-api.magnit.ru';
         } elseif ($mode === self::MODE_TEST) {
-            $this->host = 'https://b2b-api-gateway.uat.ya.magnit.ru/api';
+            $this->host = 'https://b2b-api-gateway.uat.ya.magnit.ru';
         } else {
             throw new \InvalidArgumentException(
                 "Invalid mode: {$mode}. Use Config::MODE_PRODUCTION or Config::MODE_TEST"
