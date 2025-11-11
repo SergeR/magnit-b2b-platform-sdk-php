@@ -77,7 +77,14 @@ class LoggerMiddleware
     private function logRequest(RequestInterface $request): void
     {
         $headers = $this->sanitizeHeaders($request->getHeaders());
-        $body = (string) $request->getBody();
+        
+        // Читаем тело и возвращаем указатель в начало
+        $body = '';
+        $bodyStream = $request->getBody();
+        if ($bodyStream->isSeekable()) {
+            $body = (string) $bodyStream;
+            $bodyStream->rewind();
+        }
         
         $message = sprintf(
             "HTTP Request: %s %s\nHeaders: %s",
