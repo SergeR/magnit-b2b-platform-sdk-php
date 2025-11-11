@@ -106,7 +106,7 @@ class AuthApi
      */
     protected function getTokenRequest(AuthRequest $authRequest): Request
     {
-        $resourcePath = '/v2/oauth/token';
+        $resourcePath = '/api/v2/oauth/token';
         
         // Формируем заголовки
         $headers = [
