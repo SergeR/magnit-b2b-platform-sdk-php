@@ -52,8 +52,8 @@ class VerifyEACResult implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            VerifyEACStatusEnum::fromArray($data['verification_result']),
-            $data['attempts_left']
+            VerifyEACStatusEnum::fromArray($data['verificationResult']),
+            $data['attemptsLeft'] ?? 0
         );
     }
 

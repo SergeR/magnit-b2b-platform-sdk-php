@@ -72,7 +72,7 @@ class DeliveryOrderRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['customer_order_id'],
+            $data['customerOrderId'],
             MagnitPostPayment::fromArray($data['payment']),
             MagnitPostDelivery::fromArray($data['delivery']),
             ParcelCharacteristic::fromArray($data['characteristic'])

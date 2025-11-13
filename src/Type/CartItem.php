@@ -70,7 +70,7 @@ class CartItem implements \JsonSerializable
         }
 
         return new self(
-            $data['good_id'],
+            $data['goodId'],
             $data['name'],
             $data['qnty'],
             ProductPrice::fromArray($data['price']),

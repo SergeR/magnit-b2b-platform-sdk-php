@@ -52,8 +52,8 @@ class Comments implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['customer_comment'],
-            $data['vendor_comment']
+            $data['customerComment'] ?? '',
+            $data['vendorComment'] ?? ''
         );
     }
 
