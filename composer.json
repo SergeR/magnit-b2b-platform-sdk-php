@@ -1,4 +1,5 @@
 {
+  "name": "serger/magnit-b2b-platform-sdk",
   "description": "PHP SDK для работы с Magnit B2B API",
   "keywords": [
     "магнит",

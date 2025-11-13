@@ -24,7 +24,7 @@ PHP SDK для интеграции с API платформы Магнит B2B.
 ## Установка
 
 ```bash
-composer require magnit/b2b-platform-sdk
+composer require serger/magnit-b2b-platform-sdk
 ```
 
 ## Быстрый старт
