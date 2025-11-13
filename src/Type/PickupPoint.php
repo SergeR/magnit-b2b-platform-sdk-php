@@ -26,12 +26,12 @@ class PickupPoint implements \JsonSerializable
     private string $address;
     private string $region;
     private string $city;
-    private string $index;
+    private ?string $index;
     /** @var string[] */
     private array $phones;
     /** @var DayWorkHours[] */
     private array $workHours;
-    private PickupPointCoordinates $coordinates;
+    private ?PickupPointCoordinates $coordinates;
 
     /**
      * Constructor
@@ -42,10 +42,10 @@ class PickupPoint implements \JsonSerializable
      * @param string $address Адрес
      * @param string $region Регион
      * @param string $city Город
-     * @param string $index Индекс
+     * @param string|null $index Индекс
      * @param string[] $phones Телефоны
      * @param DayWorkHours[] $workHours Часы работы
-     * @param PickupPointCoordinates $coordinates Координаты
+     * @param PickupPointCoordinates|null $coordinates Координаты
      */
     public function __construct(
         string $key,
@@ -54,10 +54,10 @@ class PickupPoint implements \JsonSerializable
         string $address,
         string $region,
         string $city,
-        string $index,
+        ?string $index,
         array $phones,
         array $workHours,
-        PickupPointCoordinates $coordinates
+        ?PickupPointCoordinates $coordinates
     ) {
         $this->key = $key;
         $this->name = $name;
@@ -93,10 +93,10 @@ class PickupPoint implements \JsonSerializable
             $data['address'],
             $data['region'],
             $data['city'],
-            $data['index'],
+            $data['index'] ?? null,
             $data['phones'] ?? [],
             $workHours,
-            PickupPointCoordinates::fromArray($data['coordinates'])
+            isset($data['coordinates']) ? PickupPointCoordinates::fromArray($data['coordinates']) : null
         );
     }
 
@@ -163,9 +163,9 @@ class PickupPoint implements \JsonSerializable
     /**
      * Gets index
      *
-     * @return string
+     * @return string|null
      */
-    public function getIndex(): string
+    public function getIndex(): ?string
     {
         return $this->index;
     }
@@ -193,9 +193,9 @@ class PickupPoint implements \JsonSerializable
     /**
      * Gets coordinates
      *
-     * @return PickupPointCoordinates
+     * @return PickupPointCoordinates|null
      */
-    public function getCoordinates(): PickupPointCoordinates
+    public function getCoordinates(): ?PickupPointCoordinates
     {
         return $this->coordinates;
     }
@@ -217,7 +217,7 @@ class PickupPoint implements \JsonSerializable
             'index' => $this->index,
             'phones' => $this->phones,
             'work_hours' => array_map(fn($item) => $item->toArray(), $this->workHours),
-            'coordinates' => $this->coordinates->toArray(),
+            'coordinates' => $this->coordinates ? $this->coordinates->toArray() : null,
         ];
     }
 
