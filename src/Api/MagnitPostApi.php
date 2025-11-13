@@ -43,7 +43,7 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'POST',
-            $this->getMagnitClient()->getConfig()->getHost() . '/v1/magnit-post/orders',
+            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders'),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -67,7 +67,7 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'DELETE',
-            $this->getMagnitClient()->getConfig()->getHost() . '/v1/magnit-post/orders/' . urlencode($trackingNumber),
+            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders/' . urlencode($trackingNumber)),
             ['Accept' => 'application/json']
         );
 
@@ -86,7 +86,7 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'POST',
-            $this->getMagnitClient()->getConfig()->getHost() . '/v2/magnit-post/orders/estimate',
+            $this->buildAbsoluteRequestUri('/v2/magnit-post/orders/estimate'),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -110,7 +110,7 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'GET',
-            $this->getMagnitClient()->getConfig()->getHost() . '/v1/magnit-post/orders/' . urlencode($trackingNumber),
+            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders/' . urlencode($trackingNumber)),
             ['Accept' => 'application/json']
         );
 
@@ -130,7 +130,7 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'GET',
-            $this->getMagnitClient()->getConfig()->getHost() . '/v1/magnit-post/orders/' . urlencode($trackingNumber) . '/status-history',
+            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders/' . urlencode($trackingNumber) . '/status-history'),
             ['Accept' => 'application/json']
         );
 
@@ -150,7 +150,7 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'POST',
-            $this->getMagnitClient()->getConfig()->getHost() . '/v1/magnit-post/order-statuses',
+            $this->buildAbsoluteRequestUri('/v1/magnit-post/order-statuses'),
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -159,13 +159,13 @@ class MagnitPostApi extends AbstractApi
         );
 
         $data = $this->sendJsonRequest($request);
-        
+
         // Возвращаем массив DeliveryOrderStatusInfo
         $result = [];
         foreach ($data as $item) {
             $result[] = DeliveryOrderStatusInfo::fromArray($item);
         }
-        
+
         return $result;
     }
 
@@ -192,7 +192,7 @@ class MagnitPostApi extends AbstractApi
             'page' => $page,
             'size' => $size,
         ];
-        
+
         if ($key !== null) {
             $queryParams['key'] = $key;
         }
@@ -202,9 +202,9 @@ class MagnitPostApi extends AbstractApi
         if ($city !== null) {
             $queryParams['city'] = $city;
         }
-        
+
         $query = http_build_query($queryParams);
-        
+
         $request = new Request(
             'GET',
             $this->buildAbsoluteRequestUri('/v1/magnit-post/pickup-points?' . $query),
