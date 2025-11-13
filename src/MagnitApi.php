@@ -36,7 +36,7 @@ class MagnitApi
     /**
      * Constructor
      *
-     * @param MagnitClient $client HTTP клиент с на��троенной авторизацией
+     * @param MagnitClient $client HTTP клиент с настроенной авторизацией
      */
     public function __construct(MagnitClient $client)
     {
