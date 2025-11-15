@@ -20,6 +20,7 @@ class Config
     public const MODE_PRODUCTION = 'production';
     public const MODE_TEST = 'test';
 
+    private string $mode;
     private string $host;
     private string $clientId;
     private string $clientSecret;
@@ -48,8 +49,10 @@ class Config
 
         // Устанавливаем host в зависимости от режима
         if ($mode === self::MODE_PRODUCTION) {
+            $this->mode = self::MODE_PRODUCTION;
             $this->host = 'https://b2b-api.magnit.ru';
         } elseif ($mode === self::MODE_TEST) {
+            $this->mode = self::MODE_TEST;
             $this->host = 'https://b2b-api-gateway.uat.ya.magnit.ru';
         } else {
             throw new \InvalidArgumentException(
@@ -88,6 +91,16 @@ class Config
         string $scope = 'mm:b2b:all'
     ): self {
         return new self(self::MODE_TEST, $clientId, $clientSecret, $scope);
+    }
+
+    /**
+     * Gets mode
+     *
+     * @return string
+     */
+    public function getMode(): string
+    {
+        return $this->mode;
     }
 
     /**
