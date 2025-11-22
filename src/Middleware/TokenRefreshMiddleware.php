@@ -54,6 +54,7 @@ class TokenRefreshMiddleware
      *
      * @param callable $handler
      * @return callable
+     * @throws \RuntimeException If token is not available
      */
     public function __invoke(callable $handler): callable
     {
@@ -65,15 +66,25 @@ class TokenRefreshMiddleware
             }
 
             // Проверяем и обновляем токен если нужно
+            $token = null;
             if ($this->storage->isExpired() && !$this->isRefreshing) {
-                $this->refreshToken();
+                $token = $this->refreshToken();
+            }
+
+            // Если токен не был обновлён, получаем из storage
+            if ($token === null) {
+                $token = $this->storage->getToken();
+            }
+
+            // Если токен всё ещё отсутствует, выбрасываем исключение
+            if ($token === null) {
+                throw new \RuntimeException(
+                    'Authentication token is not available. Please authenticate first.'
+                );
             }
 
             // Добавляем токен в заголовок
-            $token = $this->storage->getToken();
-            if ($token) {
-                $request = $request->withHeader('Authorization', 'Bearer ' . $token);
-            }
+            $request = $request->withHeader('Authorization', 'Bearer ' . $token);
 
             return $handler($request, $options);
         };
@@ -82,9 +93,9 @@ class TokenRefreshMiddleware
     /**
      * Refresh token
      *
-     * @return void
+     * @return string|null Refreshed token or null if refresh failed
      */
-    private function refreshToken(): void
+    private function refreshToken(): ?string
     {
         $this->isRefreshing = true;
         
@@ -94,7 +105,10 @@ class TokenRefreshMiddleware
             
             if (isset($tokenData['access_token']) && isset($tokenData['expires_in'])) {
                 $this->storage->saveToken($tokenData['access_token'], $tokenData['expires_in']);
+                return $tokenData['access_token'];
             }
+            
+            return null;
         } finally {
             $this->isRefreshing = false;
         }
