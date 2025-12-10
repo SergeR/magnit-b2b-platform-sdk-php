@@ -25,7 +25,7 @@ class TokenRefreshMiddleware
     /**
      * @var TokenStorageInterface
      */
-    private $storage;
+    private TokenStorageInterface $storage;
 
     /**
      * @var callable
@@ -35,7 +35,7 @@ class TokenRefreshMiddleware
     /**
      * @var bool
      */
-    private $isRefreshing = false;
+    private bool $isRefreshing = false;
 
     /**
      * Constructor
