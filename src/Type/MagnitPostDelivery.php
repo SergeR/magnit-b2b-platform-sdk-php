@@ -8,6 +8,8 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
@@ -42,7 +44,7 @@ class MagnitPostDelivery implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['pickup_point_key'],
+            $data['pickupPointKey'],
             Recipient::fromArray($data['recipient'])
         );
     }
@@ -75,7 +77,7 @@ class MagnitPostDelivery implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'pickup_point_key' => $this->pickupPointKey,
+            'pickupPointKey' => $this->pickupPointKey,
             'recipient' => $this->recipient->toArray(),
         ];
     }

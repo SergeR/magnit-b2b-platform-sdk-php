@@ -21,7 +21,7 @@ class Recipient implements \JsonSerializable
     private string $firstName;
     private string $familyName;
     private string $phoneNumber;
-    private string $address;
+    private ?string $address;
 
     /**
      * Constructor
@@ -29,13 +29,13 @@ class Recipient implements \JsonSerializable
      * @param string $firstName Имя
      * @param string $familyName Фамилия
      * @param string $phoneNumber Номер телефона
-     * @param string $address Адрес
+     * @param string|null $address Адрес
      */
     public function __construct(
         string $firstName,
         string $familyName,
         string $phoneNumber,
-        string $address
+        ?string $address = null
     ) {
         $this->firstName = $firstName;
         $this->familyName = $familyName;
@@ -52,10 +52,10 @@ class Recipient implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['first_name'],
-            $data['family_name'],
-            $data['phone_number'],
-            $data['address']
+            $data['firstName'],
+            $data['familyName'],
+            $data['phoneNumber'],
+            $data['address'] ?? null
         );
     }
 
@@ -92,9 +92,9 @@ class Recipient implements \JsonSerializable
     /**
      * Gets address
      *
-     * @return string
+     * @return string|null
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -106,12 +106,16 @@ class Recipient implements \JsonSerializable
      */
     public function toArray(): array
     {
-        return [
-            'first_name' => $this->firstName,
-            'family_name' => $this->familyName,
-            'phone_number' => $this->phoneNumber,
-            'address' => $this->address,
+        $result = [
+            'firstName' => $this->firstName,
+            'familyName' => $this->familyName,
+            'phoneNumber' => $this->phoneNumber,
         ];
+
+        if (isset($this->address)) {
+            $result['address'] = $this->address;
+        }
+        return $result;
     }
 
     /**

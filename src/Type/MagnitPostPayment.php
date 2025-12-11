@@ -8,6 +8,8 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
@@ -38,7 +40,7 @@ class MagnitPostPayment implements \JsonSerializable
      */
     public static function fromArray(array $data): self
     {
-        return new self($data['declared_value']);
+        return new self($data['declaredValue']);
     }
 
     /**
@@ -59,7 +61,7 @@ class MagnitPostPayment implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'declared_value' => $this->declaredValue,
+            'declaredValue' => $this->declaredValue,
         ];
     }
 

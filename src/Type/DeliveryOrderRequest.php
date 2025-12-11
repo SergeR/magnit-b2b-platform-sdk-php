@@ -8,6 +8,8 @@
  * @package  SergeR\MagintB2BPlatformSDK
  */
 
+declare(strict_types=1);
+
 namespace SergeR\MagintB2BPlatformSDK\Type;
 
 /**
@@ -21,24 +23,24 @@ class DeliveryOrderRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $customerOrderId;
+    private string $customerOrderId;
 
     /**
      * @var MagnitPostPayment
      */
-    private $payment;
+    private MagnitPostPayment $payment;
 
     /**
      * @var MagnitPostDelivery
      */
-    private $delivery;
+    private MagnitPostDelivery $delivery;
 
     /**
      * @var ParcelCharacteristic
      */
-    private $characteristic;
+    private ParcelCharacteristic $characteristic;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +54,8 @@ class DeliveryOrderRequest implements \JsonSerializable
         $this->delivery = $delivery;
         $this->characteristic = $characteristic;
     }
-        if (isset($data['payment'])) {
-            $this->payment = $data['payment'];
-        }
-        if (isset($data['delivery'])) {
-            $this->delivery = $data['delivery'];
-        }
-        if (isset($data['characteristic'])) {
-            $this->characteristic = $data['characteristic'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -80,23 +72,11 @@ class DeliveryOrderRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets customerOrderId
      *
      * @return string
      */
-    public function getCustomerOrderId()
+    public function getCustomerOrderId(): string
     {
         return $this->customerOrderId;
     }
@@ -106,7 +86,7 @@ class DeliveryOrderRequest implements \JsonSerializable
      *
      * @return MagnitPostPayment
      */
-    public function getPayment()
+    public function getPayment(): MagnitPostPayment
     {
         return $this->payment;
     }
@@ -116,7 +96,7 @@ class DeliveryOrderRequest implements \JsonSerializable
      *
      * @return MagnitPostDelivery
      */
-    public function getDelivery()
+    public function getDelivery(): MagnitPostDelivery
     {
         return $this->delivery;
     }
@@ -126,7 +106,7 @@ class DeliveryOrderRequest implements \JsonSerializable
      *
      * @return ParcelCharacteristic
      */
-    public function getCharacteristic()
+    public function getCharacteristic(): ParcelCharacteristic
     {
         return $this->characteristic;
     }
@@ -139,7 +119,7 @@ class DeliveryOrderRequest implements \JsonSerializable
     public function toArray(): array
     {
         $data = [];
-        
+
         if (isset($this->customerOrderId)) {
             $data['customerOrderId'] = $this->customerOrderId;
         }
@@ -152,7 +132,7 @@ class DeliveryOrderRequest implements \JsonSerializable
         if (isset($this->characteristic)) {
             $data['characteristic'] = $this->characteristic;
         }
-        
+
         return $data;
     }
 
@@ -164,25 +144,5 @@ class DeliveryOrderRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }
