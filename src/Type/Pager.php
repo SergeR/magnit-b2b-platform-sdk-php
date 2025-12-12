@@ -109,10 +109,10 @@ class Pager implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'total_items' => $this->totalItems,
-            'total_pages' => $this->totalPages,
-            'current_page' => $this->currentPage,
-            'page_size' => $this->pageSize,
+            'totalItems' => $this->totalItems,
+            'totalPages' => $this->totalPages,
+            'currentPage' => $this->currentPage,
+            'pageSize' => $this->pageSize,
         ];
     }
 
