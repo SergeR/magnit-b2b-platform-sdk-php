@@ -20,16 +20,26 @@ namespace SergeR\MagintB2BPlatformSDK\Type;
  */
 class DeliveryOrderStatusHistoryItem implements \JsonSerializable
 {
-    private string $status;
-    private float $timestamp;
+    /**
+     * @var string
+     * @enum ('NEW', 'CREATED', 'DELIVERING_STARTED', 'ACCEPTED_AT_POINT', 'IN_COURIER_DELIVERY', 'ISSUED', 'DESTROYED', 'ACCEPTED_AT_WAREHOUSE', 'REMOVED', 'WAITING_RETURN', 'RETURN_INITIATED', 'RETURN_SEND_TO_WAREHOUSE', 'POSSIBLY_DEFECTED', 'DEFECTED', 'RETURN_ACCEPTED_AT_WAREHOUSE', 'RETURNED_TO_PROVIDER', 'CANCELED_BY_PROVIDER', 'ACCEPTED_AT_CUSTOMS')
+     * @readonly
+     */
+    public string $status;
+
+    /**
+     * @var int
+     * @readonly
+     */
+    private int $timestamp;
 
     /**
      * Constructor
      *
      * @param string $status Статус заказа (NEW, CREATED, DELIVERING_STARTED, и т.д.)
-     * @param float $timestamp Unix timestamp
+     * @param int $timestamp Unix timestamp
      */
-    public function __construct(string $status, float $timestamp)
+    public function __construct(string $status, int $timestamp)
     {
         $this->status = $status;
         $this->timestamp = $timestamp;
@@ -62,9 +72,9 @@ class DeliveryOrderStatusHistoryItem implements \JsonSerializable
     /**
      * Gets timestamp
      *
-     * @return float
+     * @return int
      */
-    public function getTimestamp(): float
+    public function getTimestamp(): int
     {
         return $this->timestamp;
     }
