@@ -18,9 +18,17 @@ namespace SergeR\MagintB2BPlatformSDK\Type;
  */
 class DeliveryOrderHistoryResponse implements \JsonSerializable
 {
-    private string $trackingNumber;
-    /** @var DeliveryOrderStatusHistoryItem[] */
-    private array $statuses;
+    /**
+     * @readonly
+     * @var string
+     */
+    public string $trackingNumber;
+
+    /**
+     * @var DeliveryOrderStatusHistoryItem[]
+     * @readonly
+     */
+    public array $statuses;
 
     /**
      * Constructor
@@ -48,8 +56,8 @@ class DeliveryOrderHistoryResponse implements \JsonSerializable
                 $statuses[] = DeliveryOrderStatusHistoryItem::fromArray($item);
             }
         }
-        
-        return new self($data['tracking_number'], $statuses);
+
+        return new self($data['trackingNumber'], $statuses);
     }
 
     /**
@@ -80,7 +88,7 @@ class DeliveryOrderHistoryResponse implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'tracking_number' => $this->trackingNumber,
+            'trackingNumber' => $this->trackingNumber,
             'statuses' => array_map(fn($item) => $item->toArray(), $this->statuses),
         ];
     }
