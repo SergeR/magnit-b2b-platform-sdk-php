@@ -16,6 +16,7 @@ use GuzzleHttp\Psr7\Request;
 use SergeR\MagintB2BPlatformSDK\ApiException;
 use SergeR\MagintB2BPlatformSDK\Type\DeliveryOrderRequest;
 use SergeR\MagintB2BPlatformSDK\Type\DeliveryOrderResponse;
+use SergeR\MagintB2BPlatformSDK\Type\DeliveryOrdersResponse;
 use SergeR\MagintB2BPlatformSDK\Type\DeliveryOrderStatusInfo;
 use SergeR\MagintB2BPlatformSDK\Type\EstimateOrderRequest;
 use SergeR\MagintB2BPlatformSDK\Type\EstimateOrderResponse;
@@ -110,12 +111,79 @@ class MagnitPostApi extends AbstractApi
     {
         $request = new Request(
             'GET',
-            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders/' . urlencode($trackingNumber)),
+//            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders/' . urlencode($trackingNumber)),
+            $this->buildAbsoluteRequestUri('/v1/magnit-post/orders'),
             ['Accept' => 'application/json']
         );
 
         $data = $this->sendJsonRequest($request);
         return DeliveryOrderResponse::fromArray($data);
+    }
+
+    /**
+     * @param int|null $page
+     * @param int|null $size
+     * @param string|null $customerOrderId
+     * @param string|null $externalOrderId
+     * @param null|string $status NEW, CREATED, DELIVERING_STARTED, ACCEPTED_AT_POINT, IN_COURIER_DELIVERY, ISSUED, DESTROYED, ACCEPTED_AT_WAREHOUSE, REMOVED, WAITING_RETURN, RETURN_INITIATED, RETURN_SEND_TO_WAREHOUSE, POSSIBLY_DEFECTED, DEFECTED, RETURN_ACCEPTED_AT_WAREHOUSE, RETURNED_TO_PROVIDER, CANCELED_BY_PROVIDER, ACCEPTED_AT_CUSTOMS
+     * @param \DateTimeInterface|null $createdFrom
+     * @param \DateTimeInterface|null $createdTo
+     * @param string|null $sortDirection
+     * @return DeliveryOrdersResponse
+     * @throws ApiException
+     * @throws GuzzleException
+     */
+    public function getOrders(
+        ?int $page = null,
+        ?int $size = null,
+        ?string $customerOrderId = null,
+        ?string $externalOrderId = null,
+        ?string $status = null,
+        ?\DateTimeInterface $createdFrom = null,
+        ?\DateTimeInterface $createdTo = null,
+        ?string $sortDirection = null
+    ): DeliveryOrdersResponse {
+        $query_params = [];
+        if ($page !== null) {
+            $query_params['page'] = $page;
+        }
+        if ($size !== null) {
+            $query_params['size'] = $size;
+        }
+        if ($customerOrderId !== null) {
+            $query_params['customerOrderId'] = $customerOrderId;
+        }
+        if ($externalOrderId !== null) {
+            $query_params['externalOrderId'] = $externalOrderId;
+        }
+        if ($status !== null) {
+            $query_params['status'] = $status;
+        }
+        if ($createdFrom !== null) {
+            $createdFrom = clone $createdFrom;
+            $createdFrom = $createdFrom->setTimezone(new \DateTimeZone('UTC'));
+            $query_params['createdFrom'] = $createdFrom->format('Y-m-d\TH:i:s.v\Z');
+        }
+        if ($createdTo !== null) {
+            $createdTo = clone $createdTo;
+            $createdTo = $createdTo->setTimezone(new \DateTimeZone('UTC'));
+            $query_params['createdTo'] = $createdTo->format('Y-m-d\TH:i:s.v\Z');
+        }
+        if ($sortDirection !== null) {
+            $query_params['sortDirection'] = $sortDirection;
+        }
+
+        $request = new Request(
+            'GET',
+            $this->buildAbsoluteRequestUri(
+                '/v1/magnit-post/orders' . ($query_params ? '?' . http_build_query($query_params) : '')
+            ),
+            ['Accept' => 'application/json']
+        );
+
+        $data = $this->sendJsonRequest($request);
+
+        return DeliveryOrdersResponse::fromArray($data);
     }
 
     /**
