@@ -7,3 +7,17 @@ composer.phar
 
 # PHPUnit cache
 .phpunit.result.cache
+
+# PHPStan cache
+/phpstan.cache
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
