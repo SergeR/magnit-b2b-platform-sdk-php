@@ -21,33 +21,33 @@ class DictionaryResponse implements \JsonSerializable
     /**
      * @var CharacteristicAttribute[]
      */
-    private $characteristicAttributes;
+    private array $characteristicAttributes;
 
     /**
      * @var string
      */
-    private $characteristicTitle;
+    private string $characteristicTitle;
 
     /**
      * @var int
      */
-    private $dictionaryId;
+    private int $dictionaryId;
 
     /**
      * @var DictionaryPagination
      */
-    private $pagination;
+    private DictionaryPagination $pagination;
 
     /**
      * @var bool
      */
-    private $systemCharacteristic;
+    private bool $systemCharacteristic;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        CharacteristicAttribute[] $characteristicAttributes,
+        array $characteristicAttributes,
         string $characteristicTitle,
         int $dictionaryId,
         DictionaryPagination $pagination,
@@ -59,21 +59,8 @@ class DictionaryResponse implements \JsonSerializable
         $this->pagination = $pagination;
         $this->systemCharacteristic = $systemCharacteristic;
     }
-        if (isset($data['characteristic_title'])) {
-            $this->characteristicTitle = $data['characteristic_title'];
-        }
-        if (isset($data['dictionary_id'])) {
-            $this->dictionaryId = $data['dictionary_id'];
-        }
-        if (isset($data['pagination'])) {
-            $this->pagination = $data['pagination'];
-        }
-        if (isset($data['system_characteristic'])) {
-            $this->systemCharacteristic = $data['system_characteristic'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -82,24 +69,15 @@ class DictionaryResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            isset($data['characteristic_attributes']) ? array_map(fn($item) => CharacteristicAttribute::fromArray($item), $data['characteristic_attributes']) : [],
-            $data['characteristic_title'],
-            $data['dictionary_id'],
+            isset($data['characteristicAttributes']) ? array_map(
+                fn($item) => CharacteristicAttribute::fromArray($item),
+                $data['characteristicAttributes']
+            ) : [],
+            $data['characteristicTitle'],
+            $data['dictionaryId'],
             DictionaryPagination::fromArray($data['pagination']),
-            $data['system_characteristic']
+            $data['systemCharacteristic']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -107,7 +85,7 @@ class DictionaryResponse implements \JsonSerializable
      *
      * @return CharacteristicAttribute[]
      */
-    public function getCharacteristicAttributes()
+    public function getCharacteristicAttributes(): array
     {
         return $this->characteristicAttributes;
     }
@@ -117,7 +95,7 @@ class DictionaryResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getCharacteristicTitle()
+    public function getCharacteristicTitle(): string
     {
         return $this->characteristicTitle;
     }
@@ -127,7 +105,7 @@ class DictionaryResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getDictionaryId()
+    public function getDictionaryId(): int
     {
         return $this->dictionaryId;
     }
@@ -137,7 +115,7 @@ class DictionaryResponse implements \JsonSerializable
      *
      * @return DictionaryPagination
      */
-    public function getPagination()
+    public function getPagination(): DictionaryPagination
     {
         return $this->pagination;
     }
@@ -147,7 +125,7 @@ class DictionaryResponse implements \JsonSerializable
      *
      * @return bool
      */
-    public function getSystemCharacteristic()
+    public function getSystemCharacteristic(): bool
     {
         return $this->systemCharacteristic;
     }
@@ -159,27 +137,13 @@ class DictionaryResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->characteristicAttributes)) {
-            $data['characteristic_attributes'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->characteristicAttributes);
-        }
-        if (isset($this->characteristicTitle)) {
-            $data['characteristic_title'] = $this->characteristicTitle;
-        }
-        if (isset($this->dictionaryId)) {
-            $data['dictionary_id'] = $this->dictionaryId;
-        }
-        if (isset($this->pagination)) {
-            $data['pagination'] = $this->pagination;
-        }
-        if (isset($this->systemCharacteristic)) {
-            $data['system_characteristic'] = $this->systemCharacteristic;
-        }
-        
-        return $data;
+        return [
+            'characteristicAttributes' => array_map(fn($item) => $item->jsonSerialize(), $this->characteristicAttributes),
+            'characteristicTitle' => $this->characteristicTitle,
+            'dictionaryId' => $this->dictionaryId,
+            'pagination' => $this->pagination,
+            'systemCharacteristic' => $this->systemCharacteristic,
+        ];
     }
 
     /**
@@ -190,25 +154,5 @@ class DictionaryResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

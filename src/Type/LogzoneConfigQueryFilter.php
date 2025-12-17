@@ -21,19 +21,19 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $externalId;
+    private string $externalId;
 
     /**
      * @var Point
      */
-    private $point;
+    private Point $point;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
         $this->externalId = $externalId;
         $this->point = $point;
     }
-        if (isset($data['external_id'])) {
-            $this->externalId = $data['external_id'];
-        }
-        if (isset($data['point'])) {
-            $this->point = $data['point'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -63,21 +56,9 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
     {
         return new self(
             $data['name'],
-            $data['external_id'],
+            $data['externalId'],
             Point::fromArray($data['point'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -95,7 +76,7 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
      *
      * @return string
      */
-    public function getExternalId()
+    public function getExternalId(): string
     {
         return $this->externalId;
     }
@@ -105,7 +86,7 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
      *
      * @return Point
      */
-    public function getPoint()
+    public function getPoint(): Point
     {
         return $this->point;
     }
@@ -117,19 +98,11 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->externalId)) {
-            $data['external_id'] = $this->externalId;
-        }
-        if (isset($this->point)) {
-            $data['point'] = $this->point;
-        }
-        
-        return $data;
+        return [
+            'name' => $this->name,
+            'externalId' => $this->externalId,
+            'point' => $this->point,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class LogzoneConfigQueryFilter implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

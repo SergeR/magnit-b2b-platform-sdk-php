@@ -21,24 +21,24 @@ class SkuArchiveResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $errorMsg;
+    private string $errorMsg;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var bool
      */
-    private $success;
+    private bool $success;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class SkuArchiveResponse implements \JsonSerializable
         $this->skuId = $skuId;
         $this->success = $success;
     }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['sku_id'])) {
-            $this->skuId = $data['sku_id'];
-        }
-        if (isset($data['success'])) {
-            $this->success = $data['success'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +62,11 @@ class SkuArchiveResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['error_msg'],
-            $data['seller_sku_id'],
-            $data['sku_id'],
+            $data['errorMsg'],
+            $data['sellerSkuId'],
+            $data['skuId'],
             $data['success']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class SkuArchiveResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getErrorMsg()
+    public function getErrorMsg(): string
     {
         return $this->errorMsg;
     }
@@ -106,7 +84,7 @@ class SkuArchiveResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -116,7 +94,7 @@ class SkuArchiveResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -126,7 +104,7 @@ class SkuArchiveResponse implements \JsonSerializable
      *
      * @return bool
      */
-    public function getSuccess()
+    public function getSuccess(): bool
     {
         return $this->success;
     }
@@ -138,22 +116,12 @@ class SkuArchiveResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->errorMsg)) {
-            $data['error_msg'] = $this->errorMsg;
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->success)) {
-            $data['success'] = $this->success;
-        }
-        
-        return $data;
+        return [
+            'errorMsg' => $this->errorMsg,
+            'sellerSkuId' => $this->sellerSkuId,
+            'skuId' => $this->skuId,
+            'success' => $this->success,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class SkuArchiveResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

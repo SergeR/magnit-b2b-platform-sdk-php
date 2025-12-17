@@ -21,29 +21,25 @@ class MarketplaceOrderCancelItemsRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $orderId;
+    private string $orderId;
 
     /**
      * @var MarketplaceSkuItem[]
      */
-    private $items;
+    private array $items;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $orderId,
-        MarketplaceSkuItem[] $items
+        array $items
     ) {
         $this->orderId = $orderId;
         $this->items = $items;
     }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceOrderCancelItemsRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['order_id'],
+            $data['orderId'],
             isset($data['items']) ? array_map(fn($item) => MarketplaceSkuItem::fromArray($item), $data['items']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceOrderCancelItemsRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getOrderId()
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
@@ -84,7 +68,7 @@ class MarketplaceOrderCancelItemsRequest implements \JsonSerializable
      *
      * @return MarketplaceSkuItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -96,18 +80,10 @@ class MarketplaceOrderCancelItemsRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->orderId)) {
-            $data['order_id'] = $this->orderId;
-        }
-        if (isset($this->items)) {
-            $data['items'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->items);
-        }
-        
-        return $data;
+        return [
+            'orderId' => $this->orderId,
+            'items' => array_map(fn($item) => $item->jsonSerialize(), $this->items),
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class MarketplaceOrderCancelItemsRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

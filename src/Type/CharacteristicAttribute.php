@@ -21,19 +21,19 @@ class CharacteristicAttribute implements \JsonSerializable
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * @var string
      */
-    private $value;
+    private string $value;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class CharacteristicAttribute implements \JsonSerializable
         $this->title = $title;
         $this->value = $value;
     }
-        if (isset($data['title'])) {
-            $this->title = $data['title'];
-        }
-        if (isset($data['value'])) {
-            $this->value = $data['value'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -69,23 +62,11 @@ class CharacteristicAttribute implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets id
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -95,7 +76,7 @@ class CharacteristicAttribute implements \JsonSerializable
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -105,7 +86,7 @@ class CharacteristicAttribute implements \JsonSerializable
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -117,19 +98,11 @@ class CharacteristicAttribute implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->id)) {
-            $data['id'] = $this->id;
-        }
-        if (isset($this->title)) {
-            $data['title'] = $this->title;
-        }
-        if (isset($this->value)) {
-            $data['value'] = $this->value;
-        }
-        
-        return $data;
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'value' => $this->value,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class CharacteristicAttribute implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

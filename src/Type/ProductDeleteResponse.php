@@ -21,19 +21,19 @@ class ProductDeleteResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $errorMsg;
+    private string $errorMsg;
 
     /**
      * @var int
      */
-    private $productId;
+    private int $productId;
 
     /**
      * @var bool
      */
-    private $success;
+    private bool $success;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class ProductDeleteResponse implements \JsonSerializable
         $this->productId = $productId;
         $this->success = $success;
     }
-        if (isset($data['product_id'])) {
-            $this->productId = $data['product_id'];
-        }
-        if (isset($data['success'])) {
-            $this->success = $data['success'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,10 @@ class ProductDeleteResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['error_msg'],
-            $data['product_id'],
+            $data['errorMsg'],
+            $data['productId'],
             $data['success']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class ProductDeleteResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getErrorMsg()
+    public function getErrorMsg(): string
     {
         return $this->errorMsg;
     }
@@ -95,7 +76,7 @@ class ProductDeleteResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getProductId()
+    public function getProductId(): int
     {
         return $this->productId;
     }
@@ -105,7 +86,7 @@ class ProductDeleteResponse implements \JsonSerializable
      *
      * @return bool
      */
-    public function getSuccess()
+    public function getSuccess(): bool
     {
         return $this->success;
     }
@@ -117,19 +98,11 @@ class ProductDeleteResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->errorMsg)) {
-            $data['error_msg'] = $this->errorMsg;
-        }
-        if (isset($this->productId)) {
-            $data['product_id'] = $this->productId;
-        }
-        if (isset($this->success)) {
-            $data['success'] = $this->success;
-        }
-        
-        return $data;
+        return [
+            'errorMsg' => $this->errorMsg,
+            'productId' => $this->productId,
+            'success' => $this->success,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class ProductDeleteResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

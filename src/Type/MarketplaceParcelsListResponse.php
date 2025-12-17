@@ -21,29 +21,25 @@ class MarketplaceParcelsListResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $nextPageToken;
+    private string $nextPageToken;
 
     /**
      * @var MarketplaceParcelFullInfo[]
      */
-    private $parcels;
+    private array $parcels;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $nextPageToken,
-        MarketplaceParcelFullInfo[] $parcels
+        array $parcels
     ) {
         $this->nextPageToken = $nextPageToken;
         $this->parcels = $parcels;
     }
-        if (isset($data['parcels'])) {
-            $this->parcels = $data['parcels'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,10 @@ class MarketplaceParcelsListResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['next_page_token'],
-            isset($data['parcels']) ? array_map(fn($item) => MarketplaceParcelFullInfo::fromArray($item), $data['parcels']) : []
+            $data['nextPageToken'],
+            isset($data['parcels']) ? array_map(fn($item) => MarketplaceParcelFullInfo::fromArray($item),
+                $data['parcels']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +59,7 @@ class MarketplaceParcelsListResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getNextPageToken()
+    public function getNextPageToken(): string
     {
         return $this->nextPageToken;
     }
@@ -84,7 +69,7 @@ class MarketplaceParcelsListResponse implements \JsonSerializable
      *
      * @return MarketplaceParcelFullInfo[]
      */
-    public function getParcels()
+    public function getParcels(): array
     {
         return $this->parcels;
     }
@@ -96,18 +81,10 @@ class MarketplaceParcelsListResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->nextPageToken)) {
-            $data['next_page_token'] = $this->nextPageToken;
-        }
-        if (isset($this->parcels)) {
-            $data['parcels'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->parcels);
-        }
-        
-        return $data;
+        return [
+            'nextPageToken' => $this->nextPageToken,
+            'parcels' => array_map(fn($item) => $item->jsonSerialize(), $this->parcels),
+        ];
     }
 
     /**
@@ -118,25 +95,5 @@ class MarketplaceParcelsListResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

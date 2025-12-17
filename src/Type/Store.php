@@ -21,19 +21,19 @@ class Store implements \JsonSerializable
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $code;
+    private string $code;
 
     /**
      * @var StoreFlags
      */
-    private $flags;
+    private StoreFlags $flags;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class Store implements \JsonSerializable
         $this->code = $code;
         $this->flags = $flags;
     }
-        if (isset($data['code'])) {
-            $this->code = $data['code'];
-        }
-        if (isset($data['flags'])) {
-            $this->flags = $data['flags'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -69,23 +62,11 @@ class Store implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets name
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -95,7 +76,7 @@ class Store implements \JsonSerializable
      *
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -105,7 +86,7 @@ class Store implements \JsonSerializable
      *
      * @return StoreFlags
      */
-    public function getFlags()
+    public function getFlags(): StoreFlags
     {
         return $this->flags;
     }
@@ -117,19 +98,11 @@ class Store implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->code)) {
-            $data['code'] = $this->code;
-        }
-        if (isset($this->flags)) {
-            $data['flags'] = $this->flags;
-        }
-        
-        return $data;
+        return [
+            'name' => $this->name,
+            'code' => $this->code,
+            'flags' => $this->flags,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class Store implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

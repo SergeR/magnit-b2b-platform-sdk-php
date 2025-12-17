@@ -21,9 +21,9 @@ class DeliveryPrice implements \JsonSerializable
     /**
      * @var DeliveryBasePrice
      */
-    private $base;
+    private DeliveryBasePrice $base;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class DeliveryPrice implements \JsonSerializable
     ) {
         $this->base = $base;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class DeliveryPrice implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets base
      *
      * @return DeliveryBasePrice
      */
-    public function getBase()
+    public function getBase(): DeliveryBasePrice
     {
         return $this->base;
     }
@@ -75,13 +62,9 @@ class DeliveryPrice implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->base)) {
-            $data['base'] = $this->base;
-        }
-        
-        return $data;
+        return [
+            'base' => $this->base,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class DeliveryPrice implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

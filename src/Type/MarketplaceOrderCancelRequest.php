@@ -21,9 +21,9 @@ class MarketplaceOrderCancelRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $orderId;
+    private string $orderId;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class MarketplaceOrderCancelRequest implements \JsonSerializable
     ) {
         $this->orderId = $orderId;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class MarketplaceOrderCancelRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['order_id']
+            $data['orderId']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class MarketplaceOrderCancelRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getOrderId()
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
@@ -75,13 +62,9 @@ class MarketplaceOrderCancelRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->orderId)) {
-            $data['order_id'] = $this->orderId;
-        }
-        
-        return $data;
+        return [
+            'orderId' => $this->orderId,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class MarketplaceOrderCancelRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

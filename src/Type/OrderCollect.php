@@ -21,9 +21,9 @@ class OrderCollect implements \JsonSerializable
     /**
      * @var string
      */
-    private $expectedAt;
+    private string $expectedAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class OrderCollect implements \JsonSerializable
     ) {
         $this->expectedAt = $expectedAt;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class OrderCollect implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['expected_at']
+            $data['expectedAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class OrderCollect implements \JsonSerializable
      *
      * @return string
      */
-    public function getExpectedAt()
+    public function getExpectedAt(): string
     {
         return $this->expectedAt;
     }
@@ -75,13 +62,9 @@ class OrderCollect implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->expectedAt)) {
-            $data['expected_at'] = $this->expectedAt;
-        }
-        
-        return $data;
+        return [
+            'expectedAt' => $this->expectedAt,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class OrderCollect implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

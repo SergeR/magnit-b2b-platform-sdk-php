@@ -21,9 +21,9 @@ class ProductVisualEffects implements \JsonSerializable
     /**
      * @var string
      */
-    private $url;
+    private string $url;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class ProductVisualEffects implements \JsonSerializable
     ) {
         $this->url = $url;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class ProductVisualEffects implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets url
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -75,13 +62,9 @@ class ProductVisualEffects implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->url)) {
-            $data['url'] = $this->url;
-        }
-        
-        return $data;
+        return [
+            'url' => $this->url,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class ProductVisualEffects implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,24 +21,24 @@ class ErrorInfo implements \JsonSerializable
     /**
      * @var string
      */
-    private $attributeError;
+    private string $attributeError;
 
     /**
      * @var string
      */
-    private $message;
+    private string $message;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var string
      */
-    private $status;
+    private string $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class ErrorInfo implements \JsonSerializable
         $this->sellerSkuId = $sellerSkuId;
         $this->status = $status;
     }
-        if (isset($data['message'])) {
-            $this->message = $data['message'];
-        }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +62,11 @@ class ErrorInfo implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['attribute_error'],
+            $data['attributeError'],
             $data['message'],
-            $data['seller_sku_id'],
+            $data['sellerSkuId'],
             $data['status']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class ErrorInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getAttributeError()
+    public function getAttributeError(): string
     {
         return $this->attributeError;
     }
@@ -106,7 +84,7 @@ class ErrorInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -116,7 +94,7 @@ class ErrorInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -126,7 +104,7 @@ class ErrorInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -138,22 +116,12 @@ class ErrorInfo implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->attributeError)) {
-            $data['attribute_error'] = $this->attributeError;
-        }
-        if (isset($this->message)) {
-            $data['message'] = $this->message;
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'attributeError' => $this->attributeError,
+            'message' => $this->message,
+            'sellerSkuId' => $this->sellerSkuId,
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class ErrorInfo implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

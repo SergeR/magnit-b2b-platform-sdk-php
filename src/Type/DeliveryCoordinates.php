@@ -21,14 +21,14 @@ class DeliveryCoordinates implements \JsonSerializable
     /**
      * @var float
      */
-    private $lat;
+    private float $lat;
 
     /**
      * @var float
      */
-    private $lng;
+    private float $lng;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class DeliveryCoordinates implements \JsonSerializable
         $this->lat = $lat;
         $this->lng = $lng;
     }
-        if (isset($data['lng'])) {
-            $this->lng = $data['lng'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class DeliveryCoordinates implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets lat
      *
      * @return float
      */
-    public function getLat()
+    public function getLat(): float
     {
         return $this->lat;
     }
@@ -84,7 +68,7 @@ class DeliveryCoordinates implements \JsonSerializable
      *
      * @return float
      */
-    public function getLng()
+    public function getLng(): float
     {
         return $this->lng;
     }
@@ -96,16 +80,10 @@ class DeliveryCoordinates implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->lat)) {
-            $data['lat'] = $this->lat;
-        }
-        if (isset($this->lng)) {
-            $data['lng'] = $this->lng;
-        }
-        
-        return $data;
+        return [
+            'lat' => $this->lat,
+            'lng' => $this->lng,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class DeliveryCoordinates implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

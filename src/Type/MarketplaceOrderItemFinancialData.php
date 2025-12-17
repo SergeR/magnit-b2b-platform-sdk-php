@@ -21,14 +21,14 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
     /**
      * @var float
      */
-    private $oldPrice;
+    private float $oldPrice;
 
     /**
      * @var float
      */
-    private $price;
+    private float $price;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
         $this->oldPrice = $oldPrice;
         $this->price = $price;
     }
-        if (isset($data['price'])) {
-            $this->price = $data['price'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['old_price'],
+            $data['oldPrice'],
             $data['price']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
      *
      * @return float
      */
-    public function getOldPrice()
+    public function getOldPrice(): float
     {
         return $this->oldPrice;
     }
@@ -84,7 +68,7 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
      *
      * @return float
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
@@ -96,16 +80,10 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->oldPrice)) {
-            $data['old_price'] = $this->oldPrice;
-        }
-        if (isset($this->price)) {
-            $data['price'] = $this->price;
-        }
-        
-        return $data;
+        return [
+            'oldPrice' => $this->oldPrice,
+            'price' => $this->price,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class MarketplaceOrderItemFinancialData implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

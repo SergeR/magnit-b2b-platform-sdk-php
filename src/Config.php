@@ -25,7 +25,6 @@ class Config
     private string $clientId;
     private string $clientSecret;
     private string $scope;
-    private string $accessToken = '';
     private string $userAgent = 'Magnit-B2B-SDK/1.0.0/PHP';
     private ?\Psr\Log\LoggerInterface $logger = null;
 

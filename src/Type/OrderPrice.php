@@ -21,9 +21,9 @@ class OrderPrice implements \JsonSerializable
     /**
      * @var OrderTotalPrice
      */
-    private $total;
+    private OrderTotalPrice $total;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class OrderPrice implements \JsonSerializable
     ) {
         $this->total = $total;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class OrderPrice implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets total
      *
      * @return OrderTotalPrice
      */
-    public function getTotal()
+    public function getTotal(): OrderTotalPrice
     {
         return $this->total;
     }
@@ -75,13 +62,9 @@ class OrderPrice implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->total)) {
-            $data['total'] = $this->total;
-        }
-        
-        return $data;
+        return [
+            'total' => $this->total,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class OrderPrice implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,9 +21,9 @@ class SkuFilterValue implements \JsonSerializable
     /**
      * @var string
      */
-    private $characteristicValue;
+    private string $characteristicValue;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class SkuFilterValue implements \JsonSerializable
     ) {
         $this->characteristicValue = $characteristicValue;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class SkuFilterValue implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['characteristic_value']
+            $data['characteristicValue']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class SkuFilterValue implements \JsonSerializable
      *
      * @return string
      */
-    public function getCharacteristicValue()
+    public function getCharacteristicValue(): string
     {
         return $this->characteristicValue;
     }
@@ -75,13 +62,9 @@ class SkuFilterValue implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->characteristicValue)) {
-            $data['characteristic_value'] = $this->characteristicValue;
-        }
-        
-        return $data;
+        return [
+            'characteristicValue' => $this->characteristicValue,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class SkuFilterValue implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

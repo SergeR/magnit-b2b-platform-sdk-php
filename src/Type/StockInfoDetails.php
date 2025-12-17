@@ -21,19 +21,19 @@ class StockInfoDetails implements \JsonSerializable
     /**
      * @var int
      */
-    private $reserved;
+    private int $reserved;
 
     /**
      * @var int
      */
-    private $stock;
+    private int $stock;
 
     /**
      * @var string
      */
-    private $type;
+    private string $type;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class StockInfoDetails implements \JsonSerializable
         $this->stock = $stock;
         $this->type = $type;
     }
-        if (isset($data['stock'])) {
-            $this->stock = $data['stock'];
-        }
-        if (isset($data['type'])) {
-            $this->type = $data['type'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -69,23 +62,11 @@ class StockInfoDetails implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets reserved
      *
      * @return int
      */
-    public function getReserved()
+    public function getReserved(): int
     {
         return $this->reserved;
     }
@@ -95,7 +76,7 @@ class StockInfoDetails implements \JsonSerializable
      *
      * @return int
      */
-    public function getStock()
+    public function getStock(): int
     {
         return $this->stock;
     }
@@ -105,7 +86,7 @@ class StockInfoDetails implements \JsonSerializable
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -117,19 +98,11 @@ class StockInfoDetails implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->reserved)) {
-            $data['reserved'] = $this->reserved;
-        }
-        if (isset($this->stock)) {
-            $data['stock'] = $this->stock;
-        }
-        if (isset($this->type)) {
-            $data['type'] = $this->type;
-        }
-        
-        return $data;
+        return [
+            'reserved' => $this->reserved,
+            'stock' => $this->stock,
+            'type' => $this->type,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class StockInfoDetails implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

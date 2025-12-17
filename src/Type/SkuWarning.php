@@ -21,23 +21,23 @@ class SkuWarning implements \JsonSerializable
     /**
      * @var SkuWarningAttribute[]
      */
-    private $attributes;
+    private array $attributes;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var string
      */
-    private $status;
+    private string $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        SkuWarningAttribute[] $attributes,
+        array $attributes,
         string $sellerSkuId,
         string $status
     ) {
@@ -45,15 +45,8 @@ class SkuWarning implements \JsonSerializable
         $this->sellerSkuId = $sellerSkuId;
         $this->status = $status;
     }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,11 @@ class SkuWarning implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            isset($data['attributes']) ? array_map(fn($item) => SkuWarningAttribute::fromArray($item), $data['attributes']) : [],
-            $data['seller_sku_id'],
+            isset($data['attributes']) ? array_map(fn($item) => SkuWarningAttribute::fromArray($item),
+                $data['attributes']) : [],
+            $data['sellerSkuId'],
             $data['status']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +67,7 @@ class SkuWarning implements \JsonSerializable
      *
      * @return SkuWarningAttribute[]
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -95,7 +77,7 @@ class SkuWarning implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -105,7 +87,7 @@ class SkuWarning implements \JsonSerializable
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -117,21 +99,11 @@ class SkuWarning implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->attributes)) {
-            $data['attributes'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->attributes);
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'attributes' => array_map(fn($item) => $item->jsonSerialize(), $this->attributes),
+            'sellerSkuId' => $this->sellerSkuId,
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -142,25 +114,5 @@ class SkuWarning implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

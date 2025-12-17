@@ -21,49 +21,39 @@ class UpdateSkuDto implements \JsonSerializable
     /**
      * @var int
      */
-    private $barcode;
+    private int $barcode;
 
     /**
      * @var SkuDimensions
      */
-    private $dimensions;
+    private SkuDimensions $dimensions;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var UpdateSkuFilter[]
      */
-    private $skuFilterList;
+    private array $skuFilterList;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $barcode,
         SkuDimensions $dimensions,
         string $sellerSkuId,
-        UpdateSkuFilter[] $skuFilterList
+        array $skuFilterList
     ) {
         $this->barcode = $barcode;
         $this->dimensions = $dimensions;
         $this->sellerSkuId = $sellerSkuId;
         $this->skuFilterList = $skuFilterList;
     }
-        if (isset($data['dimensions'])) {
-            $this->dimensions = $data['dimensions'];
-        }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['sku_filter_list'])) {
-            $this->skuFilterList = $data['sku_filter_list'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -74,21 +64,10 @@ class UpdateSkuDto implements \JsonSerializable
         return new self(
             $data['barcode'],
             SkuDimensions::fromArray($data['dimensions']),
-            $data['seller_sku_id'],
-            isset($data['sku_filter_list']) ? array_map(fn($item) => UpdateSkuFilter::fromArray($item), $data['sku_filter_list']) : []
+            $data['sellerSkuId'],
+            isset($data['skuFilterList']) ? array_map(fn($item) => UpdateSkuFilter::fromArray($item),
+                $data['skuFilterList']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +75,7 @@ class UpdateSkuDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getBarcode()
+    public function getBarcode(): int
     {
         return $this->barcode;
     }
@@ -106,7 +85,7 @@ class UpdateSkuDto implements \JsonSerializable
      *
      * @return SkuDimensions
      */
-    public function getDimensions()
+    public function getDimensions(): SkuDimensions
     {
         return $this->dimensions;
     }
@@ -116,7 +95,7 @@ class UpdateSkuDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -126,7 +105,7 @@ class UpdateSkuDto implements \JsonSerializable
      *
      * @return UpdateSkuFilter[]
      */
-    public function getSkuFilterList()
+    public function getSkuFilterList(): array
     {
         return $this->skuFilterList;
     }
@@ -138,24 +117,12 @@ class UpdateSkuDto implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->barcode)) {
-            $data['barcode'] = $this->barcode;
-        }
-        if (isset($this->dimensions)) {
-            $data['dimensions'] = $this->dimensions;
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->skuFilterList)) {
-            $data['sku_filter_list'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->skuFilterList);
-        }
-        
-        return $data;
+        return [
+            'barcode' => $this->barcode,
+            'dimensions' => $this->dimensions,
+            'sellerSkuId' => $this->sellerSkuId,
+            'skuFilterList' => array_map(fn($item) => $item->jsonSerialize(), $this->skuFilterList),
+        ];
     }
 
     /**
@@ -166,25 +133,5 @@ class UpdateSkuDto implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,29 +21,25 @@ class MarketplaceOrdersUnprocessedResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $nextPageToken;
+    private string $nextPageToken;
 
     /**
      * @var MarketplaceOrder[]
      */
-    private $orders;
+    private array $orders;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $nextPageToken,
-        MarketplaceOrder[] $orders
+        array $orders
     ) {
         $this->nextPageToken = $nextPageToken;
         $this->orders = $orders;
     }
-        if (isset($data['orders'])) {
-            $this->orders = $data['orders'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceOrdersUnprocessedResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['next_page_token'],
+            $data['nextPageToken'],
             isset($data['orders']) ? array_map(fn($item) => MarketplaceOrder::fromArray($item), $data['orders']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceOrdersUnprocessedResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getNextPageToken()
+    public function getNextPageToken(): string
     {
         return $this->nextPageToken;
     }
@@ -84,7 +68,7 @@ class MarketplaceOrdersUnprocessedResponse implements \JsonSerializable
      *
      * @return MarketplaceOrder[]
      */
-    public function getOrders()
+    public function getOrders(): array
     {
         return $this->orders;
     }
@@ -96,18 +80,10 @@ class MarketplaceOrdersUnprocessedResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->nextPageToken)) {
-            $data['next_page_token'] = $this->nextPageToken;
-        }
-        if (isset($this->orders)) {
-            $data['orders'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->orders);
-        }
-        
-        return $data;
+        return [
+            'nextPageToken' => $this->nextPageToken,
+            'orders' => array_map(fn($item) => $item->jsonSerialize(), $this->orders),
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class MarketplaceOrdersUnprocessedResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

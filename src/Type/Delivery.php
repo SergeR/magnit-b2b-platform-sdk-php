@@ -21,9 +21,9 @@ class Delivery implements \JsonSerializable
     /**
      * @var DeliveryTimeSlot
      */
-    private $timeSlot;
+    private DeliveryTimeSlot $timeSlot;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class Delivery implements \JsonSerializable
     ) {
         $this->timeSlot = $timeSlot;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class Delivery implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            DeliveryTimeSlot::fromArray($data['time_slot'])
+            DeliveryTimeSlot::fromArray($data['timeSlot'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class Delivery implements \JsonSerializable
      *
      * @return DeliveryTimeSlot
      */
-    public function getTimeSlot()
+    public function getTimeSlot(): DeliveryTimeSlot
     {
         return $this->timeSlot;
     }
@@ -75,13 +62,9 @@ class Delivery implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->timeSlot)) {
-            $data['time_slot'] = $this->timeSlot;
-        }
-        
-        return $data;
+        return [
+            'timeSlot' => $this->timeSlot,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class Delivery implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

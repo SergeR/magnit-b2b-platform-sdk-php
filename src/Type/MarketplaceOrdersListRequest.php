@@ -21,41 +21,41 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
     /**
      * @var int
      */
-    private $pageSize;
+    private int $pageSize;
 
     /**
      * @var string
      */
-    private $pageToken;
+    private string $pageToken;
 
     /**
      * @var MarketplaceSortDirection
      */
-    private $dir;
+    private MarketplaceSortDirection $dir;
 
     /**
      * @var string[]
      */
-    private $orderId;
+    private array $orderId;
 
     /**
      * @var MarketplaceFilterDateTime
      */
-    private $createdAt;
+    private MarketplaceFilterDateTime $createdAt;
 
     /**
      * @var MarketplaceOrderStatus
      */
-    private $status;
+    private MarketplaceOrderStatus $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $pageSize,
         string $pageToken,
         MarketplaceSortDirection $dir,
-        string[] $orderId,
+        array $orderId,
         MarketplaceFilterDateTime $createdAt,
         MarketplaceOrderStatus $status
     ) {
@@ -66,24 +66,8 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
         $this->createdAt = $createdAt;
         $this->status = $status;
     }
-        if (isset($data['page_token'])) {
-            $this->pageToken = $data['page_token'];
-        }
-        if (isset($data['dir'])) {
-            $this->dir = $data['dir'];
-        }
-        if (isset($data['order_id'])) {
-            $this->orderId = $data['order_id'];
-        }
-        if (isset($data['created_at'])) {
-            $this->createdAt = $data['created_at'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -92,25 +76,13 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['page_size'],
-            $data['page_token'],
+            $data['pageSize'],
+            $data['pageToken'],
             MarketplaceSortDirection::fromArray($data['dir']),
-            $data['order_id'],
-            MarketplaceFilterDateTime::fromArray($data['created_at']),
+            $data['orderId'],
+            MarketplaceFilterDateTime::fromArray($data['createdAt']),
             MarketplaceOrderStatus::fromArray($data['status'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -118,7 +90,7 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      *
      * @return int
      */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return $this->pageSize;
     }
@@ -128,7 +100,7 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getPageToken()
+    public function getPageToken(): string
     {
         return $this->pageToken;
     }
@@ -138,7 +110,7 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      *
      * @return MarketplaceSortDirection
      */
-    public function getDir()
+    public function getDir(): MarketplaceSortDirection
     {
         return $this->dir;
     }
@@ -148,7 +120,7 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getOrderId()
+    public function getOrderId(): array
     {
         return $this->orderId;
     }
@@ -158,7 +130,7 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      *
      * @return MarketplaceFilterDateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): MarketplaceFilterDateTime
     {
         return $this->createdAt;
     }
@@ -168,7 +140,7 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      *
      * @return MarketplaceOrderStatus
      */
-    public function getStatus()
+    public function getStatus(): MarketplaceOrderStatus
     {
         return $this->status;
     }
@@ -180,30 +152,14 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->pageSize)) {
-            $data['page_size'] = $this->pageSize;
-        }
-        if (isset($this->pageToken)) {
-            $data['page_token'] = $this->pageToken;
-        }
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->orderId)) {
-            $data['order_id'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->orderId);
-        }
-        if (isset($this->createdAt)) {
-            $data['created_at'] = $this->createdAt;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'pageSize' => $this->pageSize,
+            'pageToken' => $this->pageToken,
+            'dir' => $this->dir,
+            'orderId' => $this->orderId,
+            'createdAt' => $this->createdAt,
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -214,25 +170,5 @@ class MarketplaceOrdersListRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

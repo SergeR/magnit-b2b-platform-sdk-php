@@ -21,24 +21,24 @@ class DeliveryMagnit implements \JsonSerializable
     /**
      * @var DeliveryTimeSlot
      */
-    private $timeSlot;
+    private DeliveryTimeSlot $timeSlot;
 
     /**
      * @var DeliveryPrice
      */
-    private $price;
+    private DeliveryPrice $price;
 
     /**
      * @var DeliveryCoordinates
      */
-    private $coordinates;
+    private DeliveryCoordinates $coordinates;
 
     /**
      * @var DeliveryAddress
      */
-    private $address;
+    private DeliveryAddress $address;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class DeliveryMagnit implements \JsonSerializable
         $this->coordinates = $coordinates;
         $this->address = $address;
     }
-        if (isset($data['price'])) {
-            $this->price = $data['price'];
-        }
-        if (isset($data['coordinates'])) {
-            $this->coordinates = $data['coordinates'];
-        }
-        if (isset($data['address'])) {
-            $this->address = $data['address'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,7 +62,7 @@ class DeliveryMagnit implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            DeliveryTimeSlot::fromArray($data['time_slot']),
+            DeliveryTimeSlot::fromArray($data['timeSlot']),
             DeliveryPrice::fromArray($data['price']),
             DeliveryCoordinates::fromArray($data['coordinates']),
             DeliveryAddress::fromArray($data['address'])
@@ -80,23 +70,11 @@ class DeliveryMagnit implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets timeSlot
      *
      * @return DeliveryTimeSlot
      */
-    public function getTimeSlot()
+    public function getTimeSlot(): DeliveryTimeSlot
     {
         return $this->timeSlot;
     }
@@ -106,7 +84,7 @@ class DeliveryMagnit implements \JsonSerializable
      *
      * @return DeliveryPrice
      */
-    public function getPrice()
+    public function getPrice(): DeliveryPrice
     {
         return $this->price;
     }
@@ -116,7 +94,7 @@ class DeliveryMagnit implements \JsonSerializable
      *
      * @return DeliveryCoordinates
      */
-    public function getCoordinates()
+    public function getCoordinates(): DeliveryCoordinates
     {
         return $this->coordinates;
     }
@@ -126,7 +104,7 @@ class DeliveryMagnit implements \JsonSerializable
      *
      * @return DeliveryAddress
      */
-    public function getAddress()
+    public function getAddress(): DeliveryAddress
     {
         return $this->address;
     }
@@ -138,22 +116,12 @@ class DeliveryMagnit implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->timeSlot)) {
-            $data['time_slot'] = $this->timeSlot;
-        }
-        if (isset($this->price)) {
-            $data['price'] = $this->price;
-        }
-        if (isset($this->coordinates)) {
-            $data['coordinates'] = $this->coordinates;
-        }
-        if (isset($this->address)) {
-            $data['address'] = $this->address;
-        }
-        
-        return $data;
+        return [
+            'timeSlot' => $this->timeSlot,
+            'price' => $this->price,
+            'coordinates' => $this->coordinates,
+            'address' => $this->address,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class DeliveryMagnit implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

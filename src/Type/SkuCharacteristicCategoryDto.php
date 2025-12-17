@@ -21,44 +21,44 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
     /**
      * @var string
      */
-    private $characteristicTitle;
+    private string $characteristicTitle;
 
     /**
      * @var int
      */
-    private $dictionaryId;
+    private int $dictionaryId;
 
     /**
      * @var bool
      */
-    private $extendableValues;
+    private bool $extendableValues;
 
     /**
      * @var string
      */
-    private $inputType;
+    private string $inputType;
 
     /**
      * @var int
      */
-    private $maxAllowedValues;
+    private int $maxAllowedValues;
 
     /**
      * @var bool
      */
-    private $required;
+    private bool $required;
 
     /**
      * @var bool
      */
-    private $systemCharacteristic;
+    private bool $systemCharacteristic;
 
     /**
      * @var string
      */
-    private $type;
+    private string $type;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -80,30 +80,8 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
         $this->systemCharacteristic = $systemCharacteristic;
         $this->type = $type;
     }
-        if (isset($data['dictionary_id'])) {
-            $this->dictionaryId = $data['dictionary_id'];
-        }
-        if (isset($data['extendable_values'])) {
-            $this->extendableValues = $data['extendable_values'];
-        }
-        if (isset($data['input_type'])) {
-            $this->inputType = $data['input_type'];
-        }
-        if (isset($data['max_allowed_values'])) {
-            $this->maxAllowedValues = $data['max_allowed_values'];
-        }
-        if (isset($data['required'])) {
-            $this->required = $data['required'];
-        }
-        if (isset($data['system_characteristic'])) {
-            $this->systemCharacteristic = $data['system_characteristic'];
-        }
-        if (isset($data['type'])) {
-            $this->type = $data['type'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -112,27 +90,15 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['characteristic_title'],
-            $data['dictionary_id'],
-            $data['extendable_values'],
-            $data['input_type'],
-            $data['max_allowed_values'],
+            $data['characteristicTitle'],
+            $data['dictionaryId'],
+            $data['extendableValues'],
+            $data['inputType'],
+            $data['maxAllowedValues'],
             $data['required'],
-            $data['system_characteristic'],
+            $data['systemCharacteristic'],
             $data['type']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -140,7 +106,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getCharacteristicTitle()
+    public function getCharacteristicTitle(): string
     {
         return $this->characteristicTitle;
     }
@@ -150,7 +116,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getDictionaryId()
+    public function getDictionaryId(): int
     {
         return $this->dictionaryId;
     }
@@ -160,7 +126,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return bool
      */
-    public function getExtendableValues()
+    public function getExtendableValues(): bool
     {
         return $this->extendableValues;
     }
@@ -170,7 +136,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getInputType()
+    public function getInputType(): string
     {
         return $this->inputType;
     }
@@ -180,7 +146,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getMaxAllowedValues()
+    public function getMaxAllowedValues(): int
     {
         return $this->maxAllowedValues;
     }
@@ -190,7 +156,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return bool
      */
-    public function getRequired()
+    public function getRequired(): bool
     {
         return $this->required;
     }
@@ -200,7 +166,7 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return bool
      */
-    public function getSystemCharacteristic()
+    public function getSystemCharacteristic(): bool
     {
         return $this->systemCharacteristic;
     }
@@ -210,46 +176,28 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * Преобразовать в массив
+     * Преобр��зовать в массив
      *
      * @return array
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->characteristicTitle)) {
-            $data['characteristic_title'] = $this->characteristicTitle;
-        }
-        if (isset($this->dictionaryId)) {
-            $data['dictionary_id'] = $this->dictionaryId;
-        }
-        if (isset($this->extendableValues)) {
-            $data['extendable_values'] = $this->extendableValues;
-        }
-        if (isset($this->inputType)) {
-            $data['input_type'] = $this->inputType;
-        }
-        if (isset($this->maxAllowedValues)) {
-            $data['max_allowed_values'] = $this->maxAllowedValues;
-        }
-        if (isset($this->required)) {
-            $data['required'] = $this->required;
-        }
-        if (isset($this->systemCharacteristic)) {
-            $data['system_characteristic'] = $this->systemCharacteristic;
-        }
-        if (isset($this->type)) {
-            $data['type'] = $this->type;
-        }
-        
-        return $data;
+        return [
+            'characteristicTitle' => $this->characteristicTitle,
+            'dictionaryId' => $this->dictionaryId,
+            'extendableValues' => $this->extendableValues,
+            'inputType' => $this->inputType,
+            'maxAllowedValues' => $this->maxAllowedValues,
+            'required' => $this->required,
+            'systemCharacteristic' => $this->systemCharacteristic,
+            'type' => $this->type,
+        ];
     }
 
     /**
@@ -260,25 +208,5 @@ class SkuCharacteristicCategoryDto implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

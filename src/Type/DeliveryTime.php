@@ -21,9 +21,9 @@ class DeliveryTime implements \JsonSerializable
     /**
      * @var string
      */
-    private $expectedDatetime;
+    private string $expectedDatetime;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class DeliveryTime implements \JsonSerializable
     ) {
         $this->expectedDatetime = $expectedDatetime;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class DeliveryTime implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['expected_datetime']
+            $data['expectedDatetime']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class DeliveryTime implements \JsonSerializable
      *
      * @return string
      */
-    public function getExpectedDatetime()
+    public function getExpectedDatetime(): string
     {
         return $this->expectedDatetime;
     }
@@ -75,13 +62,9 @@ class DeliveryTime implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->expectedDatetime)) {
-            $data['expected_datetime'] = $this->expectedDatetime;
-        }
-        
-        return $data;
+        return [
+            'expectedDatetime' => $this->expectedDatetime,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class DeliveryTime implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,14 +21,14 @@ class EventPayload implements \JsonSerializable
     /**
      * @var string
      */
-    private $storeCode;
+    private string $storeCode;
 
     /**
      * @var StoreCollectQueueUpdatedItemV1
      */
-    private $items;
+    private StoreCollectQueueUpdatedItemV1 $items;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class EventPayload implements \JsonSerializable
         $this->storeCode = $storeCode;
         $this->items = $items;
     }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class EventPayload implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['store_code'],
+            $data['storeCode'],
             StoreCollectQueueUpdatedItemV1::fromArray($data['items'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class EventPayload implements \JsonSerializable
      *
      * @return string
      */
-    public function getStoreCode()
+    public function getStoreCode(): string
     {
         return $this->storeCode;
     }
@@ -84,7 +68,7 @@ class EventPayload implements \JsonSerializable
      *
      * @return StoreCollectQueueUpdatedItemV1
      */
-    public function getItems()
+    public function getItems(): StoreCollectQueueUpdatedItemV1
     {
         return $this->items;
     }
@@ -96,16 +80,10 @@ class EventPayload implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->storeCode)) {
-            $data['store_code'] = $this->storeCode;
-        }
-        if (isset($this->items)) {
-            $data['items'] = $this->items;
-        }
-        
-        return $data;
+        return [
+            'storeCode' => $this->storeCode,
+            'items' => $this->items,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class EventPayload implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

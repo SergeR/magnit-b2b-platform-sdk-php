@@ -37,8 +37,14 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class ErrorCodeEnum
+class ErrorCodeEnum implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $code;
+
     /**
      * Possible values of this enum
      */
@@ -51,6 +57,28 @@ class ErrorCodeEnum
     public const INTERNAL_ERROR = 'INTERNAL_ERROR';
 
     public const ARTICLE_NOT_FOUND = 'ARTICLE_NOT_FOUND';
+
+    /**
+     * @param string $code
+     */
+    public function __construct(string $code)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['code'] ?? $data;
+        }
+        return new self($data);
+    }
 
     /**
      * Gets allowable values of the enum
@@ -66,6 +94,26 @@ class ErrorCodeEnum
             self::ARTICLE_NOT_FOUND
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'code' => $this->code,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->code;
+    }
 }
-
-

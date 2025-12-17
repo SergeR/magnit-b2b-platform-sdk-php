@@ -21,14 +21,14 @@ class CustomSkuCharacteristic implements \JsonSerializable
     /**
      * @var string
      */
-    private $characteristicTitle;
+    private string $characteristicTitle;
 
     /**
      * @var string
      */
-    private $characteristicValue;
+    private string $characteristicValue;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class CustomSkuCharacteristic implements \JsonSerializable
         $this->characteristicTitle = $characteristicTitle;
         $this->characteristicValue = $characteristicValue;
     }
-        if (isset($data['characteristic_value'])) {
-            $this->characteristicValue = $data['characteristic_value'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class CustomSkuCharacteristic implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['characteristic_title'],
-            $data['characteristic_value']
+            $data['characteristicTitle'],
+            $data['characteristicValue']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class CustomSkuCharacteristic implements \JsonSerializable
      *
      * @return string
      */
-    public function getCharacteristicTitle()
+    public function getCharacteristicTitle(): string
     {
         return $this->characteristicTitle;
     }
@@ -84,7 +68,7 @@ class CustomSkuCharacteristic implements \JsonSerializable
      *
      * @return string
      */
-    public function getCharacteristicValue()
+    public function getCharacteristicValue(): string
     {
         return $this->characteristicValue;
     }
@@ -96,16 +80,10 @@ class CustomSkuCharacteristic implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->characteristicTitle)) {
-            $data['characteristic_title'] = $this->characteristicTitle;
-        }
-        if (isset($this->characteristicValue)) {
-            $data['characteristic_value'] = $this->characteristicValue;
-        }
-        
-        return $data;
+        return [
+            'characteristicTitle' => $this->characteristicTitle,
+            'characteristicValue' => $this->characteristicValue,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class CustomSkuCharacteristic implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

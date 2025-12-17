@@ -19,12 +19,18 @@ namespace SergeR\MagintB2BPlatformSDK\Type;
 class ClaimMeta implements \JsonSerializable
 {
     /**
+     * @var array
+     */
+    private array $data;
+
+    /**
      * Constructor
      *
      * @param array $data Ассоциативный массив данных
      */
     public function __construct(array $data = [])
     {
+        $this->data = $data;
     }
 
     /**
@@ -39,28 +45,13 @@ class ClaimMeta implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Преобразовать в массив
      *
      * @return array
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        
-        return $data;
+        return $this->data;
     }
 
     /**
@@ -71,25 +62,5 @@ class ClaimMeta implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

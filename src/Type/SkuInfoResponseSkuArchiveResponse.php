@@ -21,19 +21,18 @@ class SkuInfoResponseSkuArchiveResponse implements \JsonSerializable
     /**
      * @var SkuArchiveResponse[]
      */
-    private $result;
+    private array $result;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        SkuArchiveResponse[] $result
+        array $result
     ) {
         $this->result = $result;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class SkuInfoResponseSkuArchiveResponse implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets result
      *
      * @return SkuArchiveResponse[]
      */
-    public function getResult()
+    public function getResult(): array
     {
         return $this->result;
     }
@@ -75,15 +62,9 @@ class SkuInfoResponseSkuArchiveResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->result)) {
-            $data['result'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->result);
-        }
-        
-        return $data;
+        return [
+            'result' => array_map(fn($item) => $item->jsonSerialize(), $this->result),
+        ];
     }
 
     /**
@@ -94,25 +75,5 @@ class SkuInfoResponseSkuArchiveResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

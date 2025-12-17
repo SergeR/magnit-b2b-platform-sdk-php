@@ -21,74 +21,53 @@ class MarketplaceOrder implements \JsonSerializable
     /**
      * @var string
      */
-    private $orderId;
+    private string $orderId;
 
     /**
      * @var MarketplaceOrderStatus
      */
-    private $status;
+    private MarketplaceOrderStatus $status;
 
     /**
      * @var \DateTime
      */
-    private $cutoffTime;
+    private \DateTime $cutoffTime;
 
     /**
      * @var MarketplaceOrderItem[]
      */
-    private $items;
+    private array $items;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $orderId,
         MarketplaceOrderStatus $status,
         \DateTime $cutoffTime,
-        MarketplaceOrderItem[] $items
+        array $items
     ) {
         $this->orderId = $orderId;
         $this->status = $status;
         $this->cutoffTime = $cutoffTime;
         $this->items = $items;
     }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-        if (isset($data['cutoff_time'])) {
-            $this->cutoffTime = $data['cutoff_time'];
-        }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
      * @return self
+     * @throws \Exception
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['order_id'],
+            $data['orderId'],
             MarketplaceOrderStatus::fromArray($data['status']),
-            \DateTime::fromArray($data['cutoff_time']),
+            new \DateTime($data['cutoffTime']),
             isset($data['items']) ? array_map(fn($item) => MarketplaceOrderItem::fromArray($item), $data['items']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +75,7 @@ class MarketplaceOrder implements \JsonSerializable
      *
      * @return string
      */
-    public function getOrderId()
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
@@ -106,7 +85,7 @@ class MarketplaceOrder implements \JsonSerializable
      *
      * @return MarketplaceOrderStatus
      */
-    public function getStatus()
+    public function getStatus(): MarketplaceOrderStatus
     {
         return $this->status;
     }
@@ -116,7 +95,7 @@ class MarketplaceOrder implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getCutoffTime()
+    public function getCutoffTime(): \DateTime
     {
         return $this->cutoffTime;
     }
@@ -126,7 +105,7 @@ class MarketplaceOrder implements \JsonSerializable
      *
      * @return MarketplaceOrderItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -138,24 +117,12 @@ class MarketplaceOrder implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->orderId)) {
-            $data['order_id'] = $this->orderId;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        if (isset($this->cutoffTime)) {
-            $data['cutoff_time'] = $this->cutoffTime instanceof \JsonSerializable ? $this->cutoffTime->jsonSerialize() : $this->cutoffTime;
-        }
-        if (isset($this->items)) {
-            $data['items'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->items);
-        }
-        
-        return $data;
+        return [
+            'orderId' => $this->orderId,
+            'status' => $this->status,
+            'cutoffTime' => $this->cutoffTime->format(\DateTimeInterface::ATOM),
+            'items' => array_map(fn($item) => $item->jsonSerialize(), $this->items),
+        ];
     }
 
     /**
@@ -166,25 +133,5 @@ class MarketplaceOrder implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

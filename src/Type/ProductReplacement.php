@@ -21,14 +21,14 @@ class ProductReplacement implements \JsonSerializable
     /**
      * @var string
      */
-    private $oldArticle;
+    private string $oldArticle;
 
     /**
      * @var string
      */
-    private $newArticle;
+    private string $newArticle;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class ProductReplacement implements \JsonSerializable
         $this->oldArticle = $oldArticle;
         $this->newArticle = $newArticle;
     }
-        if (isset($data['new_article'])) {
-            $this->newArticle = $data['new_article'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class ProductReplacement implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['old_article'],
-            $data['new_article']
+            $data['oldArticle'],
+            $data['newArticle']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class ProductReplacement implements \JsonSerializable
      *
      * @return string
      */
-    public function getOldArticle()
+    public function getOldArticle(): string
     {
         return $this->oldArticle;
     }
@@ -84,7 +68,7 @@ class ProductReplacement implements \JsonSerializable
      *
      * @return string
      */
-    public function getNewArticle()
+    public function getNewArticle(): string
     {
         return $this->newArticle;
     }
@@ -96,16 +80,10 @@ class ProductReplacement implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->oldArticle)) {
-            $data['old_article'] = $this->oldArticle;
-        }
-        if (isset($this->newArticle)) {
-            $data['new_article'] = $this->newArticle;
-        }
-        
-        return $data;
+        return [
+            'oldArticle' => $this->oldArticle,
+            'newArticle' => $this->newArticle,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class ProductReplacement implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

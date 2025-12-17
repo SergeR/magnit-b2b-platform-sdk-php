@@ -21,19 +21,19 @@ class ExternalSellerCategoryDto implements \JsonSerializable
     /**
      * @var int
      */
-    private $categoryId;
+    private int $categoryId;
 
     /**
      * @var string
      */
-    private $categoryStringPath;
+    private string $categoryStringPath;
 
     /**
      * @var string
      */
-    private $categoryTitle;
+    private string $categoryTitle;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class ExternalSellerCategoryDto implements \JsonSerializable
         $this->categoryStringPath = $categoryStringPath;
         $this->categoryTitle = $categoryTitle;
     }
-        if (isset($data['category_string_path'])) {
-            $this->categoryStringPath = $data['category_string_path'];
-        }
-        if (isset($data['category_title'])) {
-            $this->categoryTitle = $data['category_title'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,10 @@ class ExternalSellerCategoryDto implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['category_id'],
-            $data['category_string_path'],
-            $data['category_title']
+            $data['categoryId'],
+            $data['categoryStringPath'],
+            $data['categoryTitle']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class ExternalSellerCategoryDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->categoryId;
     }
@@ -95,7 +76,7 @@ class ExternalSellerCategoryDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getCategoryStringPath()
+    public function getCategoryStringPath(): string
     {
         return $this->categoryStringPath;
     }
@@ -105,7 +86,7 @@ class ExternalSellerCategoryDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getCategoryTitle()
+    public function getCategoryTitle(): string
     {
         return $this->categoryTitle;
     }
@@ -117,19 +98,11 @@ class ExternalSellerCategoryDto implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->categoryId)) {
-            $data['category_id'] = $this->categoryId;
-        }
-        if (isset($this->categoryStringPath)) {
-            $data['category_string_path'] = $this->categoryStringPath;
-        }
-        if (isset($this->categoryTitle)) {
-            $data['category_title'] = $this->categoryTitle;
-        }
-        
-        return $data;
+        return [
+            'categoryId' => $this->categoryId,
+            'categoryStringPath' => $this->categoryStringPath,
+            'categoryTitle' => $this->categoryTitle,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class ExternalSellerCategoryDto implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,14 +21,14 @@ class SkuRequestFilter implements \JsonSerializable
     /**
      * @var int
      */
-    private $categoryId;
+    private int $categoryId;
 
     /**
      * @var int
      */
-    private $shopId;
+    private int $shopId;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class SkuRequestFilter implements \JsonSerializable
         $this->categoryId = $categoryId;
         $this->shopId = $shopId;
     }
-        if (isset($data['shop_id'])) {
-            $this->shopId = $data['shop_id'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class SkuRequestFilter implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['category_id'],
-            $data['shop_id']
+            $data['categoryId'],
+            $data['shopId']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class SkuRequestFilter implements \JsonSerializable
      *
      * @return int
      */
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->categoryId;
     }
@@ -84,7 +68,7 @@ class SkuRequestFilter implements \JsonSerializable
      *
      * @return int
      */
-    public function getShopId()
+    public function getShopId(): int
     {
         return $this->shopId;
     }
@@ -96,16 +80,10 @@ class SkuRequestFilter implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->categoryId)) {
-            $data['category_id'] = $this->categoryId;
-        }
-        if (isset($this->shopId)) {
-            $data['shop_id'] = $this->shopId;
-        }
-        
-        return $data;
+        return [
+            'categoryId' => $this->categoryId,
+            'shopId' => $this->shopId,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class SkuRequestFilter implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

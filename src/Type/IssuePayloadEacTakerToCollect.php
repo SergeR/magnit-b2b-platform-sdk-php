@@ -21,9 +21,9 @@ class IssuePayloadEacTakerToCollect implements \JsonSerializable
     /**
      * @var EAC
      */
-    private $eac;
+    private EAC $eac;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class IssuePayloadEacTakerToCollect implements \JsonSerializable
     ) {
         $this->eac = $eac;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class IssuePayloadEacTakerToCollect implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets eac
      *
      * @return EAC
      */
-    public function getEac()
+    public function getEac(): EAC
     {
         return $this->eac;
     }
@@ -75,13 +62,9 @@ class IssuePayloadEacTakerToCollect implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->eac)) {
-            $data['eac'] = $this->eac;
-        }
-        
-        return $data;
+        return [
+            'eac' => $this->eac,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class IssuePayloadEacTakerToCollect implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

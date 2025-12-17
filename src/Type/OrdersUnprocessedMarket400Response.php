@@ -21,19 +21,18 @@ class OrdersUnprocessedMarket400Response implements \JsonSerializable
     /**
      * @var MarketplaceApiError[]
      */
-    private $errors;
+    private array $errors;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        MarketplaceApiError[] $errors
+        array $errors
     ) {
         $this->errors = $errors;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class OrdersUnprocessedMarket400Response implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets errors
      *
      * @return MarketplaceApiError[]
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -75,15 +62,9 @@ class OrdersUnprocessedMarket400Response implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->errors)) {
-            $data['errors'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->errors);
-        }
-        
-        return $data;
+        return [
+            'errors' => array_map(fn($item) => $item->jsonSerialize(), $this->errors),
+        ];
     }
 
     /**
@@ -94,25 +75,5 @@ class OrdersUnprocessedMarket400Response implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

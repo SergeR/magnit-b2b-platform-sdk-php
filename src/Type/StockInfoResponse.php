@@ -21,39 +21,32 @@ class StockInfoResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var StockInfoDetails[]
      */
-    private $stockInfoDetails;
+    private array $stockInfoDetails;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $sellerSkuId,
         int $skuId,
-        StockInfoDetails[] $stockInfoDetails
+        array $stockInfoDetails
     ) {
         $this->sellerSkuId = $sellerSkuId;
         $this->skuId = $skuId;
         $this->stockInfoDetails = $stockInfoDetails;
     }
-        if (isset($data['sku_id'])) {
-            $this->skuId = $data['sku_id'];
-        }
-        if (isset($data['stock_info_details'])) {
-            $this->stockInfoDetails = $data['stock_info_details'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,11 @@ class StockInfoResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['seller_sku_id'],
-            $data['sku_id'],
-            isset($data['stock_info_details']) ? array_map(fn($item) => StockInfoDetails::fromArray($item), $data['stock_info_details']) : []
+            $data['sellerSkuId'],
+            $data['skuId'],
+            isset($data['stockInfoDetails']) ? array_map(fn($item) => StockInfoDetails::fromArray($item),
+                $data['stockInfoDetails']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +67,7 @@ class StockInfoResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -95,7 +77,7 @@ class StockInfoResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -105,7 +87,7 @@ class StockInfoResponse implements \JsonSerializable
      *
      * @return StockInfoDetails[]
      */
-    public function getStockInfoDetails()
+    public function getStockInfoDetails(): array
     {
         return $this->stockInfoDetails;
     }
@@ -117,21 +99,11 @@ class StockInfoResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->stockInfoDetails)) {
-            $data['stock_info_details'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->stockInfoDetails);
-        }
-        
-        return $data;
+        return [
+            'sellerSkuId' => $this->sellerSkuId,
+            'skuId' => $this->skuId,
+            'stockInfoDetails' => array_map(fn($item) => $item->jsonSerialize(), $this->stockInfoDetails),
+        ];
     }
 
     /**
@@ -142,25 +114,5 @@ class StockInfoResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

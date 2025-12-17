@@ -21,14 +21,14 @@ class Collect implements \JsonSerializable
     /**
      * @var CollectReplacementStrategyEnum
      */
-    private $strategy;
+    private CollectReplacementStrategyEnum $strategy;
 
     /**
      * @var string
      */
-    private $desiredAt;
+    private string $desiredAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class Collect implements \JsonSerializable
         $this->strategy = $strategy;
         $this->desiredAt = $desiredAt;
     }
-        if (isset($data['desired_at'])) {
-            $this->desiredAt = $data['desired_at'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -53,20 +49,8 @@ class Collect implements \JsonSerializable
     {
         return new self(
             CollectReplacementStrategyEnum::fromArray($data['strategy']),
-            $data['desired_at']
+            $data['desiredAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class Collect implements \JsonSerializable
      *
      * @return CollectReplacementStrategyEnum
      */
-    public function getStrategy()
+    public function getStrategy(): CollectReplacementStrategyEnum
     {
         return $this->strategy;
     }
@@ -84,7 +68,7 @@ class Collect implements \JsonSerializable
      *
      * @return string
      */
-    public function getDesiredAt()
+    public function getDesiredAt(): string
     {
         return $this->desiredAt;
     }
@@ -96,16 +80,10 @@ class Collect implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->strategy)) {
-            $data['strategy'] = $this->strategy;
-        }
-        if (isset($this->desiredAt)) {
-            $data['desired_at'] = $this->desiredAt;
-        }
-        
-        return $data;
+        return [
+            'strategy' => $this->strategy,
+            'desiredAt' => $this->desiredAt,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class Collect implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

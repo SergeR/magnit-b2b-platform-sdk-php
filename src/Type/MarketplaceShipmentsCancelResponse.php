@@ -21,29 +21,25 @@ class MarketplaceShipmentsCancelResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $shipmentId;
+    private string $shipmentId;
 
     /**
      * @var MarketplaceShipmentParcel[]
      */
-    private $parcels;
+    private array $parcels;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $shipmentId,
-        MarketplaceShipmentParcel[] $parcels
+        array $parcels
     ) {
         $this->shipmentId = $shipmentId;
         $this->parcels = $parcels;
     }
-        if (isset($data['parcels'])) {
-            $this->parcels = $data['parcels'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceShipmentsCancelResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['shipment_id'],
+            $data['shipmentId'],
             isset($data['parcels']) ? array_map(fn($item) => MarketplaceShipmentParcel::fromArray($item), $data['parcels']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceShipmentsCancelResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getShipmentId()
+    public function getShipmentId(): string
     {
         return $this->shipmentId;
     }
@@ -84,7 +68,7 @@ class MarketplaceShipmentsCancelResponse implements \JsonSerializable
      *
      * @return MarketplaceShipmentParcel[]
      */
-    public function getParcels()
+    public function getParcels(): array
     {
         return $this->parcels;
     }
@@ -96,18 +80,10 @@ class MarketplaceShipmentsCancelResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->shipmentId)) {
-            $data['shipment_id'] = $this->shipmentId;
-        }
-        if (isset($this->parcels)) {
-            $data['parcels'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->parcels);
-        }
-        
-        return $data;
+        return [
+            'shipmentId' => $this->shipmentId,
+            'parcels' => array_map(fn($item) => $item->jsonSerialize(), $this->parcels),
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class MarketplaceShipmentsCancelResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

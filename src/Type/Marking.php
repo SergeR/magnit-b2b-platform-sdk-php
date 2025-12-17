@@ -21,19 +21,19 @@ class Marking implements \JsonSerializable
     /**
      * @var int
      */
-    private $qnty;
+    private int $qnty;
 
     /**
      * @var string
      */
-    private $cis;
+    private string $cis;
 
     /**
      * @var MarkingRequest
      */
-    private $request;
+    private MarkingRequest $request;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class Marking implements \JsonSerializable
         $this->cis = $cis;
         $this->request = $request;
     }
-        if (isset($data['cis'])) {
-            $this->cis = $data['cis'];
-        }
-        if (isset($data['request'])) {
-            $this->request = $data['request'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -69,23 +62,11 @@ class Marking implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets qnty
      *
      * @return int
      */
-    public function getQnty()
+    public function getQnty(): int
     {
         return $this->qnty;
     }
@@ -95,7 +76,7 @@ class Marking implements \JsonSerializable
      *
      * @return string
      */
-    public function getCis()
+    public function getCis(): string
     {
         return $this->cis;
     }
@@ -105,7 +86,7 @@ class Marking implements \JsonSerializable
      *
      * @return MarkingRequest
      */
-    public function getRequest()
+    public function getRequest(): MarkingRequest
     {
         return $this->request;
     }
@@ -117,19 +98,11 @@ class Marking implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->qnty)) {
-            $data['qnty'] = $this->qnty;
-        }
-        if (isset($this->cis)) {
-            $data['cis'] = $this->cis;
-        }
-        if (isset($this->request)) {
-            $data['request'] = $this->request;
-        }
-        
-        return $data;
+        return [
+            'qnty' => $this->qnty,
+            'cis' => $this->cis,
+            'request' => $this->request,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class Marking implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

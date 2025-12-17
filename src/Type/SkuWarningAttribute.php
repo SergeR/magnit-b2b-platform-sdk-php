@@ -21,14 +21,14 @@ class SkuWarningAttribute implements \JsonSerializable
     /**
      * @var string
      */
-    private $attribute;
+    private string $attribute;
 
     /**
      * @var string
      */
-    private $message;
+    private string $message;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class SkuWarningAttribute implements \JsonSerializable
         $this->attribute = $attribute;
         $this->message = $message;
     }
-        if (isset($data['message'])) {
-            $this->message = $data['message'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class SkuWarningAttribute implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets attribute
      *
      * @return string
      */
-    public function getAttribute()
+    public function getAttribute(): string
     {
         return $this->attribute;
     }
@@ -84,7 +68,7 @@ class SkuWarningAttribute implements \JsonSerializable
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -96,16 +80,10 @@ class SkuWarningAttribute implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->attribute)) {
-            $data['attribute'] = $this->attribute;
-        }
-        if (isset($this->message)) {
-            $data['message'] = $this->message;
-        }
-        
-        return $data;
+        return [
+            'attribute' => $this->attribute,
+            'message' => $this->message,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class SkuWarningAttribute implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

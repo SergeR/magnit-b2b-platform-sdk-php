@@ -21,34 +21,34 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
     /**
      * @var string
      */
-    private $parcelId;
+    private string $parcelId;
 
     /**
      * @var string
      */
-    private $orderId;
+    private string $orderId;
 
     /**
      * @var MarketplaceParcelStatus
      */
-    private $status;
+    private MarketplaceParcelStatus $status;
 
     /**
      * @var string
      */
-    private $barcode;
+    private string $barcode;
 
     /**
      * @var \DateTime
      */
-    private $cutoffTime;
+    private \DateTime $cutoffTime;
 
     /**
      * @var MarketplaceParcelItem[]
      */
-    private $items;
+    private array $items;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -57,7 +57,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
         MarketplaceParcelStatus $status,
         string $barcode,
         \DateTime $cutoffTime,
-        MarketplaceParcelItem[] $items
+        array $items
     ) {
         $this->parcelId = $parcelId;
         $this->orderId = $orderId;
@@ -66,51 +66,24 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
         $this->cutoffTime = $cutoffTime;
         $this->items = $items;
     }
-        if (isset($data['order_id'])) {
-            $this->orderId = $data['order_id'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-        if (isset($data['barcode'])) {
-            $this->barcode = $data['barcode'];
-        }
-        if (isset($data['cutoff_time'])) {
-            $this->cutoffTime = $data['cutoff_time'];
-        }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
      * @return self
+     * @throws \Exception
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['parcel_id'],
-            $data['order_id'],
+            $data['parcelId'],
+            $data['orderId'],
             MarketplaceParcelStatus::fromArray($data['status']),
             $data['barcode'],
-            \DateTime::fromArray($data['cutoff_time']),
+            new \DateTime($data['cutoffTime']),
             isset($data['items']) ? array_map(fn($item) => MarketplaceParcelItem::fromArray($item), $data['items']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -118,7 +91,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getParcelId()
+    public function getParcelId(): string
     {
         return $this->parcelId;
     }
@@ -128,7 +101,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getOrderId()
+    public function getOrderId(): string
     {
         return $this->orderId;
     }
@@ -138,7 +111,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      *
      * @return MarketplaceParcelStatus
      */
-    public function getStatus()
+    public function getStatus(): MarketplaceParcelStatus
     {
         return $this->status;
     }
@@ -148,7 +121,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getBarcode()
+    public function getBarcode(): string
     {
         return $this->barcode;
     }
@@ -158,7 +131,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getCutoffTime()
+    public function getCutoffTime(): \DateTime
     {
         return $this->cutoffTime;
     }
@@ -168,7 +141,7 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      *
      * @return MarketplaceParcelItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -180,30 +153,14 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->parcelId)) {
-            $data['parcel_id'] = $this->parcelId;
-        }
-        if (isset($this->orderId)) {
-            $data['order_id'] = $this->orderId;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        if (isset($this->barcode)) {
-            $data['barcode'] = $this->barcode;
-        }
-        if (isset($this->cutoffTime)) {
-            $data['cutoff_time'] = $this->cutoffTime instanceof \JsonSerializable ? $this->cutoffTime->jsonSerialize() : $this->cutoffTime;
-        }
-        if (isset($this->items)) {
-            $data['items'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->items);
-        }
-        
-        return $data;
+        return [
+            'parcelId' => $this->parcelId,
+            'orderId' => $this->orderId,
+            'status' => $this->status,
+            'barcode' => $this->barcode,
+            'cutoffTime' => $this->cutoffTime->format(\DateTimeInterface::ATOM),
+            'items' => array_map(fn($item) => $item->jsonSerialize(), $this->items),
+        ];
     }
 
     /**
@@ -214,25 +171,5 @@ class MarketplaceParcelFullInfo implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

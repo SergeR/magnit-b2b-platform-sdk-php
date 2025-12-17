@@ -21,19 +21,19 @@ class StoresPricesItemV1 implements \JsonSerializable
     /**
      * @var string
      */
-    private $goodId;
+    private string $goodId;
 
     /**
      * @var StoresBasePriceV1
      */
-    private $base;
+    private StoresBasePriceV1 $base;
 
     /**
      * @var StoresActionPriceV1
      */
-    private $action;
+    private StoresActionPriceV1 $action;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class StoresPricesItemV1 implements \JsonSerializable
         $this->base = $base;
         $this->action = $action;
     }
-        if (isset($data['base'])) {
-            $this->base = $data['base'];
-        }
-        if (isset($data['action'])) {
-            $this->action = $data['action'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,10 @@ class StoresPricesItemV1 implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['good_id'],
+            $data['goodId'],
             StoresBasePriceV1::fromArray($data['base']),
             StoresActionPriceV1::fromArray($data['action'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class StoresPricesItemV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getGoodId()
+    public function getGoodId(): string
     {
         return $this->goodId;
     }
@@ -95,7 +76,7 @@ class StoresPricesItemV1 implements \JsonSerializable
      *
      * @return StoresBasePriceV1
      */
-    public function getBase()
+    public function getBase(): StoresBasePriceV1
     {
         return $this->base;
     }
@@ -105,7 +86,7 @@ class StoresPricesItemV1 implements \JsonSerializable
      *
      * @return StoresActionPriceV1
      */
-    public function getAction()
+    public function getAction(): StoresActionPriceV1
     {
         return $this->action;
     }
@@ -117,19 +98,11 @@ class StoresPricesItemV1 implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->goodId)) {
-            $data['good_id'] = $this->goodId;
-        }
-        if (isset($this->base)) {
-            $data['base'] = $this->base;
-        }
-        if (isset($this->action)) {
-            $data['action'] = $this->action;
-        }
-        
-        return $data;
+        return [
+            'goodId' => $this->goodId,
+            'base' => $this->base,
+            'action' => $this->action,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class StoresPricesItemV1 implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

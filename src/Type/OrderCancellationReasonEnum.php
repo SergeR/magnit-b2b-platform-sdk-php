@@ -38,8 +38,14 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class OrderCancellationReasonEnum
+class OrderCancellationReasonEnum implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $reason;
+
     /**
      * Possible values of this enum
      */
@@ -74,6 +80,28 @@ class OrderCancellationReasonEnum
     public const OTHER = 'other';
 
     /**
+     * @param string $reason
+     */
+    public function __construct(string $reason)
+    {
+        $this->reason = $reason;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['reason'] ?? $data;
+        }
+        return new self($data);
+    }
+
+    /**
      * Gets allowable values of the enum
      * @return string[]
      */
@@ -97,6 +125,26 @@ class OrderCancellationReasonEnum
             self::OTHER
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'reason' => $this->reason,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->reason;
+    }
 }
-
-

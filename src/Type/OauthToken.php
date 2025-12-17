@@ -21,22 +21,22 @@ class OauthToken implements \JsonSerializable
     /**
      * @var string
      */
-    private $accessToken;
+    private string $accessToken;
 
     /**
      * @var int
      */
-    private $expiresIn;
+    private int $expiresIn;
 
     /**
      * @var string
      */
-    private $scope;
+    private string $scope;
 
     /**
      * @var string
      */
-    private $tokenType;
+    private string $tokenType;
 
     /**
      * Constructor
@@ -91,7 +91,7 @@ class OauthToken implements \JsonSerializable
      *
      * @return string
      */
-    public function getAccessToken()
+    public function getAccessToken(): string
     {
         return $this->accessToken;
     }
@@ -101,7 +101,7 @@ class OauthToken implements \JsonSerializable
      *
      * @return int
      */
-    public function getExpiresIn()
+    public function getExpiresIn(): int
     {
         return $this->expiresIn;
     }
@@ -111,7 +111,7 @@ class OauthToken implements \JsonSerializable
      *
      * @return string
      */
-    public function getScope()
+    public function getScope(): string
     {
         return $this->scope;
     }
@@ -121,7 +121,7 @@ class OauthToken implements \JsonSerializable
      *
      * @return string
      */
-    public function getTokenType()
+    public function getTokenType(): string
     {
         return $this->tokenType;
     }
@@ -133,22 +133,12 @@ class OauthToken implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->accessToken)) {
-            $data['access_token'] = $this->accessToken;
-        }
-        if (isset($this->expiresIn)) {
-            $data['expires_in'] = $this->expiresIn;
-        }
-        if (isset($this->scope)) {
-            $data['scope'] = $this->scope;
-        }
-        if (isset($this->tokenType)) {
-            $data['token_type'] = $this->tokenType;
-        }
-        
-        return $data;
+        return [
+            'accessToken' => $this->accessToken,
+            'expiresIn' => $this->expiresIn,
+            'scope' => $this->scope,
+            'tokenType' => $this->tokenType,
+        ];
     }
 
     /**
@@ -159,25 +149,5 @@ class OauthToken implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

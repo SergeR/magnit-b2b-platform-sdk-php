@@ -21,14 +21,14 @@ class SkuCharacteristic implements \JsonSerializable
     /**
      * @var int
      */
-    private $characteristicId;
+    private int $characteristicId;
 
     /**
      * @var string
      */
-    private $characteristicValue;
+    private string $characteristicValue;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class SkuCharacteristic implements \JsonSerializable
         $this->characteristicId = $characteristicId;
         $this->characteristicValue = $characteristicValue;
     }
-        if (isset($data['characteristic_value'])) {
-            $this->characteristicValue = $data['characteristic_value'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class SkuCharacteristic implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['characteristic_id'],
-            $data['characteristic_value']
+            $data['characteristicId'],
+            $data['characteristicValue']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class SkuCharacteristic implements \JsonSerializable
      *
      * @return int
      */
-    public function getCharacteristicId()
+    public function getCharacteristicId(): int
     {
         return $this->characteristicId;
     }
@@ -84,7 +68,7 @@ class SkuCharacteristic implements \JsonSerializable
      *
      * @return string
      */
-    public function getCharacteristicValue()
+    public function getCharacteristicValue(): string
     {
         return $this->characteristicValue;
     }
@@ -96,16 +80,10 @@ class SkuCharacteristic implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->characteristicId)) {
-            $data['characteristic_id'] = $this->characteristicId;
-        }
-        if (isset($this->characteristicValue)) {
-            $data['characteristic_value'] = $this->characteristicValue;
-        }
-        
-        return $data;
+        return [
+            'characteristicId' => $this->characteristicId,
+            'characteristicValue' => $this->characteristicValue,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class SkuCharacteristic implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

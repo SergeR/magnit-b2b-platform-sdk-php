@@ -21,9 +21,9 @@ class OrderChangeStatusRequest implements \JsonSerializable
     /**
      * @var OrderChangeRequestStatus
      */
-    private $status;
+    private OrderChangeRequestStatus $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class OrderChangeStatusRequest implements \JsonSerializable
     ) {
         $this->status = $status;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class OrderChangeStatusRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets status
      *
      * @return OrderChangeRequestStatus
      */
-    public function getStatus()
+    public function getStatus(): OrderChangeRequestStatus
     {
         return $this->status;
     }
@@ -75,13 +62,9 @@ class OrderChangeStatusRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class OrderChangeStatusRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

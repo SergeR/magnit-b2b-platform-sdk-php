@@ -21,19 +21,19 @@ class Contact implements \JsonSerializable
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $phone;
+    private string $phone;
 
     /**
      * @var string
      */
-    private $extraPhone;
+    private string $extraPhone;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class Contact implements \JsonSerializable
         $this->phone = $phone;
         $this->extraPhone = $extraPhone;
     }
-        if (isset($data['phone'])) {
-            $this->phone = $data['phone'];
-        }
-        if (isset($data['extra_phone'])) {
-            $this->extraPhone = $data['extra_phone'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -64,20 +57,8 @@ class Contact implements \JsonSerializable
         return new self(
             $data['name'],
             $data['phone'],
-            $data['extra_phone']
+            $data['extraPhone']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class Contact implements \JsonSerializable
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -95,7 +76,7 @@ class Contact implements \JsonSerializable
      *
      * @return string
      */
-    public function getPhone()
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -105,7 +86,7 @@ class Contact implements \JsonSerializable
      *
      * @return string
      */
-    public function getExtraPhone()
+    public function getExtraPhone(): string
     {
         return $this->extraPhone;
     }
@@ -117,19 +98,11 @@ class Contact implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->phone)) {
-            $data['phone'] = $this->phone;
-        }
-        if (isset($this->extraPhone)) {
-            $data['extra_phone'] = $this->extraPhone;
-        }
-        
-        return $data;
+        return [
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'extraPhone' => $this->extraPhone,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class Contact implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

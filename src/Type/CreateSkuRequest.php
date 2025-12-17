@@ -21,19 +21,18 @@ class CreateSkuRequest implements \JsonSerializable
     /**
      * @var SkuRequest[]
      */
-    private $skuList;
+    private array $skuList;
 
-            /**
+    /**
      * Constructor
      */
-    public function __construct(
-        SkuRequest[] $skuList
-    ) {
+    public function __construct(array $skuList)
+    {
         $this->skuList = $skuList;
     }
-    }
 
-            /**
+
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class CreateSkuRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            isset($data['sku_list']) ? array_map(fn($item) => SkuRequest::fromArray($item), $data['sku_list']) : []
+            isset($data['skuList']) ? array_map(fn($item) => SkuRequest::fromArray($item), $data['skuList']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class CreateSkuRequest implements \JsonSerializable
      *
      * @return SkuRequest[]
      */
-    public function getSkuList()
+    public function getSkuList(): array
     {
         return $this->skuList;
     }
@@ -75,15 +62,9 @@ class CreateSkuRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->skuList)) {
-            $data['sku_list'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->skuList);
-        }
-        
-        return $data;
+        return [
+            'skuList' => array_map(fn($item) => $item->jsonSerialize(), $this->skuList),
+        ];
     }
 
     /**
@@ -94,25 +75,5 @@ class CreateSkuRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

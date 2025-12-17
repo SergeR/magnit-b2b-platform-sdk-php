@@ -21,14 +21,14 @@ class MarketplaceFilterDateTime implements \JsonSerializable
     /**
      * @var \DateTime
      */
-    private $from;
+    private \DateTime $from;
 
     /**
      * @var \DateTime
      */
-    private $to;
+    private \DateTime $to;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class MarketplaceFilterDateTime implements \JsonSerializable
         $this->from = $from;
         $this->to = $to;
     }
-        if (isset($data['to'])) {
-            $this->to = $data['to'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceFilterDateTime implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            \DateTime::fromArray($data['from']),
-            \DateTime::fromArray($data['to'])
+            \DateTime::createFromFormat('Y-m-d\TH:i:s', $data['from']) ?: new \DateTime($data['from']),
+            \DateTime::createFromFormat('Y-m-d\TH:i:s', $data['to']) ?: new \DateTime($data['to'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceFilterDateTime implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getFrom()
+    public function getFrom(): \DateTime
     {
         return $this->from;
     }
@@ -84,7 +68,7 @@ class MarketplaceFilterDateTime implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getTo()
+    public function getTo(): \DateTime
     {
         return $this->to;
     }
@@ -96,16 +80,10 @@ class MarketplaceFilterDateTime implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->from)) {
-            $data['from'] = $this->from instanceof \JsonSerializable ? $this->from->jsonSerialize() : $this->from;
-        }
-        if (isset($this->to)) {
-            $data['to'] = $this->to instanceof \JsonSerializable ? $this->to->jsonSerialize() : $this->to;
-        }
-        
-        return $data;
+        return [
+            'from' => $this->from instanceof \JsonSerializable ? $this->from->jsonSerialize() : $this->from,
+            'to' => $this->to instanceof \JsonSerializable ? $this->to->jsonSerialize() : $this->to,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class MarketplaceFilterDateTime implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

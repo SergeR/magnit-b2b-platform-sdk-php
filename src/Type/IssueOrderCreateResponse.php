@@ -21,14 +21,14 @@ class IssueOrderCreateResponse implements \JsonSerializable
     /**
      * @var IssueStrategyEnum
      */
-    private $strategy;
+    private IssueStrategyEnum $strategy;
 
     /**
      * @var IssueOrderCreateResponsePayload
      */
-    private $payload;
+    private IssueOrderCreateResponsePayload $payload;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class IssueOrderCreateResponse implements \JsonSerializable
         $this->strategy = $strategy;
         $this->payload = $payload;
     }
-        if (isset($data['payload'])) {
-            $this->payload = $data['payload'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class IssueOrderCreateResponse implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets strategy
      *
      * @return IssueStrategyEnum
      */
-    public function getStrategy()
+    public function getStrategy(): IssueStrategyEnum
     {
         return $this->strategy;
     }
@@ -84,7 +68,7 @@ class IssueOrderCreateResponse implements \JsonSerializable
      *
      * @return IssueOrderCreateResponsePayload
      */
-    public function getPayload()
+    public function getPayload(): IssueOrderCreateResponsePayload
     {
         return $this->payload;
     }
@@ -96,16 +80,10 @@ class IssueOrderCreateResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->strategy)) {
-            $data['strategy'] = $this->strategy;
-        }
-        if (isset($this->payload)) {
-            $data['payload'] = $this->payload;
-        }
-        
-        return $data;
+        return [
+            'strategy' => $this->strategy,
+            'payload' => $this->payload,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class IssueOrderCreateResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

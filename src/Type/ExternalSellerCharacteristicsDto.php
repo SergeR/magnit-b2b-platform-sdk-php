@@ -21,37 +21,37 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
     /**
      * @var int
      */
-    private $categoryId;
+    private int $categoryId;
 
     /**
      * @var string
      */
-    private $categoryTitle;
+    private string $categoryTitle;
 
     /**
      * @var SkuCharacteristicCategoryDto[]
      */
-    private $definedCharacteristic;
+    private array $definedCharacteristic;
 
     /**
      * @var SkuCharacteristicCategoryDto[]
      */
-    private $productFilter;
+    private array $productFilter;
 
     /**
      * @var SkuCharacteristicCategoryDto[]
      */
-    private $skuFilter;
+    private array $skuFilter;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $categoryId,
         string $categoryTitle,
-        SkuCharacteristicCategoryDto[] $definedCharacteristic,
-        SkuCharacteristicCategoryDto[] $productFilter,
-        SkuCharacteristicCategoryDto[] $skuFilter
+        array $definedCharacteristic,
+        array $productFilter,
+        array $skuFilter
     ) {
         $this->categoryId = $categoryId;
         $this->categoryTitle = $categoryTitle;
@@ -59,21 +59,8 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
         $this->productFilter = $productFilter;
         $this->skuFilter = $skuFilter;
     }
-        if (isset($data['category_title'])) {
-            $this->categoryTitle = $data['category_title'];
-        }
-        if (isset($data['defined_characteristic'])) {
-            $this->definedCharacteristic = $data['defined_characteristic'];
-        }
-        if (isset($data['product_filter'])) {
-            $this->productFilter = $data['product_filter'];
-        }
-        if (isset($data['sku_filter'])) {
-            $this->skuFilter = $data['sku_filter'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -82,24 +69,17 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['category_id'],
-            $data['category_title'],
-            isset($data['defined_characteristic']) ? array_map(fn($item) => SkuCharacteristicCategoryDto::fromArray($item), $data['defined_characteristic']) : [],
-            isset($data['product_filter']) ? array_map(fn($item) => SkuCharacteristicCategoryDto::fromArray($item), $data['product_filter']) : [],
-            isset($data['sku_filter']) ? array_map(fn($item) => SkuCharacteristicCategoryDto::fromArray($item), $data['sku_filter']) : []
+            $data['categoryId'],
+            $data['categoryTitle'],
+            isset($data['definedCharacteristic']) ? array_map(
+                fn($item) => SkuCharacteristicCategoryDto::fromArray($item),
+                $data['definedCharacteristic']
+            ) : [],
+            isset($data['productFilter']) ? array_map(fn($item) => SkuCharacteristicCategoryDto::fromArray($item),
+                $data['productFilter']) : [],
+            isset($data['skuFilter']) ? array_map(fn($item) => SkuCharacteristicCategoryDto::fromArray($item),
+                $data['skuFilter']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -107,7 +87,7 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->categoryId;
     }
@@ -117,7 +97,7 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getCategoryTitle()
+    public function getCategoryTitle(): string
     {
         return $this->categoryTitle;
     }
@@ -127,7 +107,7 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
      *
      * @return SkuCharacteristicCategoryDto[]
      */
-    public function getDefinedCharacteristic()
+    public function getDefinedCharacteristic(): array
     {
         return $this->definedCharacteristic;
     }
@@ -137,7 +117,7 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
      *
      * @return SkuCharacteristicCategoryDto[]
      */
-    public function getProductFilter()
+    public function getProductFilter(): array
     {
         return $this->productFilter;
     }
@@ -147,7 +127,7 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
      *
      * @return SkuCharacteristicCategoryDto[]
      */
-    public function getSkuFilter()
+    public function getSkuFilter(): array
     {
         return $this->skuFilter;
     }
@@ -159,31 +139,13 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->categoryId)) {
-            $data['category_id'] = $this->categoryId;
-        }
-        if (isset($this->categoryTitle)) {
-            $data['category_title'] = $this->categoryTitle;
-        }
-        if (isset($this->definedCharacteristic)) {
-            $data['defined_characteristic'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->definedCharacteristic);
-        }
-        if (isset($this->productFilter)) {
-            $data['product_filter'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->productFilter);
-        }
-        if (isset($this->skuFilter)) {
-            $data['sku_filter'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->skuFilter);
-        }
-        
-        return $data;
+        return [
+            'categoryId' => $this->categoryId,
+            'categoryTitle' => $this->categoryTitle,
+            'definedCharacteristic' => array_map(fn($item) => $item->jsonSerialize(), $this->definedCharacteristic),
+            'productFilter' => array_map(fn($item) => $item->jsonSerialize(), $this->productFilter),
+            'skuFilter' => array_map(fn($item) => $item->jsonSerialize(), $this->skuFilter),
+        ];
     }
 
     /**
@@ -194,25 +156,5 @@ class ExternalSellerCharacteristicsDto implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -27,6 +27,7 @@
 
 namespace SergeR\MagintB2BPlatformSDK\Api;
 
+use SergeR\MagintB2BPlatformSDK\Config;
 use SergeR\MagintB2BPlatformSDK\MagnitClient;
 
 use GuzzleHttp\Client;
@@ -57,21 +58,23 @@ class OrderEventsApi
     protected $client;
 
     /**
-     * @var Configuration
+     * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var HeaderSelector
      */
-    protected $headerSelector;/** @var string[] $contentTypes **/
+    protected HeaderSelector $headerSelector;
+
+    /** @var string[] $contentTypes * */
     public const contentTypes = [
         'v1OrdersOrderIdEventPost' => [
             'application/json',
         ],
     ];
 
-/**
+    /**
      * @param MagnitClient $client Magnit API client
      */
     public function __construct(MagnitClient $client)
@@ -79,10 +82,12 @@ class OrderEventsApi
         $this->client = $client->getHttpClient();
         $this->config = $client->getConfig();
         $this->headerSelector = new HeaderSelector();
-    }/**
-     * @return Configuration
+    }
+
+    /**
+     * @return Config
      */
-    public function getConfig()
+    public function getConfig(): Config
     {
         return $this->config;
     }
@@ -92,14 +97,16 @@ class OrderEventsApi
      *
      * События по заказам от Партнера
      *
-     * @param  string $orderId Идентификатор заказа в системе Магнита (required)
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
-     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @param string $orderId Идентификатор заказа в системе Магнита (required)
+     * @param \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)
      * @return void
+     * @throws \InvalidArgumentException
+     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
      */
-    public function v1OrdersOrderIdEventPost($orderId, $v1OrdersOrderIdEventPostRequest)
-    {
+    public function v1OrdersOrderIdEventPost(
+        string $orderId,
+        \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest
+    ) {
         $this->v1OrdersOrderIdEventPostWithHttpInfo($orderId, $v1OrdersOrderIdEventPostRequest);
     }
 
@@ -108,11 +115,11 @@ class OrderEventsApi
      *
      * События по заказам от Партнера
      *
-     * @param  string $orderId Идентификатор заказа в системе Магнита (required)
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
-     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @param string $orderId Идентификатор заказа в системе Магнита (required)
+     * @param \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     * @throws \InvalidArgumentException
+     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
      */
     public function v1OrdersOrderIdEventPostWithHttpInfo($orderId, $v1OrdersOrderIdEventPostRequest)
     {
@@ -125,14 +132,14 @@ class OrderEventsApi
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
+                    (int)$e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() ? (string)$e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
+                    (int)$e->getCode(),
                     null,
                     null
                 );
@@ -145,16 +152,15 @@ class OrderEventsApi
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
-                        (string) $request->getUri()
+                        (string)$request->getUri()
                     ),
                     $statusCode,
                     $response->getHeaders(),
-                    (string) $response->getBody()
+                    (string)$response->getBody()
                 );
             }
 
             return [null, $statusCode, $response->getHeaders()];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 400:
@@ -191,10 +197,10 @@ class OrderEventsApi
      *
      * События по заказам от Партнера
      *
-     * @param  string $orderId Идентификатор заказа в системе Магнита (required)
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
-     * @throws \InvalidArgumentException
+     * @param string $orderId Идентификатор заказа в системе Магнита (required)
+     * @param \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
      * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function v1OrdersOrderIdEventPostAsync($orderId, $v1OrdersOrderIdEventPostRequest)
     {
@@ -211,10 +217,10 @@ class OrderEventsApi
      *
      * События по заказам от Партнера
      *
-     * @param  string $orderId Идентификатор заказа в системе Магнита (required)
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
-     * @throws \InvalidArgumentException
+     * @param string $orderId Идентификатор заказа в системе Магнита (required)
+     * @param \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
      * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function v1OrdersOrderIdEventPostAsyncWithHttpInfo($orderId, $v1OrdersOrderIdEventPostRequest)
     {
@@ -224,7 +230,7 @@ class OrderEventsApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {
                     return [null, $response->getStatusCode(), $response->getHeaders()];
                 },
                 function ($exception) {
@@ -238,7 +244,7 @@ class OrderEventsApi
                         ),
                         $statusCode,
                         $response->getHeaders(),
-                        (string) $response->getBody()
+                        (string)$response->getBody()
                     );
                 }
             );
@@ -247,14 +253,13 @@ class OrderEventsApi
     /**
      * Create request for operation 'v1OrdersOrderIdEventPost'
      *
-     * @param  string $orderId Идентификатор заказа в системе Магнита (required)
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
-     * @throws \InvalidArgumentException
+     * @param string $orderId Идентификатор заказа в системе Магнита (required)
+     * @param \SergeR\MagintB2BPlatformSDK\Type\V1OrdersOrderIdEventPostRequest $v1OrdersOrderIdEventPostRequest Событие по заказу (required)     *
      * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
     public function v1OrdersOrderIdEventPostRequest($orderId, $v1OrdersOrderIdEventPostRequest)
     {
-
         // verify the required parameter 'orderId' is set
         if ($orderId === null || (is_array($orderId) && count($orderId) === 0)) {
             throw new \InvalidArgumentException(
@@ -263,7 +268,9 @@ class OrderEventsApi
         }
 
         // verify the required parameter 'v1OrdersOrderIdEventPostRequest' is set
-        if ($v1OrdersOrderIdEventPostRequest === null || (is_array($v1OrdersOrderIdEventPostRequest) && count($v1OrdersOrderIdEventPostRequest) === 0)) {
+        if ($v1OrdersOrderIdEventPostRequest === null || (is_array($v1OrdersOrderIdEventPostRequest) && count(
+                    $v1OrdersOrderIdEventPostRequest
+                ) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $v1OrdersOrderIdEventPostRequest when calling v1OrdersOrderIdEventPost'
             );
@@ -278,7 +285,6 @@ class OrderEventsApi
         $multipart = false;
 
 
-
         // path params
         if ($orderId !== null) {
             $resourcePath = str_replace(
@@ -290,7 +296,8 @@ class OrderEventsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ], self::contentTypes['v1OrdersOrderIdEventPost'][0],
+            ['application/json',],
+            self::contentTypes['v1OrdersOrderIdEventPost'][0],
             $multipart
         );
 
@@ -298,7 +305,9 @@ class OrderEventsApi
         if (isset($v1OrdersOrderIdEventPostRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($v1OrdersOrderIdEventPostRequest));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(
+                    ObjectSerializer::sanitizeForSerialization($v1OrdersOrderIdEventPostRequest)
+                );
             } else {
                 $httpBody = $v1OrdersOrderIdEventPostRequest;
             }
@@ -316,7 +325,6 @@ class OrderEventsApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
@@ -355,8 +363,8 @@ class OrderEventsApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
      * @return array of http client options
+     * @throws \RuntimeException on file opening failure
      */
     protected function createHttpClientOption()
     {

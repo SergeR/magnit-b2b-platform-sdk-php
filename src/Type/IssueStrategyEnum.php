@@ -37,12 +37,40 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class IssueStrategyEnum
+class IssueStrategyEnum implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $strategy;
+
     /**
      * Possible values of this enum
      */
     public const EAC_TAKER_TO_COLLECT = 'eac_taker_to_collect';
+
+    /**
+     * @param string $strategy
+     */
+    public function __construct(string $strategy)
+    {
+        $this->strategy = $strategy;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['strategy'] ?? $data;
+        }
+        return new self($data);
+    }
 
     /**
      * Gets allowable values of the enum
@@ -54,6 +82,26 @@ class IssueStrategyEnum
             self::EAC_TAKER_TO_COLLECT
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'strategy' => $this->strategy,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->strategy;
+    }
 }
-
-

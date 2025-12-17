@@ -21,24 +21,24 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
     /**
      * @var string
      */
-    private $cis;
+    private string $cis;
 
     /**
      * @var string
      */
-    private $uin;
+    private string $uin;
 
     /**
      * @var string
      */
-    private $rnpt;
+    private string $rnpt;
 
     /**
      * @var string
      */
-    private $gtd;
+    private string $gtd;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
         $this->rnpt = $rnpt;
         $this->gtd = $gtd;
     }
-        if (isset($data['uin'])) {
-            $this->uin = $data['uin'];
-        }
-        if (isset($data['rnpt'])) {
-            $this->rnpt = $data['rnpt'];
-        }
-        if (isset($data['gtd'])) {
-            $this->gtd = $data['gtd'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -80,23 +70,11 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets cis
      *
      * @return string
      */
-    public function getCis()
+    public function getCis(): string
     {
         return $this->cis;
     }
@@ -106,7 +84,7 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
      *
      * @return string
      */
-    public function getUin()
+    public function getUin(): string
     {
         return $this->uin;
     }
@@ -116,7 +94,7 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
      *
      * @return string
      */
-    public function getRnpt()
+    public function getRnpt(): string
     {
         return $this->rnpt;
     }
@@ -126,7 +104,7 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
      *
      * @return string
      */
-    public function getGtd()
+    public function getGtd(): string
     {
         return $this->gtd;
     }
@@ -138,22 +116,12 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->cis)) {
-            $data['cis'] = $this->cis;
-        }
-        if (isset($this->uin)) {
-            $data['uin'] = $this->uin;
-        }
-        if (isset($this->rnpt)) {
-            $data['rnpt'] = $this->rnpt;
-        }
-        if (isset($this->gtd)) {
-            $data['gtd'] = $this->gtd;
-        }
-        
-        return $data;
+        return [
+            'cis' => $this->cis,
+            'uin' => $this->uin,
+            'rnpt' => $this->rnpt,
+            'gtd' => $this->gtd,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class MarketplaceSkuIdentifiers implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,14 +21,14 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
     /**
      * @var OrderCancellationReasonEnum
      */
-    private $reason;
+    private OrderCancellationReasonEnum $reason;
 
     /**
      * @var string
      */
-    private $cancelledAt;
+    private string $cancelledAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
         $this->reason = $reason;
         $this->cancelledAt = $cancelledAt;
     }
-        if (isset($data['cancelled_at'])) {
-            $this->cancelledAt = $data['cancelled_at'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -53,20 +49,8 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
     {
         return new self(
             OrderCancellationReasonEnum::fromArray($data['reason']),
-            $data['cancelled_at']
+            $data['cancelledAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
      *
      * @return OrderCancellationReasonEnum
      */
-    public function getReason()
+    public function getReason(): OrderCancellationReasonEnum
     {
         return $this->reason;
     }
@@ -84,7 +68,7 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getCancelledAt()
+    public function getCancelledAt(): string
     {
         return $this->cancelledAt;
     }
@@ -96,16 +80,10 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->reason)) {
-            $data['reason'] = $this->reason;
-        }
-        if (isset($this->cancelledAt)) {
-            $data['cancelled_at'] = $this->cancelledAt;
-        }
-        
-        return $data;
+        return [
+            'reason' => $this->reason,
+            'cancelledAt' => $this->cancelledAt,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class V1OrdersOrderIdCancelPostRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,14 +21,14 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $shipmentId;
+    private string $shipmentId;
 
     /**
      * @var string
      */
-    private $documentType;
+    private string $documentType;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
         $this->shipmentId = $shipmentId;
         $this->documentType = $documentType;
     }
-        if (isset($data['document_type'])) {
-            $this->documentType = $data['document_type'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['shipment_id'],
-            $data['document_type']
+            $data['shipmentId'],
+            $data['documentType']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getShipmentId()
+    public function getShipmentId(): string
     {
         return $this->shipmentId;
     }
@@ -84,7 +68,7 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getDocumentType()
+    public function getDocumentType(): string
     {
         return $this->documentType;
     }
@@ -96,16 +80,10 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->shipmentId)) {
-            $data['shipment_id'] = $this->shipmentId;
-        }
-        if (isset($this->documentType)) {
-            $data['document_type'] = $this->documentType;
-        }
-        
-        return $data;
+        return [
+            'shipmentId' => $this->shipmentId,
+            'documentType' => $this->documentType,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class MarketplaceShipmentGetDocumentsRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -37,8 +37,13 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class OrderStatusEnum
+class OrderStatusEnum implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $status;
     /**
      * Possible values of this enum
      */
@@ -57,6 +62,28 @@ class OrderStatusEnum
     public const CLIENT_REFUSED = 'order_client_refused';
 
     /**
+     * @param string $status
+     */
+    public function __construct(string $status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['status'] ?? $data;
+        }
+        return new self($data);
+    }
+
+    /**
      * Gets allowable values of the enum
      * @return string[]
      */
@@ -72,6 +99,26 @@ class OrderStatusEnum
             self::CLIENT_REFUSED
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'status' => $this->status,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->status;
+    }
 }
-
-

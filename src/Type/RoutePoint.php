@@ -21,24 +21,24 @@ class RoutePoint implements \JsonSerializable
     /**
      * @var RoutePointType
      */
-    private $pointType;
+    private RoutePointType $pointType;
 
     /**
      * @var Address
      */
-    private $address;
+    private Address $address;
 
     /**
      * @var Contact
      */
-    private $contact;
+    private Contact $contact;
 
     /**
      * @var string
      */
-    private $transferCode;
+    private string $transferCode;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class RoutePoint implements \JsonSerializable
         $this->contact = $contact;
         $this->transferCode = $transferCode;
     }
-        if (isset($data['address'])) {
-            $this->address = $data['address'];
-        }
-        if (isset($data['contact'])) {
-            $this->contact = $data['contact'];
-        }
-        if (isset($data['transfer_code'])) {
-            $this->transferCode = $data['transfer_code'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +62,11 @@ class RoutePoint implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            RoutePointType::fromArray($data['point_type']),
+            RoutePointType::fromArray($data['pointType']),
             Address::fromArray($data['address']),
             Contact::fromArray($data['contact']),
-            $data['transfer_code']
+            $data['transferCode']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class RoutePoint implements \JsonSerializable
      *
      * @return RoutePointType
      */
-    public function getPointType()
+    public function getPointType(): RoutePointType
     {
         return $this->pointType;
     }
@@ -106,7 +84,7 @@ class RoutePoint implements \JsonSerializable
      *
      * @return Address
      */
-    public function getAddress()
+    public function getAddress(): Address
     {
         return $this->address;
     }
@@ -116,7 +94,7 @@ class RoutePoint implements \JsonSerializable
      *
      * @return Contact
      */
-    public function getContact()
+    public function getContact(): Contact
     {
         return $this->contact;
     }
@@ -126,7 +104,7 @@ class RoutePoint implements \JsonSerializable
      *
      * @return string
      */
-    public function getTransferCode()
+    public function getTransferCode(): string
     {
         return $this->transferCode;
     }
@@ -138,22 +116,12 @@ class RoutePoint implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->pointType)) {
-            $data['point_type'] = $this->pointType;
-        }
-        if (isset($this->address)) {
-            $data['address'] = $this->address;
-        }
-        if (isset($this->contact)) {
-            $data['contact'] = $this->contact;
-        }
-        if (isset($this->transferCode)) {
-            $data['transfer_code'] = $this->transferCode;
-        }
-        
-        return $data;
+        return [
+            'pointType' => $this->pointType,
+            'address' => $this->address,
+            'contact' => $this->contact,
+            'transferCode' => $this->transferCode,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class RoutePoint implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

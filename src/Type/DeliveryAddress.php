@@ -21,44 +21,44 @@ class DeliveryAddress implements \JsonSerializable
     /**
      * @var string
      */
-    private $city;
+    private string $city;
 
     /**
      * @var string
      */
-    private $street;
+    private string $street;
 
     /**
      * @var string
      */
-    private $building;
+    private string $building;
 
     /**
      * @var string
      */
-    private $entrance;
+    private string $entrance;
 
     /**
      * @var string
      */
-    private $floor;
+    private string $floor;
 
     /**
      * @var string
      */
-    private $flat;
+    private string $flat;
 
     /**
      * @var string
      */
-    private $intercom;
+    private string $intercom;
 
     /**
      * @var string
      */
-    private $full;
+    private string $full;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -80,30 +80,8 @@ class DeliveryAddress implements \JsonSerializable
         $this->intercom = $intercom;
         $this->full = $full;
     }
-        if (isset($data['street'])) {
-            $this->street = $data['street'];
-        }
-        if (isset($data['building'])) {
-            $this->building = $data['building'];
-        }
-        if (isset($data['entrance'])) {
-            $this->entrance = $data['entrance'];
-        }
-        if (isset($data['floor'])) {
-            $this->floor = $data['floor'];
-        }
-        if (isset($data['flat'])) {
-            $this->flat = $data['flat'];
-        }
-        if (isset($data['intercom'])) {
-            $this->intercom = $data['intercom'];
-        }
-        if (isset($data['full'])) {
-            $this->full = $data['full'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -124,23 +102,11 @@ class DeliveryAddress implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets city
      *
      * @return string
      */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -150,7 +116,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getStreet()
+    public function getStreet(): string
     {
         return $this->street;
     }
@@ -160,7 +126,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getBuilding()
+    public function getBuilding(): string
     {
         return $this->building;
     }
@@ -170,7 +136,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getEntrance()
+    public function getEntrance(): string
     {
         return $this->entrance;
     }
@@ -180,7 +146,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getFloor()
+    public function getFloor(): string
     {
         return $this->floor;
     }
@@ -190,7 +156,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getFlat()
+    public function getFlat(): string
     {
         return $this->flat;
     }
@@ -200,7 +166,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getIntercom()
+    public function getIntercom(): string
     {
         return $this->intercom;
     }
@@ -210,7 +176,7 @@ class DeliveryAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getFull()
+    public function getFull(): string
     {
         return $this->full;
     }
@@ -222,34 +188,16 @@ class DeliveryAddress implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->city)) {
-            $data['city'] = $this->city;
-        }
-        if (isset($this->street)) {
-            $data['street'] = $this->street;
-        }
-        if (isset($this->building)) {
-            $data['building'] = $this->building;
-        }
-        if (isset($this->entrance)) {
-            $data['entrance'] = $this->entrance;
-        }
-        if (isset($this->floor)) {
-            $data['floor'] = $this->floor;
-        }
-        if (isset($this->flat)) {
-            $data['flat'] = $this->flat;
-        }
-        if (isset($this->intercom)) {
-            $data['intercom'] = $this->intercom;
-        }
-        if (isset($this->full)) {
-            $data['full'] = $this->full;
-        }
-        
-        return $data;
+        return [
+            'city' => $this->city,
+            'street' => $this->street,
+            'building' => $this->building,
+            'entrance' => $this->entrance,
+            'floor' => $this->floor,
+            'flat' => $this->flat,
+            'intercom' => $this->intercom,
+            'full' => $this->full,
+        ];
     }
 
     /**
@@ -260,25 +208,5 @@ class DeliveryAddress implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

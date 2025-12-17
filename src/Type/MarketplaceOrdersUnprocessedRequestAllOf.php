@@ -21,14 +21,14 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
     /**
      * @var MarketplaceSortDirection
      */
-    private $dir;
+    private MarketplaceSortDirection $dir;
 
     /**
      * @var MarketplaceFilterDateTime
      */
-    private $cutoffTime;
+    private MarketplaceFilterDateTime $cutoffTime;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,13 +38,9 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
         $this->dir = $dir;
         $this->cutoffTime = $cutoffTime;
     }
-        if (isset($data['cutoff_time'])) {
-            $this->cutoffTime = $data['cutoff_time'];
-        }
-    }
 
-            /**
-     * Создать из массива
+    /**
+     * Созд��ть из массива
      *
      * @param array $data
      * @return self
@@ -53,20 +49,8 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
     {
         return new self(
             MarketplaceSortDirection::fromArray($data['dir']),
-            MarketplaceFilterDateTime::fromArray($data['cutoff_time'])
+            MarketplaceFilterDateTime::fromArray($data['cutoffTime'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
      *
      * @return MarketplaceSortDirection
      */
-    public function getDir()
+    public function getDir(): MarketplaceSortDirection
     {
         return $this->dir;
     }
@@ -84,7 +68,7 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
      *
      * @return MarketplaceFilterDateTime
      */
-    public function getCutoffTime()
+    public function getCutoffTime(): MarketplaceFilterDateTime
     {
         return $this->cutoffTime;
     }
@@ -96,16 +80,10 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->cutoffTime)) {
-            $data['cutoff_time'] = $this->cutoffTime;
-        }
-        
-        return $data;
+        return [
+            'dir' => $this->dir,
+            'cutoffTime' => $this->cutoffTime,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class MarketplaceOrdersUnprocessedRequestAllOf implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

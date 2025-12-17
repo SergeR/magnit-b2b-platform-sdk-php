@@ -21,17 +21,17 @@ class OauthError implements \JsonSerializable
     /**
      * @var string
      */
-    private $error;
+    private string $error;
 
     /**
      * @var string
      */
-    private $errorDescription;
+    private string $errorDescription;
 
     /**
      * @var string
      */
-    private $message;
+    private string $message;
 
     /**
      * Constructor
@@ -82,7 +82,7 @@ class OauthError implements \JsonSerializable
      *
      * @return string
      */
-    public function getError()
+    public function getError(): string
     {
         return $this->error;
     }
@@ -92,7 +92,7 @@ class OauthError implements \JsonSerializable
      *
      * @return string
      */
-    public function getErrorDescription()
+    public function getErrorDescription(): string
     {
         return $this->errorDescription;
     }
@@ -102,7 +102,7 @@ class OauthError implements \JsonSerializable
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -114,19 +114,11 @@ class OauthError implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->error)) {
-            $data['error'] = $this->error;
-        }
-        if (isset($this->errorDescription)) {
-            $data['error_description'] = $this->errorDescription;
-        }
-        if (isset($this->message)) {
-            $data['message'] = $this->message;
-        }
-        
-        return $data;
+        return [
+            'error' => $this->error,
+            'errorDescription' => $this->errorDescription,
+            'message' => $this->message,
+        ];
     }
 
     /**
@@ -137,25 +129,5 @@ class OauthError implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

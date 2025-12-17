@@ -21,24 +21,24 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
     /**
      * @var int
      */
-    private $pageSize;
+    private int $pageSize;
 
     /**
      * @var string
      */
-    private $pageToken;
+    private string $pageToken;
 
     /**
      * @var MarketplaceSortDirection
      */
-    private $dir;
+    private MarketplaceSortDirection $dir;
 
     /**
      * @var MarketplaceFilterDateTime
      */
-    private $cutoffTime;
+    private MarketplaceFilterDateTime $cutoffTime;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
         $this->dir = $dir;
         $this->cutoffTime = $cutoffTime;
     }
-        if (isset($data['page_token'])) {
-            $this->pageToken = $data['page_token'];
-        }
-        if (isset($data['dir'])) {
-            $this->dir = $data['dir'];
-        }
-        if (isset($data['cutoff_time'])) {
-            $this->cutoffTime = $data['cutoff_time'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +62,11 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['page_size'],
-            $data['page_token'],
+            $data['pageSize'],
+            $data['pageToken'],
             MarketplaceSortDirection::fromArray($data['dir']),
-            MarketplaceFilterDateTime::fromArray($data['cutoff_time'])
+            MarketplaceFilterDateTime::fromArray($data['cutoffTime'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
      *
      * @return int
      */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return $this->pageSize;
     }
@@ -106,7 +84,7 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getPageToken()
+    public function getPageToken(): string
     {
         return $this->pageToken;
     }
@@ -116,7 +94,7 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
      *
      * @return MarketplaceSortDirection
      */
-    public function getDir()
+    public function getDir(): MarketplaceSortDirection
     {
         return $this->dir;
     }
@@ -126,7 +104,7 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
      *
      * @return MarketplaceFilterDateTime
      */
-    public function getCutoffTime()
+    public function getCutoffTime(): MarketplaceFilterDateTime
     {
         return $this->cutoffTime;
     }
@@ -138,22 +116,12 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->pageSize)) {
-            $data['page_size'] = $this->pageSize;
-        }
-        if (isset($this->pageToken)) {
-            $data['page_token'] = $this->pageToken;
-        }
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->cutoffTime)) {
-            $data['cutoff_time'] = $this->cutoffTime;
-        }
-        
-        return $data;
+        return [
+            'pageSize' => $this->pageSize,
+            'pageToken' => $this->pageToken,
+            'dir' => $this->dir,
+            'cutoffTime' => $this->cutoffTime,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class MarketplaceOrdersUnprocessedRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

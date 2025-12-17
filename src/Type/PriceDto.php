@@ -21,29 +21,29 @@ class PriceDto implements \JsonSerializable
     /**
      * @var string
      */
-    private $currencyCode;
+    private string $currencyCode;
 
     /**
      * @var float
      */
-    private $oldPrice;
+    private float $oldPrice;
 
     /**
      * @var float
      */
-    private $price;
+    private float $price;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -59,21 +59,8 @@ class PriceDto implements \JsonSerializable
         $this->sellerSkuId = $sellerSkuId;
         $this->skuId = $skuId;
     }
-        if (isset($data['old_price'])) {
-            $this->oldPrice = $data['old_price'];
-        }
-        if (isset($data['price'])) {
-            $this->price = $data['price'];
-        }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['sku_id'])) {
-            $this->skuId = $data['sku_id'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -82,24 +69,12 @@ class PriceDto implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['currency_code'],
-            $data['old_price'],
+            $data['currencyCode'],
+            $data['oldPrice'],
             $data['price'],
-            $data['seller_sku_id'],
-            $data['sku_id']
+            $data['sellerSkuId'],
+            $data['skuId']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -107,7 +82,7 @@ class PriceDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->currencyCode;
     }
@@ -117,7 +92,7 @@ class PriceDto implements \JsonSerializable
      *
      * @return float
      */
-    public function getOldPrice()
+    public function getOldPrice(): float
     {
         return $this->oldPrice;
     }
@@ -127,7 +102,7 @@ class PriceDto implements \JsonSerializable
      *
      * @return float
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
@@ -137,7 +112,7 @@ class PriceDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -147,7 +122,7 @@ class PriceDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -159,25 +134,13 @@ class PriceDto implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->currencyCode)) {
-            $data['currency_code'] = $this->currencyCode;
-        }
-        if (isset($this->oldPrice)) {
-            $data['old_price'] = $this->oldPrice;
-        }
-        if (isset($this->price)) {
-            $data['price'] = $this->price;
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        
-        return $data;
+        return [
+            'currencyCode' => $this->currencyCode,
+            'oldPrice' => $this->oldPrice,
+            'price' => $this->price,
+            'sellerSkuId' => $this->sellerSkuId,
+            'skuId' => $this->skuId,
+        ];
     }
 
     /**
@@ -188,25 +151,5 @@ class PriceDto implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,44 +21,44 @@ class OrderRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $originalOrderId;
+    private string $originalOrderId;
 
     /**
      * @var string
      */
-    private $storeCode;
+    private string $storeCode;
 
     /**
      * @var Customer
      */
-    private $customer;
+    private Customer $customer;
 
     /**
      * @var OrderRequestDelivery
      */
-    private $delivery;
+    private OrderRequestDelivery $delivery;
 
     /**
      * @var Collect
      */
-    private $collect;
+    private Collect $collect;
 
     /**
      * @var CartRequest
      */
-    private $cart;
+    private CartRequest $cart;
 
     /**
      * @var OrderPrice
      */
-    private $price;
+    private OrderPrice $price;
 
     /**
      * @var string
      */
-    private $comment;
+    private string $comment;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -80,30 +80,8 @@ class OrderRequest implements \JsonSerializable
         $this->price = $price;
         $this->comment = $comment;
     }
-        if (isset($data['store_code'])) {
-            $this->storeCode = $data['store_code'];
-        }
-        if (isset($data['customer'])) {
-            $this->customer = $data['customer'];
-        }
-        if (isset($data['delivery'])) {
-            $this->delivery = $data['delivery'];
-        }
-        if (isset($data['collect'])) {
-            $this->collect = $data['collect'];
-        }
-        if (isset($data['cart'])) {
-            $this->cart = $data['cart'];
-        }
-        if (isset($data['price'])) {
-            $this->price = $data['price'];
-        }
-        if (isset($data['comment'])) {
-            $this->comment = $data['comment'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -112,8 +90,8 @@ class OrderRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['original_order_id'],
-            $data['store_code'],
+            $data['originalOrderId'],
+            $data['storeCode'],
             Customer::fromArray($data['customer']),
             OrderRequestDelivery::fromArray($data['delivery']),
             Collect::fromArray($data['collect']),
@@ -124,23 +102,11 @@ class OrderRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets originalOrderId
      *
      * @return string
      */
-    public function getOriginalOrderId()
+    public function getOriginalOrderId(): string
     {
         return $this->originalOrderId;
     }
@@ -150,7 +116,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getStoreCode()
+    public function getStoreCode(): string
     {
         return $this->storeCode;
     }
@@ -160,7 +126,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return Customer
      */
-    public function getCustomer()
+    public function getCustomer(): Customer
     {
         return $this->customer;
     }
@@ -170,7 +136,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return OrderRequestDelivery
      */
-    public function getDelivery()
+    public function getDelivery(): OrderRequestDelivery
     {
         return $this->delivery;
     }
@@ -180,7 +146,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return Collect
      */
-    public function getCollect()
+    public function getCollect(): Collect
     {
         return $this->collect;
     }
@@ -190,7 +156,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return CartRequest
      */
-    public function getCart()
+    public function getCart(): CartRequest
     {
         return $this->cart;
     }
@@ -200,7 +166,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return OrderPrice
      */
-    public function getPrice()
+    public function getPrice(): OrderPrice
     {
         return $this->price;
     }
@@ -210,7 +176,7 @@ class OrderRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->comment;
     }
@@ -222,34 +188,16 @@ class OrderRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->originalOrderId)) {
-            $data['original_order_id'] = $this->originalOrderId;
-        }
-        if (isset($this->storeCode)) {
-            $data['store_code'] = $this->storeCode;
-        }
-        if (isset($this->customer)) {
-            $data['customer'] = $this->customer;
-        }
-        if (isset($this->delivery)) {
-            $data['delivery'] = $this->delivery;
-        }
-        if (isset($this->collect)) {
-            $data['collect'] = $this->collect;
-        }
-        if (isset($this->cart)) {
-            $data['cart'] = $this->cart;
-        }
-        if (isset($this->price)) {
-            $data['price'] = $this->price;
-        }
-        if (isset($this->comment)) {
-            $data['comment'] = $this->comment;
-        }
-        
-        return $data;
+        return [
+            'originalOrderId' => $this->originalOrderId,
+            'storeCode' => $this->storeCode,
+            'customer' => $this->customer,
+            'delivery' => $this->delivery,
+            'collect' => $this->collect,
+            'cart' => $this->cart,
+            'price' => $this->price,
+            'comment' => $this->comment,
+        ];
     }
 
     /**
@@ -260,25 +208,5 @@ class OrderRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

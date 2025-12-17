@@ -21,37 +21,37 @@ class TaskStatusResponse implements \JsonSerializable
     /**
      * @var int
      */
-    private $countWarning;
+    private int $countWarning;
 
     /**
      * @var ErrorInfo[]
      */
-    private $error;
+    private array $error;
 
     /**
      * @var string
      */
-    private $status;
+    private string $status;
 
     /**
      * @var int
      */
-    private $totalUpload;
+    private int $totalUpload;
 
     /**
      * @var SkuWarning[]
      */
-    private $warnings;
+    private array $warnings;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $countWarning,
-        ErrorInfo[] $error,
+        array $error,
         string $status,
         int $totalUpload,
-        SkuWarning[] $warnings
+        array $warnings
     ) {
         $this->countWarning = $countWarning;
         $this->error = $error;
@@ -59,21 +59,8 @@ class TaskStatusResponse implements \JsonSerializable
         $this->totalUpload = $totalUpload;
         $this->warnings = $warnings;
     }
-        if (isset($data['error'])) {
-            $this->error = $data['error'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-        if (isset($data['total_upload'])) {
-            $this->totalUpload = $data['total_upload'];
-        }
-        if (isset($data['warnings'])) {
-            $this->warnings = $data['warnings'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -82,24 +69,12 @@ class TaskStatusResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['count_warning'],
+            $data['countWarning'],
             isset($data['error']) ? array_map(fn($item) => ErrorInfo::fromArray($item), $data['error']) : [],
             $data['status'],
-            $data['total_upload'],
+            $data['totalUpload'],
             isset($data['warnings']) ? array_map(fn($item) => SkuWarning::fromArray($item), $data['warnings']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -107,7 +82,7 @@ class TaskStatusResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getCountWarning()
+    public function getCountWarning(): int
     {
         return $this->countWarning;
     }
@@ -117,7 +92,7 @@ class TaskStatusResponse implements \JsonSerializable
      *
      * @return ErrorInfo[]
      */
-    public function getError()
+    public function getError(): array
     {
         return $this->error;
     }
@@ -127,7 +102,7 @@ class TaskStatusResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -137,7 +112,7 @@ class TaskStatusResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getTotalUpload()
+    public function getTotalUpload(): int
     {
         return $this->totalUpload;
     }
@@ -147,7 +122,7 @@ class TaskStatusResponse implements \JsonSerializable
      *
      * @return SkuWarning[]
      */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         return $this->warnings;
     }
@@ -159,29 +134,13 @@ class TaskStatusResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->countWarning)) {
-            $data['count_warning'] = $this->countWarning;
-        }
-        if (isset($this->error)) {
-            $data['error'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->error);
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        if (isset($this->totalUpload)) {
-            $data['total_upload'] = $this->totalUpload;
-        }
-        if (isset($this->warnings)) {
-            $data['warnings'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->warnings);
-        }
-        
-        return $data;
+        return [
+            'countWarning' => $this->countWarning,
+            'error' => array_map(fn($item) => $item->jsonSerialize(), $this->error),
+            'status' => $this->status,
+            'totalUpload' => $this->totalUpload,
+            'warnings' => array_map(fn($item) => $item->jsonSerialize(), $this->warnings),
+        ];
     }
 
     /**
@@ -192,25 +151,5 @@ class TaskStatusResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

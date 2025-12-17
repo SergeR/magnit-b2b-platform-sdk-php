@@ -21,19 +21,19 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
     /**
      * @var string
      */
-    private $storeCode;
+    private string $storeCode;
 
     /**
      * @var StoreStatusEnum
      */
-    private $status;
+    private StoreStatusEnum $status;
 
     /**
      * @var string
      */
-    private $updatedAt;
+    private string $updatedAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
         $this->status = $status;
         $this->updatedAt = $updatedAt;
     }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-        if (isset($data['updated_at'])) {
-            $this->updatedAt = $data['updated_at'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,10 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['store_code'],
+            $data['storeCode'],
             StoreStatusEnum::fromArray($data['status']),
-            $data['updated_at']
+            $data['updatedAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getStoreCode()
+    public function getStoreCode(): string
     {
         return $this->storeCode;
     }
@@ -95,7 +76,7 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
      *
      * @return StoreStatusEnum
      */
-    public function getStatus()
+    public function getStatus(): StoreStatusEnum
     {
         return $this->status;
     }
@@ -105,7 +86,7 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
@@ -117,19 +98,11 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->storeCode)) {
-            $data['store_code'] = $this->storeCode;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        if (isset($this->updatedAt)) {
-            $data['updated_at'] = $this->updatedAt;
-        }
-        
-        return $data;
+        return [
+            'storeCode' => $this->storeCode,
+            'status' => $this->status,
+            'updatedAt' => $this->updatedAt,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class StoreStatusUpdatedItemV1 implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

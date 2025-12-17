@@ -37,8 +37,14 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class OrderNotificationTypeEnum
+class OrderNotificationTypeEnum implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $type;
+
     /**
      * Possible values of this enum
      */
@@ -47,6 +53,28 @@ class OrderNotificationTypeEnum
     public const READY_TO_PICK_UP = 'order_ready_to_pick_up';
 
     public const PICKED_UP = 'order_picked_up';
+
+    /**
+     * @param string $type
+     */
+    public function __construct(string $type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['type'] ?? $data;
+        }
+        return new self($data);
+    }
 
     /**
      * Gets allowable values of the enum
@@ -60,6 +88,26 @@ class OrderNotificationTypeEnum
             self::PICKED_UP
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'type' => $this->type,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->type;
+    }
 }
-
-

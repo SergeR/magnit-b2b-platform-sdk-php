@@ -21,19 +21,18 @@ class MarketplaceShipmentListResponseAllOf implements \JsonSerializable
     /**
      * @var MarketplaceShipment[]
      */
-    private $shipments;
+    private array $shipments;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        MarketplaceShipment[] $shipments
+        array $shipments
     ) {
         $this->shipments = $shipments;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,9 @@ class MarketplaceShipmentListResponseAllOf implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            isset($data['shipments']) ? array_map(fn($item) => MarketplaceShipment::fromArray($item), $data['shipments']) : []
+            isset($data['shipments']) ? array_map(fn($item) => MarketplaceShipment::fromArray($item),
+                $data['shipments']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +51,7 @@ class MarketplaceShipmentListResponseAllOf implements \JsonSerializable
      *
      * @return MarketplaceShipment[]
      */
-    public function getShipments()
+    public function getShipments(): array
     {
         return $this->shipments;
     }
@@ -75,15 +63,9 @@ class MarketplaceShipmentListResponseAllOf implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->shipments)) {
-            $data['shipments'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->shipments);
-        }
-        
-        return $data;
+        return [
+            'shipments' => array_map(fn($item) => $item->jsonSerialize(), $this->shipments),
+        ];
     }
 
     /**
@@ -94,25 +76,5 @@ class MarketplaceShipmentListResponseAllOf implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,14 +21,14 @@ class ClaimState implements \JsonSerializable
     /**
      * @var ClaimStatus
      */
-    private $status;
+    private ClaimStatus $status;
 
     /**
      * @var CancelReason
      */
-    private $cancelReason;
+    private CancelReason $cancelReason;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -37,10 +37,6 @@ class ClaimState implements \JsonSerializable
     ) {
         $this->status = $status;
         $this->cancelReason = $cancelReason;
-    }
-        if (isset($data['cancel_reason'])) {
-            $this->cancelReason = $data['cancel_reason'];
-        }
     }
 
             /**
@@ -53,20 +49,8 @@ class ClaimState implements \JsonSerializable
     {
         return new self(
             ClaimStatus::fromArray($data['status']),
-            CancelReason::fromArray($data['cancel_reason'])
+            CancelReason::fromArray($data['cancelReason'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class ClaimState implements \JsonSerializable
      *
      * @return ClaimStatus
      */
-    public function getStatus()
+    public function getStatus(): ClaimStatus
     {
         return $this->status;
     }
@@ -84,7 +68,7 @@ class ClaimState implements \JsonSerializable
      *
      * @return CancelReason
      */
-    public function getCancelReason()
+    public function getCancelReason(): CancelReason
     {
         return $this->cancelReason;
     }
@@ -96,16 +80,10 @@ class ClaimState implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        if (isset($this->cancelReason)) {
-            $data['cancel_reason'] = $this->cancelReason;
-        }
-        
-        return $data;
+        return [
+            'status' => $this->status,
+            'cancelReason' => $this->cancelReason,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class ClaimState implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

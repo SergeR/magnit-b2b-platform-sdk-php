@@ -21,9 +21,9 @@ class MarketplaceOrderCancelItemsResponse implements \JsonSerializable
     /**
      * @var MarketplaceOrder
      */
-    private $order;
+    private MarketplaceOrder $order;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class MarketplaceOrderCancelItemsResponse implements \JsonSerializable
     ) {
         $this->order = $order;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class MarketplaceOrderCancelItemsResponse implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets order
      *
      * @return MarketplaceOrder
      */
-    public function getOrder()
+    public function getOrder(): MarketplaceOrder
     {
         return $this->order;
     }
@@ -75,13 +62,9 @@ class MarketplaceOrderCancelItemsResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->order)) {
-            $data['order'] = $this->order;
-        }
-        
-        return $data;
+        return [
+            'order' => $this->order,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class MarketplaceOrderCancelItemsResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

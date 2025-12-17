@@ -21,23 +21,23 @@ class ShortSkuInfoResponse implements \JsonSerializable
     /**
      * @var ShortSkuInfo[]
      */
-    private $result;
+    private array $result;
 
     /**
      * @var int
      */
-    private $resultCount;
+    private int $resultCount;
 
     /**
      * @var int
      */
-    private $shopId;
+    private int $shopId;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        ShortSkuInfo[] $result,
+        array $result,
         int $resultCount,
         int $shopId
     ) {
@@ -45,15 +45,8 @@ class ShortSkuInfoResponse implements \JsonSerializable
         $this->resultCount = $resultCount;
         $this->shopId = $shopId;
     }
-        if (isset($data['result_count'])) {
-            $this->resultCount = $data['result_count'];
-        }
-        if (isset($data['shop_id'])) {
-            $this->shopId = $data['shop_id'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -63,21 +56,9 @@ class ShortSkuInfoResponse implements \JsonSerializable
     {
         return new self(
             isset($data['result']) ? array_map(fn($item) => ShortSkuInfo::fromArray($item), $data['result']) : [],
-            $data['result_count'],
-            $data['shop_id']
+            $data['resultCount'],
+            $data['shopId']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class ShortSkuInfoResponse implements \JsonSerializable
      *
      * @return ShortSkuInfo[]
      */
-    public function getResult()
+    public function getResult(): array
     {
         return $this->result;
     }
@@ -95,7 +76,7 @@ class ShortSkuInfoResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getResultCount()
+    public function getResultCount(): int
     {
         return $this->resultCount;
     }
@@ -105,7 +86,7 @@ class ShortSkuInfoResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getShopId()
+    public function getShopId(): int
     {
         return $this->shopId;
     }
@@ -117,21 +98,11 @@ class ShortSkuInfoResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->result)) {
-            $data['result'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->result);
-        }
-        if (isset($this->resultCount)) {
-            $data['result_count'] = $this->resultCount;
-        }
-        if (isset($this->shopId)) {
-            $data['shop_id'] = $this->shopId;
-        }
-        
-        return $data;
+        return [
+            'result' => array_map(fn($item) => $item->jsonSerialize(), $this->result),
+            'resultCount' => $this->resultCount,
+            'shopId' => $this->shopId,
+        ];
     }
 
     /**
@@ -142,25 +113,5 @@ class ShortSkuInfoResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

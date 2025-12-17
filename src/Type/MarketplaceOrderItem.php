@@ -21,24 +21,24 @@ class MarketplaceOrderItem implements \JsonSerializable
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var int
      */
-    private $quantity;
+    private int $quantity;
 
     /**
      * @var int
      */
-    private $canceledQuantity;
+    private int $canceledQuantity;
 
     /**
      * @var MarketplaceOrderItemFinancialData
      */
-    private $financialData;
+    private MarketplaceOrderItemFinancialData $financialData;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class MarketplaceOrderItem implements \JsonSerializable
         $this->canceledQuantity = $canceledQuantity;
         $this->financialData = $financialData;
     }
-        if (isset($data['quantity'])) {
-            $this->quantity = $data['quantity'];
-        }
-        if (isset($data['canceled_quantity'])) {
-            $this->canceledQuantity = $data['canceled_quantity'];
-        }
-        if (isset($data['financial_data'])) {
-            $this->financialData = $data['financial_data'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +62,11 @@ class MarketplaceOrderItem implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['sku_id'],
+            $data['skuId'],
             $data['quantity'],
-            $data['canceled_quantity'],
-            MarketplaceOrderItemFinancialData::fromArray($data['financial_data'])
+            $data['canceledQuantity'],
+            MarketplaceOrderItemFinancialData::fromArray($data['financialData'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class MarketplaceOrderItem implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -106,7 +84,7 @@ class MarketplaceOrderItem implements \JsonSerializable
      *
      * @return int
      */
-    public function getQuantity()
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
@@ -116,7 +94,7 @@ class MarketplaceOrderItem implements \JsonSerializable
      *
      * @return int
      */
-    public function getCanceledQuantity()
+    public function getCanceledQuantity(): int
     {
         return $this->canceledQuantity;
     }
@@ -126,7 +104,7 @@ class MarketplaceOrderItem implements \JsonSerializable
      *
      * @return MarketplaceOrderItemFinancialData
      */
-    public function getFinancialData()
+    public function getFinancialData(): MarketplaceOrderItemFinancialData
     {
         return $this->financialData;
     }
@@ -138,22 +116,12 @@ class MarketplaceOrderItem implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->quantity)) {
-            $data['quantity'] = $this->quantity;
-        }
-        if (isset($this->canceledQuantity)) {
-            $data['canceled_quantity'] = $this->canceledQuantity;
-        }
-        if (isset($this->financialData)) {
-            $data['financial_data'] = $this->financialData;
-        }
-        
-        return $data;
+        return [
+            'skuId' => $this->skuId,
+            'quantity' => $this->quantity,
+            'canceledQuantity' => $this->canceledQuantity,
+            'financialData' => $this->financialData,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class MarketplaceOrderItem implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

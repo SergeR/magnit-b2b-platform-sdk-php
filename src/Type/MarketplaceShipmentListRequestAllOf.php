@@ -21,29 +21,29 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
     /**
      * @var MarketplaceSortDirection
      */
-    private $dir;
+    private MarketplaceSortDirection $dir;
 
     /**
      * @var string[]
      */
-    private $shipmentId;
+    private array $shipmentId;
 
     /**
      * @var MarketplaceFilterDateTime
      */
-    private $confirmedAt;
+    private MarketplaceFilterDateTime $confirmedAt;
 
     /**
      * @var MarketplaceShipmentStatus
      */
-    private $status;
+    private MarketplaceShipmentStatus $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         MarketplaceSortDirection $dir,
-        string[] $shipmentId,
+        array $shipmentId,
         MarketplaceFilterDateTime $confirmedAt,
         MarketplaceShipmentStatus $status
     ) {
@@ -52,18 +52,8 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
         $this->confirmedAt = $confirmedAt;
         $this->status = $status;
     }
-        if (isset($data['shipment_id'])) {
-            $this->shipmentId = $data['shipment_id'];
-        }
-        if (isset($data['confirmed_at'])) {
-            $this->confirmedAt = $data['confirmed_at'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -73,22 +63,10 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
     {
         return new self(
             MarketplaceSortDirection::fromArray($data['dir']),
-            $data['shipment_id'],
-            MarketplaceFilterDateTime::fromArray($data['confirmed_at']),
+            $data['shipmentId'],
+            MarketplaceFilterDateTime::fromArray($data['confirmedAt']),
             MarketplaceShipmentStatus::fromArray($data['status'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
      *
      * @return MarketplaceSortDirection
      */
-    public function getDir()
+    public function getDir(): MarketplaceSortDirection
     {
         return $this->dir;
     }
@@ -106,7 +84,7 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getShipmentId()
+    public function getShipmentId(): array
     {
         return $this->shipmentId;
     }
@@ -116,7 +94,7 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
      *
      * @return MarketplaceFilterDateTime
      */
-    public function getConfirmedAt()
+    public function getConfirmedAt(): MarketplaceFilterDateTime
     {
         return $this->confirmedAt;
     }
@@ -126,7 +104,7 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
      *
      * @return MarketplaceShipmentStatus
      */
-    public function getStatus()
+    public function getStatus(): MarketplaceShipmentStatus
     {
         return $this->status;
     }
@@ -138,24 +116,12 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->shipmentId)) {
-            $data['shipment_id'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->shipmentId);
-        }
-        if (isset($this->confirmedAt)) {
-            $data['confirmed_at'] = $this->confirmedAt;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'dir' => $this->dir,
+            'shipmentId' => $this->shipmentId,
+            'confirmedAt' => $this->confirmedAt,
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -166,25 +132,5 @@ class MarketplaceShipmentListRequestAllOf implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

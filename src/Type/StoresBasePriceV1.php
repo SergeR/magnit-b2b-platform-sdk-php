@@ -21,14 +21,14 @@ class StoresBasePriceV1 implements \JsonSerializable
     /**
      * @var int
      */
-    private $value;
+    private int $value;
 
     /**
      * @var CurrencyEnum
      */
-    private $currency;
+    private CurrencyEnum $currency;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class StoresBasePriceV1 implements \JsonSerializable
         $this->value = $value;
         $this->currency = $currency;
     }
-        if (isset($data['currency'])) {
-            $this->currency = $data['currency'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class StoresBasePriceV1 implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets value
      *
      * @return int
      */
-    public function getValue()
+    public function getValue(): int
     {
         return $this->value;
     }
@@ -84,7 +68,7 @@ class StoresBasePriceV1 implements \JsonSerializable
      *
      * @return CurrencyEnum
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyEnum
     {
         return $this->currency;
     }
@@ -96,16 +80,10 @@ class StoresBasePriceV1 implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->value)) {
-            $data['value'] = $this->value;
-        }
-        if (isset($this->currency)) {
-            $data['currency'] = $this->currency;
-        }
-        
-        return $data;
+        return [
+            'value' => $this->value,
+            'currency' => $this->currency,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class StoresBasePriceV1 implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

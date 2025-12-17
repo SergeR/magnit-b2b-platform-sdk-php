@@ -27,6 +27,7 @@
 
 namespace SergeR\MagintB2BPlatformSDK\Api;
 
+use SergeR\MagintB2BPlatformSDK\Config;
 use SergeR\MagintB2BPlatformSDK\MagnitClient;
 
 use GuzzleHttp\Client;
@@ -57,21 +58,23 @@ class WebHookEventApi
     protected $client;
 
     /**
-     * @var Configuration
+     * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * @var HeaderSelector
      */
-    protected $headerSelector;/** @var string[] $contentTypes **/
+    protected HeaderSelector $headerSelector;
+
+    /** @var string[] $contentTypes * */
     public const contentTypes = [
         'rootPost' => [
             'application/json',
         ],
     ];
 
-/**
+    /**
      * @param MagnitClient $client Magnit API client
      */
     public function __construct(MagnitClient $client)
@@ -79,10 +82,12 @@ class WebHookEventApi
         $this->client = $client->getHttpClient();
         $this->config = $client->getConfig();
         $this->headerSelector = new HeaderSelector();
-    }/**
-     * @return Configuration
+    }
+
+    /**
+     * @return Config
      */
-    public function getConfig()
+    public function getConfig(): Config
     {
         return $this->config;
     }
@@ -92,12 +97,12 @@ class WebHookEventApi
      *
      * Получение событий от системы Магнит
      *
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\Event $event event (required)     *
-     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @param \SergeR\MagintB2BPlatformSDK\Type\Event $event event (required)     *
      * @return void
+     * @throws \InvalidArgumentException
+     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
      */
-    public function rootPost($event)
+    public function rootPost(\SergeR\MagintB2BPlatformSDK\Type\Event $event)
     {
         $this->rootPostWithHttpInfo($event);
     }
@@ -107,12 +112,12 @@ class WebHookEventApi
      *
      * Получение событий от системы Магнит
      *
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
-     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
+     * @param \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     * @throws \InvalidArgumentException
+     * @throws \SergeR\MagintB2BPlatformSDK\ApiException on non-2xx response
      */
-    public function rootPostWithHttpInfo($event)
+    public function rootPostWithHttpInfo(\SergeR\MagintB2BPlatformSDK\Type\Event $event): array
     {
         $request = $this->rootPostRequest($event);
 
@@ -123,14 +128,14 @@ class WebHookEventApi
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
+                    (int)$e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() ? (string)$e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
-                    (int) $e->getCode(),
+                    (int)$e->getCode(),
                     null,
                     null
                 );
@@ -143,16 +148,15 @@ class WebHookEventApi
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
-                        (string) $request->getUri()
+                        (string)$request->getUri()
                     ),
                     $statusCode,
                     $response->getHeaders(),
-                    (string) $response->getBody()
+                    (string)$response->getBody()
                 );
             }
 
             return [null, $statusCode, $response->getHeaders()];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
             }
@@ -165,9 +169,9 @@ class WebHookEventApi
      *
      * Получение событий от системы Магнит
      *
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
-     * @throws \InvalidArgumentException
+     * @param \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
      * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function rootPostAsync($event)
     {
@@ -184,9 +188,9 @@ class WebHookEventApi
      *
      * Получение событий от системы Магнит
      *
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
-     * @throws \InvalidArgumentException
+     * @param \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
      * @return \GuzzleHttp\Promise\PromiseInterface
+     * @throws \InvalidArgumentException
      */
     public function rootPostAsyncWithHttpInfo($event)
     {
@@ -196,7 +200,7 @@ class WebHookEventApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {
                     return [null, $response->getStatusCode(), $response->getHeaders()];
                 },
                 function ($exception) {
@@ -210,7 +214,7 @@ class WebHookEventApi
                         ),
                         $statusCode,
                         $response->getHeaders(),
-                        (string) $response->getBody()
+                        (string)$response->getBody()
                     );
                 }
             );
@@ -219,20 +223,19 @@ class WebHookEventApi
     /**
      * Create request for operation 'rootPost'
      *
-     * @param  \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)     *
-     * @throws \InvalidArgumentException
+     * @param \SergeR\MagintB2BPlatformSDK\Type\Event $event (required)
+     *
      * @return \GuzzleHttp\Psr7\Request
+     * @throws \InvalidArgumentException
      */
-    public function rootPostRequest($event)
+    public function rootPostRequest(\SergeR\MagintB2BPlatformSDK\Type\Event $event): Request
     {
-
         // verify the required parameter 'event' is set
         if ($event === null || (is_array($event) && count($event) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $event when calling rootPost'
             );
         }
-
 
         $resourcePath = '/';
         $formParams = [];
@@ -242,11 +245,9 @@ class WebHookEventApi
         $multipart = false;
 
 
-
-
-
         $headers = $this->headerSelector->selectHeaders(
-            [], self::contentTypes['rootPost'][0],
+            [],
+            self::contentTypes['rootPost'][0],
             $multipart
         );
 
@@ -272,7 +273,6 @@ class WebHookEventApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
@@ -307,8 +307,8 @@ class WebHookEventApi
     /**
      * Create http client option
      *
-     * @throws \RuntimeException on file opening failure
      * @return array of http client options
+     * @throws \RuntimeException on file opening failure
      */
     protected function createHttpClientOption()
     {

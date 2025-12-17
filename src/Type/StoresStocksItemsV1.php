@@ -21,29 +21,25 @@ class StoresStocksItemsV1 implements \JsonSerializable
     /**
      * @var int
      */
-    private $timestamp;
+    private int $timestamp;
 
     /**
      * @var StoresStockItemV1[]
      */
-    private $items;
+    private array $items;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $timestamp,
-        StoresStockItemV1[] $items
+        array $items
     ) {
         $this->timestamp = $timestamp;
         $this->items = $items;
     }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class StoresStocksItemsV1 implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets timestamp
      *
      * @return int
      */
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
         return $this->timestamp;
     }
@@ -84,7 +68,7 @@ class StoresStocksItemsV1 implements \JsonSerializable
      *
      * @return StoresStockItemV1[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -96,18 +80,10 @@ class StoresStocksItemsV1 implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->timestamp)) {
-            $data['timestamp'] = $this->timestamp;
-        }
-        if (isset($this->items)) {
-            $data['items'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->items);
-        }
-        
-        return $data;
+        return [
+            'timestamp' => $this->timestamp,
+            'items' => array_map(fn($item) => $item->jsonSerialize(), $this->items),
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class StoresStocksItemsV1 implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

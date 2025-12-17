@@ -21,24 +21,24 @@ class StoresActionPriceV1 implements \JsonSerializable
     /**
      * @var int
      */
-    private $value;
+    private int $value;
 
     /**
      * @var CurrencyEnum
      */
-    private $currency;
+    private CurrencyEnum $currency;
 
     /**
      * @var string
      */
-    private $startedAt;
+    private string $startedAt;
 
     /**
      * @var string
      */
-    private $finishedAt;
+    private string $finishedAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class StoresActionPriceV1 implements \JsonSerializable
         $this->startedAt = $startedAt;
         $this->finishedAt = $finishedAt;
     }
-        if (isset($data['currency'])) {
-            $this->currency = $data['currency'];
-        }
-        if (isset($data['started_at'])) {
-            $this->startedAt = $data['started_at'];
-        }
-        if (isset($data['finished_at'])) {
-            $this->finishedAt = $data['finished_at'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -74,21 +64,9 @@ class StoresActionPriceV1 implements \JsonSerializable
         return new self(
             $data['value'],
             CurrencyEnum::fromArray($data['currency']),
-            $data['started_at'],
-            $data['finished_at']
+            $data['startedAt'],
+            $data['finishedAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class StoresActionPriceV1 implements \JsonSerializable
      *
      * @return int
      */
-    public function getValue()
+    public function getValue(): int
     {
         return $this->value;
     }
@@ -106,7 +84,7 @@ class StoresActionPriceV1 implements \JsonSerializable
      *
      * @return CurrencyEnum
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyEnum
     {
         return $this->currency;
     }
@@ -116,7 +94,7 @@ class StoresActionPriceV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getStartedAt()
+    public function getStartedAt(): string
     {
         return $this->startedAt;
     }
@@ -126,7 +104,7 @@ class StoresActionPriceV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getFinishedAt()
+    public function getFinishedAt(): string
     {
         return $this->finishedAt;
     }
@@ -138,22 +116,12 @@ class StoresActionPriceV1 implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->value)) {
-            $data['value'] = $this->value;
-        }
-        if (isset($this->currency)) {
-            $data['currency'] = $this->currency;
-        }
-        if (isset($this->startedAt)) {
-            $data['started_at'] = $this->startedAt;
-        }
-        if (isset($this->finishedAt)) {
-            $data['finished_at'] = $this->finishedAt;
-        }
-        
-        return $data;
+        return [
+            'value' => $this->value,
+            'currency' => $this->currency,
+            'startedAt' => $this->startedAt,
+            'finishedAt' => $this->finishedAt,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class StoresActionPriceV1 implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

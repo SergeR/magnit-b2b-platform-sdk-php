@@ -38,8 +38,14 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class EventEnum
+class EventEnum implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $event;
+
     /**
      * Possible values of this enum
      */
@@ -50,6 +56,28 @@ class EventEnum
     public const COLLECT_QUEUE_UPDATED_V1 = 'store_collect_queue_updated_v1';
 
     public const STATUS_UPDATED_V1 = 'store_status_updated_v1';
+
+    /**
+     * @param string $event
+     */
+    public function __construct(string $event)
+    {
+        $this->event = $event;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['event'] ?? $data;
+        }
+        return new self($data);
+    }
 
     /**
      * Gets allowable values of the enum
@@ -64,6 +92,26 @@ class EventEnum
             self::STATUS_UPDATED_V1
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'event' => $this->event,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->event;
+    }
 }
-
-

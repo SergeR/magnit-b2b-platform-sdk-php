@@ -21,14 +21,14 @@ class ShortSkuInfoRequest implements \JsonSerializable
     /**
      * @var ShortSkuInfoFilter
      */
-    private $filters;
+    private ShortSkuInfoFilter $filters;
 
     /**
      * @var KeySetPagination
      */
-    private $pagination;
+    private KeySetPagination $pagination;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class ShortSkuInfoRequest implements \JsonSerializable
         $this->filters = $filters;
         $this->pagination = $pagination;
     }
-        if (isset($data['pagination'])) {
-            $this->pagination = $data['pagination'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class ShortSkuInfoRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets filters
      *
      * @return ShortSkuInfoFilter
      */
-    public function getFilters()
+    public function getFilters(): ShortSkuInfoFilter
     {
         return $this->filters;
     }
@@ -84,7 +68,7 @@ class ShortSkuInfoRequest implements \JsonSerializable
      *
      * @return KeySetPagination
      */
-    public function getPagination()
+    public function getPagination(): KeySetPagination
     {
         return $this->pagination;
     }
@@ -96,16 +80,10 @@ class ShortSkuInfoRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->filters)) {
-            $data['filters'] = $this->filters;
-        }
-        if (isset($this->pagination)) {
-            $data['pagination'] = $this->pagination;
-        }
-        
-        return $data;
+        return [
+            'filters' => $this->filters,
+            'pagination' => $this->pagination,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class ShortSkuInfoRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

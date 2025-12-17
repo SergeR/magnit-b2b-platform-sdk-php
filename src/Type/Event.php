@@ -21,19 +21,19 @@ class Event implements \JsonSerializable
     /**
      * @var EventEnum
      */
-    private $type;
+    private EventEnum $type;
 
     /**
      * @var EventPayload
      */
-    private $payload;
+    private EventPayload $payload;
 
     /**
      * @var string
      */
-    private $createdAt;
+    private string $createdAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class Event implements \JsonSerializable
         $this->payload = $payload;
         $this->createdAt = $createdAt;
     }
-        if (isset($data['payload'])) {
-            $this->payload = $data['payload'];
-        }
-        if (isset($data['created_at'])) {
-            $this->createdAt = $data['created_at'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -64,20 +57,8 @@ class Event implements \JsonSerializable
         return new self(
             EventEnum::fromArray($data['type']),
             EventPayload::fromArray($data['payload']),
-            $data['created_at']
+            $data['createdAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class Event implements \JsonSerializable
      *
      * @return EventEnum
      */
-    public function getType()
+    public function getType(): EventEnum
     {
         return $this->type;
     }
@@ -95,7 +76,7 @@ class Event implements \JsonSerializable
      *
      * @return EventPayload
      */
-    public function getPayload()
+    public function getPayload(): EventPayload
     {
         return $this->payload;
     }
@@ -105,7 +86,7 @@ class Event implements \JsonSerializable
      *
      * @return string
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
@@ -117,19 +98,11 @@ class Event implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->type)) {
-            $data['type'] = $this->type;
-        }
-        if (isset($this->payload)) {
-            $data['payload'] = $this->payload;
-        }
-        if (isset($this->createdAt)) {
-            $data['created_at'] = $this->createdAt;
-        }
-        
-        return $data;
+        return [
+            'type' => $this->type,
+            'payload' => $this->payload,
+            'createdAt' => $this->createdAt,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class Event implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

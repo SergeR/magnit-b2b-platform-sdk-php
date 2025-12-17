@@ -21,14 +21,14 @@ class VerifyEACResult implements \JsonSerializable
     /**
      * @var VerifyEACStatusEnum
      */
-    private $verificationResult;
+    private VerifyEACStatusEnum $verificationResult;
 
     /**
      * @var int
      */
-    private $attemptsLeft;
+    private int $attemptsLeft;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class VerifyEACResult implements \JsonSerializable
         $this->verificationResult = $verificationResult;
         $this->attemptsLeft = $attemptsLeft;
     }
-        if (isset($data['attemptsLeft'])) {
-            $this->attemptsLeft = $data['attemptsLeft'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class VerifyEACResult implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets verificationResult
      *
      * @return VerifyEACStatusEnum
      */
-    public function getVerificationResult()
+    public function getVerificationResult(): VerifyEACStatusEnum
     {
         return $this->verificationResult;
     }
@@ -84,7 +68,7 @@ class VerifyEACResult implements \JsonSerializable
      *
      * @return int
      */
-    public function getAttemptsLeft()
+    public function getAttemptsLeft(): int
     {
         return $this->attemptsLeft;
     }
@@ -96,16 +80,10 @@ class VerifyEACResult implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->verificationResult)) {
-            $data['verificationResult'] = $this->verificationResult;
-        }
-        if (isset($this->attemptsLeft)) {
-            $data['attemptsLeft'] = $this->attemptsLeft;
-        }
-        
-        return $data;
+        return [
+            'verificationResult' => $this->verificationResult,
+            'attemptsLeft' => $this->attemptsLeft,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class VerifyEACResult implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

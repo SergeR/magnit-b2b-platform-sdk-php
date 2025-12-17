@@ -21,14 +21,14 @@ class Point implements \JsonSerializable
     /**
      * @var float
      */
-    private $lat;
+    private float $lat;
 
     /**
      * @var float
      */
-    private $lon;
+    private float $lon;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class Point implements \JsonSerializable
         $this->lat = $lat;
         $this->lon = $lon;
     }
-        if (isset($data['lon'])) {
-            $this->lon = $data['lon'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class Point implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets lat
      *
      * @return float
      */
-    public function getLat()
+    public function getLat(): float
     {
         return $this->lat;
     }
@@ -84,7 +68,7 @@ class Point implements \JsonSerializable
      *
      * @return float
      */
-    public function getLon()
+    public function getLon(): float
     {
         return $this->lon;
     }
@@ -96,16 +80,10 @@ class Point implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->lat)) {
-            $data['lat'] = $this->lat;
-        }
-        if (isset($this->lon)) {
-            $data['lon'] = $this->lon;
-        }
-        
-        return $data;
+        return [
+            'lat' => $this->lat,
+            'lon' => $this->lon,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class Point implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

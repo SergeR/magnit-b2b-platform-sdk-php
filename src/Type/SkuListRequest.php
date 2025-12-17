@@ -21,14 +21,14 @@ class SkuListRequest implements \JsonSerializable
     /**
      * @var SkuRequestFilter
      */
-    private $filter;
+    private SkuRequestFilter $filter;
 
     /**
      * @var Pagination
      */
-    private $pagination;
+    private Pagination $pagination;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class SkuListRequest implements \JsonSerializable
         $this->filter = $filter;
         $this->pagination = $pagination;
     }
-        if (isset($data['pagination'])) {
-            $this->pagination = $data['pagination'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class SkuListRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets filter
      *
      * @return SkuRequestFilter
      */
-    public function getFilter()
+    public function getFilter(): SkuRequestFilter
     {
         return $this->filter;
     }
@@ -84,7 +68,7 @@ class SkuListRequest implements \JsonSerializable
      *
      * @return Pagination
      */
-    public function getPagination()
+    public function getPagination(): Pagination
     {
         return $this->pagination;
     }
@@ -96,16 +80,10 @@ class SkuListRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->filter)) {
-            $data['filter'] = $this->filter;
-        }
-        if (isset($this->pagination)) {
-            $data['pagination'] = $this->pagination;
-        }
-        
-        return $data;
+        return [
+            'filter' => $this->filter,
+            'pagination' => $this->pagination,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class SkuListRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

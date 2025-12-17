@@ -21,14 +21,14 @@ class MarkingRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $id;
+    private string $id;
 
     /**
      * @var float
      */
-    private $timestamp;
+    private float $timestamp;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class MarkingRequest implements \JsonSerializable
         $this->id = $id;
         $this->timestamp = $timestamp;
     }
-        if (isset($data['timestamp'])) {
-            $this->timestamp = $data['timestamp'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class MarkingRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets id
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -84,7 +68,7 @@ class MarkingRequest implements \JsonSerializable
      *
      * @return float
      */
-    public function getTimestamp()
+    public function getTimestamp(): float
     {
         return $this->timestamp;
     }
@@ -96,16 +80,10 @@ class MarkingRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->id)) {
-            $data['id'] = $this->id;
-        }
-        if (isset($this->timestamp)) {
-            $data['timestamp'] = $this->timestamp;
-        }
-        
-        return $data;
+        return [
+            'id' => $this->id,
+            'timestamp' => $this->timestamp,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class MarkingRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

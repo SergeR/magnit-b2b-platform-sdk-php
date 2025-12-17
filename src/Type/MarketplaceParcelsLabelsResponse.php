@@ -21,29 +21,25 @@ class MarketplaceParcelsLabelsResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $fileContent;
+    private string $fileContent;
 
     /**
      * @var MarketplaceParcelLabelItem[]
      */
-    private $parcels;
+    private array $parcels;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $fileContent,
-        MarketplaceParcelLabelItem[] $parcels
+        array $parcels
     ) {
         $this->fileContent = $fileContent;
         $this->parcels = $parcels;
     }
-        if (isset($data['parcels'])) {
-            $this->parcels = $data['parcels'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceParcelsLabelsResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['file_content'],
+            $data['fileContent'],
             isset($data['parcels']) ? array_map(fn($item) => MarketplaceParcelLabelItem::fromArray($item), $data['parcels']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceParcelsLabelsResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getFileContent()
+    public function getFileContent(): string
     {
         return $this->fileContent;
     }
@@ -84,7 +68,7 @@ class MarketplaceParcelsLabelsResponse implements \JsonSerializable
      *
      * @return MarketplaceParcelLabelItem[]
      */
-    public function getParcels()
+    public function getParcels(): array
     {
         return $this->parcels;
     }
@@ -96,18 +80,10 @@ class MarketplaceParcelsLabelsResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->fileContent)) {
-            $data['file_content'] = $this->fileContent;
-        }
-        if (isset($this->parcels)) {
-            $data['parcels'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->parcels);
-        }
-        
-        return $data;
+        return [
+            'fileContent' => $this->fileContent,
+            'parcels' => array_map(fn($item) => $item->jsonSerialize(), $this->parcels),
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class MarketplaceParcelsLabelsResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

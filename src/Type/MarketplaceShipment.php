@@ -21,29 +21,29 @@ class MarketplaceShipment implements \JsonSerializable
     /**
      * @var string
      */
-    private $shipmentId;
+    private string $shipmentId;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $confirmedAt;
+    private \DateTime $confirmedAt;
 
     /**
      * @var MarketplaceShipmentStatus
      */
-    private $status;
+    private MarketplaceShipmentStatus $status;
 
     /**
      * @var MarketplaceShipmentParcelsInner[]
      */
-    private $parcels;
+    private array $parcels;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -51,7 +51,7 @@ class MarketplaceShipment implements \JsonSerializable
         \DateTime $createdAt,
         \DateTime $confirmedAt,
         MarketplaceShipmentStatus $status,
-        MarketplaceShipmentParcelsInner[] $parcels
+        array $parcels
     ) {
         $this->shipmentId = $shipmentId;
         $this->createdAt = $createdAt;
@@ -59,47 +59,24 @@ class MarketplaceShipment implements \JsonSerializable
         $this->status = $status;
         $this->parcels = $parcels;
     }
-        if (isset($data['created_at'])) {
-            $this->createdAt = $data['created_at'];
-        }
-        if (isset($data['confirmed_at'])) {
-            $this->confirmedAt = $data['confirmed_at'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-        if (isset($data['parcels'])) {
-            $this->parcels = $data['parcels'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
      * @return self
+     * @throws \Exception
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['shipment_id'],
-            \DateTime::fromArray($data['created_at']),
-            \DateTime::fromArray($data['confirmed_at']),
+            $data['shipmentId'],
+            new \DateTime($data['createdAt']),
+            new \DateTime($data['confirmedAt']),
             MarketplaceShipmentStatus::fromArray($data['status']),
-            isset($data['parcels']) ? array_map(fn($item) => MarketplaceShipmentParcelsInner::fromArray($item), $data['parcels']) : []
+            isset($data['parcels']) ? array_map(fn($item) => MarketplaceShipmentParcelsInner::fromArray($item),
+                $data['parcels']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -107,7 +84,7 @@ class MarketplaceShipment implements \JsonSerializable
      *
      * @return string
      */
-    public function getShipmentId()
+    public function getShipmentId(): string
     {
         return $this->shipmentId;
     }
@@ -117,7 +94,7 @@ class MarketplaceShipment implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -127,7 +104,7 @@ class MarketplaceShipment implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getConfirmedAt()
+    public function getConfirmedAt(): \DateTime
     {
         return $this->confirmedAt;
     }
@@ -137,7 +114,7 @@ class MarketplaceShipment implements \JsonSerializable
      *
      * @return MarketplaceShipmentStatus
      */
-    public function getStatus()
+    public function getStatus(): MarketplaceShipmentStatus
     {
         return $this->status;
     }
@@ -147,7 +124,7 @@ class MarketplaceShipment implements \JsonSerializable
      *
      * @return MarketplaceShipmentParcelsInner[]
      */
-    public function getParcels()
+    public function getParcels(): array
     {
         return $this->parcels;
     }
@@ -159,27 +136,13 @@ class MarketplaceShipment implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->shipmentId)) {
-            $data['shipment_id'] = $this->shipmentId;
-        }
-        if (isset($this->createdAt)) {
-            $data['created_at'] = $this->createdAt instanceof \JsonSerializable ? $this->createdAt->jsonSerialize() : $this->createdAt;
-        }
-        if (isset($this->confirmedAt)) {
-            $data['confirmed_at'] = $this->confirmedAt instanceof \JsonSerializable ? $this->confirmedAt->jsonSerialize() : $this->confirmedAt;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        if (isset($this->parcels)) {
-            $data['parcels'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->parcels);
-        }
-        
-        return $data;
+        return [
+            'shipmentId' => $this->shipmentId,
+            'createdAt' => $this->createdAt->format(\DateTimeInterface::ATOM),
+            'confirmedAt' => $this->confirmedAt->format(\DateTimeInterface::ATOM),
+            'status' => $this->status,
+            'parcels' => array_map(fn($item) => $item->jsonSerialize(), $this->parcels),
+        ];
     }
 
     /**
@@ -190,25 +153,5 @@ class MarketplaceShipment implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

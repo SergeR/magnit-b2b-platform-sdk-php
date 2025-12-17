@@ -21,19 +21,19 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
     /**
      * @var string
      */
-    private $storeCode;
+    private string $storeCode;
 
     /**
      * @var string
      */
-    private $completedAt;
+    private string $completedAt;
 
     /**
      * @var string
      */
-    private $updatedAt;
+    private string $updatedAt;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
         $this->completedAt = $completedAt;
         $this->updatedAt = $updatedAt;
     }
-        if (isset($data['completed_at'])) {
-            $this->completedAt = $data['completed_at'];
-        }
-        if (isset($data['updated_at'])) {
-            $this->updatedAt = $data['updated_at'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,10 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['store_code'],
-            $data['completed_at'],
-            $data['updated_at']
+            $data['storeCode'],
+            $data['completedAt'],
+            $data['updatedAt']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getStoreCode()
+    public function getStoreCode(): string
     {
         return $this->storeCode;
     }
@@ -95,7 +76,7 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getCompletedAt()
+    public function getCompletedAt(): string
     {
         return $this->completedAt;
     }
@@ -105,7 +86,7 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
      *
      * @return string
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
@@ -117,19 +98,11 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->storeCode)) {
-            $data['store_code'] = $this->storeCode;
-        }
-        if (isset($this->completedAt)) {
-            $data['completed_at'] = $this->completedAt;
-        }
-        if (isset($this->updatedAt)) {
-            $data['updated_at'] = $this->updatedAt;
-        }
-        
-        return $data;
+        return [
+            'storeCode' => $this->storeCode,
+            'completedAt' => $this->completedAt,
+            'updatedAt' => $this->updatedAt,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class StoreCollectQueueUpdatedItemV1 implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

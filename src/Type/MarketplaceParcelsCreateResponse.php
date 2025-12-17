@@ -21,29 +21,25 @@ class MarketplaceParcelsCreateResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $parcelId;
+    private string $parcelId;
 
     /**
      * @var MarketplaceParcelItem[]
      */
-    private $items;
+    private array $items;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $parcelId,
-        MarketplaceParcelItem[] $items
+        array $items
     ) {
         $this->parcelId = $parcelId;
         $this->items = $items;
     }
-        if (isset($data['items'])) {
-            $this->items = $data['items'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceParcelsCreateResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['parcel_id'],
+            $data['parcelId'],
             isset($data['items']) ? array_map(fn($item) => MarketplaceParcelItem::fromArray($item), $data['items']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceParcelsCreateResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getParcelId()
+    public function getParcelId(): string
     {
         return $this->parcelId;
     }
@@ -84,7 +68,7 @@ class MarketplaceParcelsCreateResponse implements \JsonSerializable
      *
      * @return MarketplaceParcelItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -96,18 +80,10 @@ class MarketplaceParcelsCreateResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->parcelId)) {
-            $data['parcel_id'] = $this->parcelId;
-        }
-        if (isset($this->items)) {
-            $data['items'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->items);
-        }
-        
-        return $data;
+        return [
+            'parcelId' => $this->parcelId,
+            'items' => array_map(fn($item) => $item->jsonSerialize(), $this->items),
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class MarketplaceParcelsCreateResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

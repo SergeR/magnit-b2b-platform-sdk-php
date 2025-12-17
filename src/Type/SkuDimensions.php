@@ -21,24 +21,24 @@ class SkuDimensions implements \JsonSerializable
     /**
      * @var int
      */
-    private $height;
+    private int $height;
 
     /**
      * @var int
      */
-    private $length;
+    private int $length;
 
     /**
      * @var int
      */
-    private $weight;
+    private int $weight;
 
     /**
      * @var int
      */
-    private $width;
+    private int $width;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class SkuDimensions implements \JsonSerializable
         $this->weight = $weight;
         $this->width = $width;
     }
-        if (isset($data['length'])) {
-            $this->length = $data['length'];
-        }
-        if (isset($data['weight'])) {
-            $this->weight = $data['weight'];
-        }
-        if (isset($data['width'])) {
-            $this->width = $data['width'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -80,23 +70,11 @@ class SkuDimensions implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets height
      *
      * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
@@ -106,7 +84,7 @@ class SkuDimensions implements \JsonSerializable
      *
      * @return int
      */
-    public function getLength()
+    public function getLength(): int
     {
         return $this->length;
     }
@@ -116,7 +94,7 @@ class SkuDimensions implements \JsonSerializable
      *
      * @return int
      */
-    public function getWeight()
+    public function getWeight(): int
     {
         return $this->weight;
     }
@@ -126,7 +104,7 @@ class SkuDimensions implements \JsonSerializable
      *
      * @return int
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
@@ -138,22 +116,12 @@ class SkuDimensions implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->height)) {
-            $data['height'] = $this->height;
-        }
-        if (isset($this->length)) {
-            $data['length'] = $this->length;
-        }
-        if (isset($this->weight)) {
-            $data['weight'] = $this->weight;
-        }
-        if (isset($this->width)) {
-            $data['width'] = $this->width;
-        }
-        
-        return $data;
+        return [
+            'height' => $this->height,
+            'length' => $this->length,
+            'weight' => $this->weight,
+            'width' => $this->width,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class SkuDimensions implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

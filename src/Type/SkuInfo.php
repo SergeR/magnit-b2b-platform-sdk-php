@@ -21,159 +21,159 @@ class SkuInfo implements \JsonSerializable
     /**
      * @var int
      */
-    private $barcode;
+    private int $barcode;
 
     /**
      * @var int
      */
-    private $categoryId;
+    private int $categoryId;
 
     /**
      * @var string
      */
-    private $certificate;
+    private string $certificate;
 
     /**
      * @var string
      */
-    private $composition;
+    private string $composition;
 
     /**
      * @var string
      */
-    private $currencyCode;
+    private string $currencyCode;
 
     /**
      * @var CustomSkuCharacteristic[]
      */
-    private $customCharacteristicValuesSkus;
+    private array $customCharacteristicValuesSkus;
 
     /**
      * @var int
      */
-    private $depth;
+    private int $depth;
 
     /**
      * @var string
      */
-    private $description;
+    private string $description;
 
     /**
      * @var int
      */
-    private $height;
+    private int $height;
 
     /**
      * @var string
      */
-    private $instruction;
+    private string $instruction;
 
     /**
      * @var bool
      */
-    private $isActive;
+    private bool $isActive;
 
     /**
      * @var bool
      */
-    private $isArchive;
+    private bool $isArchive;
 
     /**
      * @var bool
      */
-    private $isBlocked;
+    private bool $isBlocked;
 
     /**
      * @var bool
      */
-    private $isNoStock;
+    private bool $isNoStock;
 
     /**
      * @var int
      */
-    private $length;
+    private int $length;
 
     /**
      * @var string
      */
-    private $okpd2;
+    private string $okpd2;
 
     /**
      * @var int
      */
-    private $oldPrice;
+    private int $oldPrice;
 
     /**
      * @var ProductVisualEffects
      */
-    private $photo360;
+    private ProductVisualEffects $photo360;
 
     /**
      * @var int
      */
-    private $price;
+    private int $price;
 
     /**
      * @var string[]
      */
-    private $productAttributes;
+    private array $productAttributes;
 
     /**
      * @var int
      */
-    private $productId;
+    private int $productId;
 
     /**
      * @var ProductVisualEffects[]
      */
-    private $productImages;
+    private array $productImages;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var string
      */
-    private $sizeChart;
+    private string $sizeChart;
 
     /**
      * @var SkuCharacteristic[]
      */
-    private $skuCharacteristicList;
+    private array $skuCharacteristicList;
 
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * @var string
      */
-    private $vat;
+    private string $vat;
 
     /**
      * @var ProductVisualEffects
      */
-    private $video;
+    private ProductVisualEffects $video;
 
     /**
      * @var int
      */
-    private $weight;
+    private int $weight;
 
     /**
      * @var int
      */
-    private $width;
+    private int $width;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -182,7 +182,7 @@ class SkuInfo implements \JsonSerializable
         string $certificate,
         string $composition,
         string $currencyCode,
-        CustomSkuCharacteristic[] $customCharacteristicValuesSkus,
+        array $customCharacteristicValuesSkus,
         int $depth,
         string $description,
         int $height,
@@ -196,12 +196,12 @@ class SkuInfo implements \JsonSerializable
         int $oldPrice,
         ProductVisualEffects $photo360,
         int $price,
-        string[] $productAttributes,
+        array $productAttributes,
         int $productId,
-        ProductVisualEffects[] $productImages,
+        array $productImages,
         string $sellerSkuId,
         string $sizeChart,
-        SkuCharacteristic[] $skuCharacteristicList,
+        array $skuCharacteristicList,
         int $skuId,
         string $title,
         string $vat,
@@ -241,99 +241,8 @@ class SkuInfo implements \JsonSerializable
         $this->weight = $weight;
         $this->width = $width;
     }
-        if (isset($data['category_id'])) {
-            $this->categoryId = $data['category_id'];
-        }
-        if (isset($data['certificate'])) {
-            $this->certificate = $data['certificate'];
-        }
-        if (isset($data['composition'])) {
-            $this->composition = $data['composition'];
-        }
-        if (isset($data['currency_code'])) {
-            $this->currencyCode = $data['currency_code'];
-        }
-        if (isset($data['custom_characteristic_values_skus'])) {
-            $this->customCharacteristicValuesSkus = $data['custom_characteristic_values_skus'];
-        }
-        if (isset($data['depth'])) {
-            $this->depth = $data['depth'];
-        }
-        if (isset($data['description'])) {
-            $this->description = $data['description'];
-        }
-        if (isset($data['height'])) {
-            $this->height = $data['height'];
-        }
-        if (isset($data['instruction'])) {
-            $this->instruction = $data['instruction'];
-        }
-        if (isset($data['is_active'])) {
-            $this->isActive = $data['is_active'];
-        }
-        if (isset($data['is_archive'])) {
-            $this->isArchive = $data['is_archive'];
-        }
-        if (isset($data['is_blocked'])) {
-            $this->isBlocked = $data['is_blocked'];
-        }
-        if (isset($data['is_no_stock'])) {
-            $this->isNoStock = $data['is_no_stock'];
-        }
-        if (isset($data['length'])) {
-            $this->length = $data['length'];
-        }
-        if (isset($data['okpd2'])) {
-            $this->okpd2 = $data['okpd2'];
-        }
-        if (isset($data['old_price'])) {
-            $this->oldPrice = $data['old_price'];
-        }
-        if (isset($data['photo_360'])) {
-            $this->photo360 = $data['photo_360'];
-        }
-        if (isset($data['price'])) {
-            $this->price = $data['price'];
-        }
-        if (isset($data['product_attributes'])) {
-            $this->productAttributes = $data['product_attributes'];
-        }
-        if (isset($data['product_id'])) {
-            $this->productId = $data['product_id'];
-        }
-        if (isset($data['product_images'])) {
-            $this->productImages = $data['product_images'];
-        }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['size_chart'])) {
-            $this->sizeChart = $data['size_chart'];
-        }
-        if (isset($data['sku_characteristic_list'])) {
-            $this->skuCharacteristicList = $data['sku_characteristic_list'];
-        }
-        if (isset($data['sku_id'])) {
-            $this->skuId = $data['sku_id'];
-        }
-        if (isset($data['title'])) {
-            $this->title = $data['title'];
-        }
-        if (isset($data['vat'])) {
-            $this->vat = $data['vat'];
-        }
-        if (isset($data['video'])) {
-            $this->video = $data['video'];
-        }
-        if (isset($data['weight'])) {
-            $this->weight = $data['weight'];
-        }
-        if (isset($data['width'])) {
-            $this->width = $data['width'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -343,31 +252,36 @@ class SkuInfo implements \JsonSerializable
     {
         return new self(
             $data['barcode'],
-            $data['category_id'],
+            $data['categoryId'],
             $data['certificate'],
             $data['composition'],
-            $data['currency_code'],
-            isset($data['custom_characteristic_values_skus']) ? array_map(fn($item) => CustomSkuCharacteristic::fromArray($item), $data['custom_characteristic_values_skus']) : [],
+            $data['currencyCode'],
+            isset($data['customCharacteristicValuesSkus']) ? array_map(
+                fn($item) => CustomSkuCharacteristic::fromArray($item),
+                $data['customCharacteristicValuesSkus']
+            ) : [],
             $data['depth'],
             $data['description'],
             $data['height'],
             $data['instruction'],
-            $data['is_active'],
-            $data['is_archive'],
-            $data['is_blocked'],
-            $data['is_no_stock'],
+            $data['isActive'],
+            $data['isArchive'],
+            $data['isBlocked'],
+            $data['isNoStock'],
             $data['length'],
             $data['okpd2'],
-            $data['old_price'],
+            $data['oldPrice'],
             ProductVisualEffects::fromArray($data['photo360']),
             $data['price'],
-            $data['product_attributes'],
-            $data['product_id'],
-            isset($data['product_images']) ? array_map(fn($item) => ProductVisualEffects::fromArray($item), $data['product_images']) : [],
-            $data['seller_sku_id'],
-            $data['size_chart'],
-            isset($data['sku_characteristic_list']) ? array_map(fn($item) => SkuCharacteristic::fromArray($item), $data['sku_characteristic_list']) : [],
-            $data['sku_id'],
+            $data['productAttributes'],
+            $data['productId'],
+            isset($data['productImages']) ? array_map(fn($item) => ProductVisualEffects::fromArray($item),
+                $data['productImages']) : [],
+            $data['sellerSkuId'],
+            $data['sizeChart'],
+            isset($data['skuCharacteristicList']) ? array_map(fn($item) => SkuCharacteristic::fromArray($item),
+                $data['skuCharacteristicList']) : [],
+            $data['skuId'],
             $data['title'],
             $data['vat'],
             ProductVisualEffects::fromArray($data['video']),
@@ -377,23 +291,11 @@ class SkuInfo implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets barcode
      *
      * @return int
      */
-    public function getBarcode()
+    public function getBarcode(): int
     {
         return $this->barcode;
     }
@@ -403,7 +305,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->categoryId;
     }
@@ -413,7 +315,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getCertificate()
+    public function getCertificate(): string
     {
         return $this->certificate;
     }
@@ -423,7 +325,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getComposition()
+    public function getComposition(): string
     {
         return $this->composition;
     }
@@ -433,7 +335,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->currencyCode;
     }
@@ -443,7 +345,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return CustomSkuCharacteristic[]
      */
-    public function getCustomCharacteristicValuesSkus()
+    public function getCustomCharacteristicValuesSkus(): array
     {
         return $this->customCharacteristicValuesSkus;
     }
@@ -453,7 +355,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getDepth()
+    public function getDepth(): int
     {
         return $this->depth;
     }
@@ -463,7 +365,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -473,7 +375,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
@@ -483,7 +385,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getInstruction()
+    public function getInstruction(): string
     {
         return $this->instruction;
     }
@@ -493,7 +395,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return bool
      */
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }
@@ -503,7 +405,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return bool
      */
-    public function getIsArchive()
+    public function getIsArchive(): bool
     {
         return $this->isArchive;
     }
@@ -513,7 +415,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return bool
      */
-    public function getIsBlocked()
+    public function getIsBlocked(): bool
     {
         return $this->isBlocked;
     }
@@ -523,7 +425,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return bool
      */
-    public function getIsNoStock()
+    public function getIsNoStock(): bool
     {
         return $this->isNoStock;
     }
@@ -533,7 +435,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getLength()
+    public function getLength(): int
     {
         return $this->length;
     }
@@ -543,7 +445,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getOkpd2()
+    public function getOkpd2(): string
     {
         return $this->okpd2;
     }
@@ -553,7 +455,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getOldPrice()
+    public function getOldPrice(): int
     {
         return $this->oldPrice;
     }
@@ -563,7 +465,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return ProductVisualEffects
      */
-    public function getPhoto360()
+    public function getPhoto360(): ProductVisualEffects
     {
         return $this->photo360;
     }
@@ -573,7 +475,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getPrice()
+    public function getPrice(): int
     {
         return $this->price;
     }
@@ -583,7 +485,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getProductAttributes()
+    public function getProductAttributes(): array
     {
         return $this->productAttributes;
     }
@@ -593,7 +495,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getProductId()
+    public function getProductId(): int
     {
         return $this->productId;
     }
@@ -603,7 +505,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return ProductVisualEffects[]
      */
-    public function getProductImages()
+    public function getProductImages(): array
     {
         return $this->productImages;
     }
@@ -613,7 +515,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -623,7 +525,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getSizeChart()
+    public function getSizeChart(): string
     {
         return $this->sizeChart;
     }
@@ -633,7 +535,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return SkuCharacteristic[]
      */
-    public function getSkuCharacteristicList()
+    public function getSkuCharacteristicList(): array
     {
         return $this->skuCharacteristicList;
     }
@@ -643,7 +545,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -653,7 +555,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -663,7 +565,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return string
      */
-    public function getVat()
+    public function getVat(): string
     {
         return $this->vat;
     }
@@ -673,7 +575,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return ProductVisualEffects
      */
-    public function getVideo()
+    public function getVideo(): ProductVisualEffects
     {
         return $this->video;
     }
@@ -683,7 +585,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getWeight()
+    public function getWeight(): int
     {
         return $this->weight;
     }
@@ -693,7 +595,7 @@ class SkuInfo implements \JsonSerializable
      *
      * @return int
      */
-    public function getWidth()
+    public function getWidth(): int
     {
         return $this->width;
     }
@@ -705,111 +607,40 @@ class SkuInfo implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->barcode)) {
-            $data['barcode'] = $this->barcode;
-        }
-        if (isset($this->categoryId)) {
-            $data['category_id'] = $this->categoryId;
-        }
-        if (isset($this->certificate)) {
-            $data['certificate'] = $this->certificate;
-        }
-        if (isset($this->composition)) {
-            $data['composition'] = $this->composition;
-        }
-        if (isset($this->currencyCode)) {
-            $data['currency_code'] = $this->currencyCode;
-        }
-        if (isset($this->customCharacteristicValuesSkus)) {
-            $data['custom_characteristic_values_skus'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->customCharacteristicValuesSkus);
-        }
-        if (isset($this->depth)) {
-            $data['depth'] = $this->depth;
-        }
-        if (isset($this->description)) {
-            $data['description'] = $this->description;
-        }
-        if (isset($this->height)) {
-            $data['height'] = $this->height;
-        }
-        if (isset($this->instruction)) {
-            $data['instruction'] = $this->instruction;
-        }
-        if (isset($this->isActive)) {
-            $data['is_active'] = $this->isActive;
-        }
-        if (isset($this->isArchive)) {
-            $data['is_archive'] = $this->isArchive;
-        }
-        if (isset($this->isBlocked)) {
-            $data['is_blocked'] = $this->isBlocked;
-        }
-        if (isset($this->isNoStock)) {
-            $data['is_no_stock'] = $this->isNoStock;
-        }
-        if (isset($this->length)) {
-            $data['length'] = $this->length;
-        }
-        if (isset($this->okpd2)) {
-            $data['okpd2'] = $this->okpd2;
-        }
-        if (isset($this->oldPrice)) {
-            $data['old_price'] = $this->oldPrice;
-        }
-        if (isset($this->photo360)) {
-            $data['photo_360'] = $this->photo360;
-        }
-        if (isset($this->price)) {
-            $data['price'] = $this->price;
-        }
-        if (isset($this->productAttributes)) {
-            $data['product_attributes'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->productAttributes);
-        }
-        if (isset($this->productId)) {
-            $data['product_id'] = $this->productId;
-        }
-        if (isset($this->productImages)) {
-            $data['product_images'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->productImages);
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->sizeChart)) {
-            $data['size_chart'] = $this->sizeChart;
-        }
-        if (isset($this->skuCharacteristicList)) {
-            $data['sku_characteristic_list'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->skuCharacteristicList);
-        }
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->title)) {
-            $data['title'] = $this->title;
-        }
-        if (isset($this->vat)) {
-            $data['vat'] = $this->vat;
-        }
-        if (isset($this->video)) {
-            $data['video'] = $this->video;
-        }
-        if (isset($this->weight)) {
-            $data['weight'] = $this->weight;
-        }
-        if (isset($this->width)) {
-            $data['width'] = $this->width;
-        }
-        
-        return $data;
+        return [
+            'barcode' => $this->barcode,
+            'categoryId' => $this->categoryId,
+            'certificate' => $this->certificate,
+            'composition' => $this->composition,
+            'currencyCode' => $this->currencyCode,
+            'customCharacteristicValuesSkus' => array_map(fn($item) => $item->jsonSerialize(),
+                $this->customCharacteristicValuesSkus),
+            'depth' => $this->depth,
+            'description' => $this->description,
+            'height' => $this->height,
+            'instruction' => $this->instruction,
+            'isActive' => $this->isActive,
+            'isArchive' => $this->isArchive,
+            'isBlocked' => $this->isBlocked,
+            'isNoStock' => $this->isNoStock,
+            'length' => $this->length,
+            'okpd2' => $this->okpd2,
+            'oldPrice' => $this->oldPrice,
+            'photo360' => $this->photo360,
+            'price' => $this->price,
+            'productAttributes' => $this->productAttributes,
+            'productId' => $this->productId,
+            'productImages' => array_map(fn($item) => $item->jsonSerialize(), $this->productImages),
+            'sellerSkuId' => $this->sellerSkuId,
+            'sizeChart' => $this->sizeChart,
+            'skuCharacteristicList' => array_map(fn($item) => $item->jsonSerialize(), $this->skuCharacteristicList),
+            'skuId' => $this->skuId,
+            'title' => $this->title,
+            'vat' => $this->vat,
+            'video' => $this->video,
+            'weight' => $this->weight,
+            'width' => $this->width,
+        ];
     }
 
     /**
@@ -820,25 +651,5 @@ class SkuInfo implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

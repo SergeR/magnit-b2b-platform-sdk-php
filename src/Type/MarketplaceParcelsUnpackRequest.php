@@ -21,9 +21,9 @@ class MarketplaceParcelsUnpackRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $parcelId;
+    private string $parcelId;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class MarketplaceParcelsUnpackRequest implements \JsonSerializable
     ) {
         $this->parcelId = $parcelId;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class MarketplaceParcelsUnpackRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['parcel_id']
+            $data['parcelId']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class MarketplaceParcelsUnpackRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getParcelId()
+    public function getParcelId(): string
     {
         return $this->parcelId;
     }
@@ -75,13 +62,9 @@ class MarketplaceParcelsUnpackRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->parcelId)) {
-            $data['parcel_id'] = $this->parcelId;
-        }
-        
-        return $data;
+        return [
+            'parcelId' => $this->parcelId,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class MarketplaceParcelsUnpackRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

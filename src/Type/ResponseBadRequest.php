@@ -21,29 +21,25 @@ class ResponseBadRequest implements \JsonSerializable
     /**
      * @var string
      */
-    private $code;
+    private string $code;
 
     /**
      * @var string[]
      */
-    private $details;
+    private array $details;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         string $code,
-        string[] $details
+        array $details
     ) {
         $this->code = $code;
         $this->details = $details;
     }
-        if (isset($data['details'])) {
-            $this->details = $data['details'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class ResponseBadRequest implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets code
      *
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -84,7 +68,7 @@ class ResponseBadRequest implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->details;
     }
@@ -96,18 +80,10 @@ class ResponseBadRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->code)) {
-            $data['code'] = $this->code;
-        }
-        if (isset($this->details)) {
-            $data['details'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->details);
-        }
-        
-        return $data;
+        return [
+            'code' => $this->code,
+            'details' => $this->details,
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class ResponseBadRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

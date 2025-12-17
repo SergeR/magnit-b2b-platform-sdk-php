@@ -21,9 +21,9 @@ class VerifyEACResponse implements \JsonSerializable
     /**
      * @var VerifyEACResult
      */
-    private $result;
+    private VerifyEACResult $result;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class VerifyEACResponse implements \JsonSerializable
     ) {
         $this->result = $result;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class VerifyEACResponse implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets result
      *
      * @return VerifyEACResult
      */
-    public function getResult()
+    public function getResult(): VerifyEACResult
     {
         return $this->result;
     }
@@ -75,13 +62,9 @@ class VerifyEACResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->result)) {
-            $data['result'] = $this->result;
-        }
-        
-        return $data;
+        return [
+            'result' => $this->result,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class VerifyEACResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

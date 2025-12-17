@@ -21,29 +21,25 @@ class ShortSkuInfoFilter implements \JsonSerializable
     /**
      * @var string[]
      */
-    private $sellerSkuIds;
+    private array $sellerSkuIds;
 
     /**
      * @var int[]
      */
-    private $skuIds;
+    private array $skuIds;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        string[] $sellerSkuIds,
-        int[] $skuIds
+        array $sellerSkuIds,
+        array $skuIds
     ) {
         $this->sellerSkuIds = $sellerSkuIds;
         $this->skuIds = $skuIds;
     }
-        if (isset($data['sku_ids'])) {
-            $this->skuIds = $data['sku_ids'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class ShortSkuInfoFilter implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['seller_sku_ids'],
-            $data['sku_ids']
+            $data['sellerSkuIds'],
+            $data['skuIds']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class ShortSkuInfoFilter implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getSellerSkuIds()
+    public function getSellerSkuIds(): array
     {
         return $this->sellerSkuIds;
     }
@@ -84,7 +68,7 @@ class ShortSkuInfoFilter implements \JsonSerializable
      *
      * @return int[]
      */
-    public function getSkuIds()
+    public function getSkuIds(): array
     {
         return $this->skuIds;
     }
@@ -96,20 +80,10 @@ class ShortSkuInfoFilter implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->sellerSkuIds)) {
-            $data['seller_sku_ids'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->sellerSkuIds);
-        }
-        if (isset($this->skuIds)) {
-            $data['sku_ids'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->skuIds);
-        }
-        
-        return $data;
+        return [
+            'sellerSkuIds' => $this->sellerSkuIds,
+            'skuIds' => $this->skuIds,
+        ];
     }
 
     /**
@@ -120,25 +94,5 @@ class ShortSkuInfoFilter implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,14 +21,14 @@ class MarketplaceShipmentParcel implements \JsonSerializable
     /**
      * @var string
      */
-    private $parcelId;
+    private string $parcelId;
 
     /**
      * @var string
      */
-    private $barcode;
+    private string $barcode;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class MarketplaceShipmentParcel implements \JsonSerializable
         $this->parcelId = $parcelId;
         $this->barcode = $barcode;
     }
-        if (isset($data['barcode'])) {
-            $this->barcode = $data['barcode'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class MarketplaceShipmentParcel implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['parcel_id'],
+            $data['parcelId'],
             $data['barcode']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class MarketplaceShipmentParcel implements \JsonSerializable
      *
      * @return string
      */
-    public function getParcelId()
+    public function getParcelId(): string
     {
         return $this->parcelId;
     }
@@ -84,7 +68,7 @@ class MarketplaceShipmentParcel implements \JsonSerializable
      *
      * @return string
      */
-    public function getBarcode()
+    public function getBarcode(): string
     {
         return $this->barcode;
     }
@@ -96,16 +80,10 @@ class MarketplaceShipmentParcel implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->parcelId)) {
-            $data['parcel_id'] = $this->parcelId;
-        }
-        if (isset($this->barcode)) {
-            $data['barcode'] = $this->barcode;
-        }
-        
-        return $data;
+        return [
+            'parcelId' => $this->parcelId,
+            'barcode' => $this->barcode,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class MarketplaceShipmentParcel implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

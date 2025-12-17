@@ -21,14 +21,14 @@ class Comments implements \JsonSerializable
     /**
      * @var string
      */
-    private $customerComment;
+    private string $customerComment;
 
     /**
      * @var string
      */
-    private $vendorComment;
+    private string $vendorComment;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class Comments implements \JsonSerializable
         $this->customerComment = $customerComment;
         $this->vendorComment = $vendorComment;
     }
-        if (isset($data['vendorComment'])) {
-            $this->vendorComment = $data['vendorComment'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class Comments implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets customerComment
      *
      * @return string
      */
-    public function getCustomerComment()
+    public function getCustomerComment(): string
     {
         return $this->customerComment;
     }
@@ -84,7 +68,7 @@ class Comments implements \JsonSerializable
      *
      * @return string
      */
-    public function getVendorComment()
+    public function getVendorComment(): string
     {
         return $this->vendorComment;
     }
@@ -96,16 +80,10 @@ class Comments implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->customerComment)) {
-            $data['customerComment'] = $this->customerComment;
-        }
-        if (isset($this->vendorComment)) {
-            $data['vendorComment'] = $this->vendorComment;
-        }
-        
-        return $data;
+        return [
+            'customerComment' => $this->customerComment,
+            'vendorComment' => $this->vendorComment,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class Comments implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

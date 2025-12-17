@@ -21,29 +21,25 @@ class UpdateSkuFilter implements \JsonSerializable
     /**
      * @var int
      */
-    private $characteristicId;
+    private int $characteristicId;
 
     /**
      * @var string[]
      */
-    private $characteristicValues;
+    private array $characteristicValues;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $characteristicId,
-        string[] $characteristicValues
+        array $characteristicValues
     ) {
         $this->characteristicId = $characteristicId;
         $this->characteristicValues = $characteristicValues;
     }
-        if (isset($data['characteristic_values'])) {
-            $this->characteristicValues = $data['characteristic_values'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class UpdateSkuFilter implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['characteristic_id'],
-            $data['characteristic_values']
+            $data['characteristicId'],
+            $data['characteristicValues']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class UpdateSkuFilter implements \JsonSerializable
      *
      * @return int
      */
-    public function getCharacteristicId()
+    public function getCharacteristicId(): int
     {
         return $this->characteristicId;
     }
@@ -84,7 +68,7 @@ class UpdateSkuFilter implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getCharacteristicValues()
+    public function getCharacteristicValues(): array
     {
         return $this->characteristicValues;
     }
@@ -96,18 +80,10 @@ class UpdateSkuFilter implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->characteristicId)) {
-            $data['characteristic_id'] = $this->characteristicId;
-        }
-        if (isset($this->characteristicValues)) {
-            $data['characteristic_values'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->characteristicValues);
-        }
-        
-        return $data;
+        return [
+            'characteristicId' => $this->characteristicId,
+            'characteristicValues' => $this->characteristicValues,
+        ];
     }
 
     /**
@@ -118,25 +94,5 @@ class UpdateSkuFilter implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -75,6 +75,7 @@ class Claim implements \JsonSerializable
      *
      * @param array $data
      * @return self
+     * @throws \Exception
      */
     public static function fromArray(array $data): self
     {

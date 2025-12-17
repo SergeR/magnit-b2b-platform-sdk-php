@@ -21,14 +21,14 @@ class UpdateClaimStatus implements \JsonSerializable
     /**
      * @var string
      */
-    private $claimId;
+    private string $claimId;
 
     /**
      * @var string
      */
-    private $status;
+    private string $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class UpdateClaimStatus implements \JsonSerializable
         $this->claimId = $claimId;
         $this->status = $status;
     }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -52,21 +48,9 @@ class UpdateClaimStatus implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['claim_id'],
+            $data['claimId'],
             $data['status']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -74,7 +58,7 @@ class UpdateClaimStatus implements \JsonSerializable
      *
      * @return string
      */
-    public function getClaimId()
+    public function getClaimId(): string
     {
         return $this->claimId;
     }
@@ -84,7 +68,7 @@ class UpdateClaimStatus implements \JsonSerializable
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -96,16 +80,10 @@ class UpdateClaimStatus implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->claimId)) {
-            $data['claim_id'] = $this->claimId;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'claimId' => $this->claimId,
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class UpdateClaimStatus implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

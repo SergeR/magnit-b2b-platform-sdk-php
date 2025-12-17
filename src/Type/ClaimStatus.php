@@ -33,13 +33,19 @@ use \SergeR\MagintB2BPlatformSDK\ObjectSerializer;
  * ClaimStatus Class Doc Comment
  *
  * @category Class
- * @description Статус доставки. Статусы доставки могут добавляться со временем. Нужно учитывать при интеграции. Промежуточные статусы:   created - заказ создан, обработка еще не началась.   estimating - рассчитывается стоимость доставки и проводится валидация.   ready_for_approval - ожидается подтверждение заявки заказчиком.   accepted - валидация завершена.   performer_searching - выполняется поиск курьера.     Если курьер был ранее назначен, но отказался от заказа, то заказ снова попадает в этот статус после performer_found.   performer_found - курьер назначен.   pickup_arrived - курьер прибыл в точку А для получения заказа.   pickuped - заказ получен. курьер движется в точку Б.   delivery_arrived - курьер прибыл в точку Б.   returning - курьер едет обратно в точку А для возврата товара   return_arrived - курьер прибыл в точку А для возврата товара  Терминальные статусы:   delivery_finished - курьер передал заказ клиенту. Доставка выполнена.   delivery_failed - курьер не смог доставить заказ.   cancelled - заказ был отменен со стороны партнера (бесплатная отмена).   cancelled_with_payment - заказ был отменен со стороны партнера (платная отмена).   cancelled_by_service - заказ был отменен со стороны сервиса доставки. Причина отмены в поле cancel_reason.   return_finished - курьер вернул заказ в точку А   return_failed - возврат заказа не удался.
+ * @description Статус доставки. Статусы доставки могут добавляться со временем. Нужно учитывать при интеграции. Промежуточные статусы:   created - заказ создан, обработка еще не началась.   estimating - рассчитывается стоимость доставки и проводится валидация.   ready_for_approval - ожидается подтверждение заявки заказчиком.   accepted - валидация завершена.   performer_searching - выполняется поиск курьера.     Если курьер был ран��е назначен, но отказался от заказа, то заказ снова попадает в этот статус после performer_found.   performer_found - курьер назначен.   pickup_arrived - курьер прибыл в точку А для получения заказа.   pickuped - заказ получен. курьер движется в точку Б.   delivery_arrived - курьер прибыл в точку Б.   returning - курьер едет обратно в точку А для возврата товара   return_arrived - курьер прибыл в точку А для возврата товара  Терминальные статусы:   delivery_finished - курьер передал заказ клиенту. Доставка выполнена.   delivery_failed - курьер не смог доставить заказ.   cancelled - заказ был отменен со стороны партнера (бесплатная отмена).   cancelled_with_payment - заказ был отменен со стороны партнера (платная отмена).   cancelled_by_service - заказ был отменен со стороны сервиса доставки. Причина отмены в поле cancel_reason.   return_finished - курьер вернул заказ в точку А   return_failed - возврат заказа не удался.
  * @package  SergeR\MagintB2BPlatformSDK
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class ClaimStatus
+class ClaimStatus implements \JsonSerializable
 {
+    /**
+     * @var string
+     * @readonly
+     */
+    public string $status;
+
     /**
      * Possible values of this enum
      */
@@ -80,10 +86,32 @@ class ClaimStatus
     public const RETURN_FAILED = 'return_failed';
 
     /**
+     * @param string $status
+     */
+    public function __construct(string $status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Создать из массива
+     *
+     * @param array|string $data
+     * @return self
+     */
+    public static function fromArray($data): self
+    {
+        if (is_array($data)) {
+            $data = $data['status'] ?? $data;
+        }
+        return new self($data);
+    }
+
+    /**
      * Gets allowable values of the enum
      * @return string[]
      */
-    public static function getAllowableEnumValues()
+    public static function getAllowableEnumValues(): array
     {
         return [
             self::CREATED,
@@ -106,6 +134,26 @@ class ClaimStatus
             self::RETURN_FAILED
         ];
     }
+
+    /**
+     * Преобразовать в массив
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'status' => $this->status,
+        ];
+    }
+
+    /**
+     * Реализация JsonSerializable
+     *
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->status;
+    }
 }
-
-

@@ -21,9 +21,9 @@ class MarketplacePaginationResponse implements \JsonSerializable
     /**
      * @var string
      */
-    private $nextPageToken;
+    private string $nextPageToken;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -31,9 +31,8 @@ class MarketplacePaginationResponse implements \JsonSerializable
     ) {
         $this->nextPageToken = $nextPageToken;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -42,20 +41,8 @@ class MarketplacePaginationResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['next_page_token']
+            $data['nextPageToken']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -63,7 +50,7 @@ class MarketplacePaginationResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getNextPageToken()
+    public function getNextPageToken(): string
     {
         return $this->nextPageToken;
     }
@@ -75,13 +62,9 @@ class MarketplacePaginationResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->nextPageToken)) {
-            $data['next_page_token'] = $this->nextPageToken;
-        }
-        
-        return $data;
+        return [
+            'nextPageToken' => $this->nextPageToken,
+        ];
     }
 
     /**
@@ -92,25 +75,5 @@ class MarketplacePaginationResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

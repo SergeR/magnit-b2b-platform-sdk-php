@@ -21,14 +21,14 @@ class Customer implements \JsonSerializable
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $phone;
+    private string $phone;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class Customer implements \JsonSerializable
         $this->name = $name;
         $this->phone = $phone;
     }
-        if (isset($data['phone'])) {
-            $this->phone = $data['phone'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class Customer implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets name
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -84,7 +68,7 @@ class Customer implements \JsonSerializable
      *
      * @return string
      */
-    public function getPhone()
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -96,16 +80,10 @@ class Customer implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->phone)) {
-            $data['phone'] = $this->phone;
-        }
-        
-        return $data;
+        return [
+            'name' => $this->name,
+            'phone' => $this->phone,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class Customer implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

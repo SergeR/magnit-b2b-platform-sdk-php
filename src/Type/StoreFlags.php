@@ -21,14 +21,14 @@ class StoreFlags implements \JsonSerializable
     /**
      * @var bool
      */
-    private $alcohol;
+    private bool $alcohol;
 
     /**
      * @var bool
      */
-    private $pickup;
+    private bool $pickup;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -38,12 +38,8 @@ class StoreFlags implements \JsonSerializable
         $this->alcohol = $alcohol;
         $this->pickup = $pickup;
     }
-        if (isset($data['pickup'])) {
-            $this->pickup = $data['pickup'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -58,23 +54,11 @@ class StoreFlags implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets alcohol
      *
      * @return bool
      */
-    public function getAlcohol()
+    public function getAlcohol(): bool
     {
         return $this->alcohol;
     }
@@ -84,7 +68,7 @@ class StoreFlags implements \JsonSerializable
      *
      * @return bool
      */
-    public function getPickup()
+    public function getPickup(): bool
     {
         return $this->pickup;
     }
@@ -96,16 +80,10 @@ class StoreFlags implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->alcohol)) {
-            $data['alcohol'] = $this->alcohol;
-        }
-        if (isset($this->pickup)) {
-            $data['pickup'] = $this->pickup;
-        }
-        
-        return $data;
+        return [
+            'alcohol' => $this->alcohol,
+            'pickup' => $this->pickup,
+        ];
     }
 
     /**
@@ -116,25 +94,5 @@ class StoreFlags implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

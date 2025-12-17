@@ -21,39 +21,32 @@ class MarketplaceParcelItem implements \JsonSerializable
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var int
      */
-    private $quantity;
+    private int $quantity;
 
     /**
      * @var MarketplaceSkuIdentifiers[]
      */
-    private $identifiers;
+    private array $identifiers;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $skuId,
         int $quantity,
-        MarketplaceSkuIdentifiers[] $identifiers
+        array $identifiers
     ) {
         $this->skuId = $skuId;
         $this->quantity = $quantity;
         $this->identifiers = $identifiers;
     }
-        if (isset($data['quantity'])) {
-            $this->quantity = $data['quantity'];
-        }
-        if (isset($data['identifiers'])) {
-            $this->identifiers = $data['identifiers'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -62,22 +55,11 @@ class MarketplaceParcelItem implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['sku_id'],
+            $data['skuId'],
             $data['quantity'],
-            isset($data['identifiers']) ? array_map(fn($item) => MarketplaceSkuIdentifiers::fromArray($item), $data['identifiers']) : []
+            isset($data['identifiers']) ? array_map(fn($item) => MarketplaceSkuIdentifiers::fromArray($item),
+                $data['identifiers']) : []
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +67,7 @@ class MarketplaceParcelItem implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -95,7 +77,7 @@ class MarketplaceParcelItem implements \JsonSerializable
      *
      * @return int
      */
-    public function getQuantity()
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
@@ -105,7 +87,7 @@ class MarketplaceParcelItem implements \JsonSerializable
      *
      * @return MarketplaceSkuIdentifiers[]
      */
-    public function getIdentifiers()
+    public function getIdentifiers(): array
     {
         return $this->identifiers;
     }
@@ -117,21 +99,11 @@ class MarketplaceParcelItem implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->quantity)) {
-            $data['quantity'] = $this->quantity;
-        }
-        if (isset($this->identifiers)) {
-            $data['identifiers'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->identifiers);
-        }
-        
-        return $data;
+        return [
+            'skuId' => $this->skuId,
+            'quantity' => $this->quantity,
+            'identifiers' => array_map(fn($item) => $item->jsonSerialize(), $this->identifiers),
+        ];
     }
 
     /**
@@ -142,25 +114,5 @@ class MarketplaceParcelItem implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

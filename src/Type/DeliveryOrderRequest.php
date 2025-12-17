@@ -118,22 +118,12 @@ class DeliveryOrderRequest implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-
-        if (isset($this->customerOrderId)) {
-            $data['customerOrderId'] = $this->customerOrderId;
-        }
-        if (isset($this->payment)) {
-            $data['payment'] = $this->payment;
-        }
-        if (isset($this->delivery)) {
-            $data['delivery'] = $this->delivery;
-        }
-        if (isset($this->characteristic)) {
-            $data['characteristic'] = $this->characteristic;
-        }
-
-        return $data;
+        return [
+            'customerOrderId' => $this->customerOrderId,
+            'payment' => $this->payment,
+            'delivery' => $this->delivery,
+            'characteristic' => $this->characteristic,
+        ];
     }
 
     /**

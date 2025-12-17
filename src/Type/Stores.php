@@ -21,19 +21,18 @@ class Stores implements \JsonSerializable
     /**
      * @var Store[]
      */
-    private $stores;
+    private array $stores;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
-        Store[] $stores
+        array $stores
     ) {
         $this->stores = $stores;
     }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -47,23 +46,11 @@ class Stores implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets stores
      *
      * @return Store[]
      */
-    public function getStores()
+    public function getStores(): array
     {
         return $this->stores;
     }
@@ -75,15 +62,9 @@ class Stores implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->stores)) {
-            $data['stores'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->stores);
-        }
-        
-        return $data;
+        return [
+            'stores' => array_map(fn($item) => $item->jsonSerialize(), $this->stores),
+        ];
     }
 
     /**
@@ -94,25 +75,5 @@ class Stores implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

@@ -21,24 +21,24 @@ class StockDto implements \JsonSerializable
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var int
      */
-    private $stock;
+    private int $stock;
 
     /**
      * @var string
      */
-    private $warehouseId;
+    private string $warehouseId;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -52,18 +52,8 @@ class StockDto implements \JsonSerializable
         $this->stock = $stock;
         $this->warehouseId = $warehouseId;
     }
-        if (isset($data['sku_id'])) {
-            $this->skuId = $data['sku_id'];
-        }
-        if (isset($data['stock'])) {
-            $this->stock = $data['stock'];
-        }
-        if (isset($data['warehouse_id'])) {
-            $this->warehouseId = $data['warehouse_id'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -72,23 +62,11 @@ class StockDto implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['seller_sku_id'],
-            $data['sku_id'],
+            $data['sellerSkuId'],
+            $data['skuId'],
             $data['stock'],
-            $data['warehouse_id']
+            $data['warehouseId']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -96,7 +74,7 @@ class StockDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -106,7 +84,7 @@ class StockDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -116,7 +94,7 @@ class StockDto implements \JsonSerializable
      *
      * @return int
      */
-    public function getStock()
+    public function getStock(): int
     {
         return $this->stock;
     }
@@ -126,7 +104,7 @@ class StockDto implements \JsonSerializable
      *
      * @return string
      */
-    public function getWarehouseId()
+    public function getWarehouseId(): string
     {
         return $this->warehouseId;
     }
@@ -138,22 +116,12 @@ class StockDto implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->stock)) {
-            $data['stock'] = $this->stock;
-        }
-        if (isset($this->warehouseId)) {
-            $data['warehouse_id'] = $this->warehouseId;
-        }
-        
-        return $data;
+        return [
+            'sellerSkuId' => $this->sellerSkuId,
+            'skuId' => $this->skuId,
+            'stock' => $this->stock,
+            'warehouseId' => $this->warehouseId,
+        ];
     }
 
     /**
@@ -164,25 +132,5 @@ class StockDto implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

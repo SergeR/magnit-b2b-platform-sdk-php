@@ -21,19 +21,19 @@ class Pagination implements \JsonSerializable
     /**
      * @var string
      */
-    private $dir;
+    private string $dir;
 
     /**
      * @var int
      */
-    private $page;
+    private int $page;
 
     /**
      * @var int
      */
-    private $pageSize;
+    private int $pageSize;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class Pagination implements \JsonSerializable
         $this->page = $page;
         $this->pageSize = $pageSize;
     }
-        if (isset($data['page'])) {
-            $this->page = $data['page'];
-        }
-        if (isset($data['page_size'])) {
-            $this->pageSize = $data['page_size'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -64,20 +57,8 @@ class Pagination implements \JsonSerializable
         return new self(
             $data['dir'],
             $data['page'],
-            $data['page_size']
+            $data['pageSize']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class Pagination implements \JsonSerializable
      *
      * @return string
      */
-    public function getDir()
+    public function getDir(): string
     {
         return $this->dir;
     }
@@ -95,7 +76,7 @@ class Pagination implements \JsonSerializable
      *
      * @return int
      */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
@@ -105,7 +86,7 @@ class Pagination implements \JsonSerializable
      *
      * @return int
      */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return $this->pageSize;
     }
@@ -117,19 +98,11 @@ class Pagination implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->page)) {
-            $data['page'] = $this->page;
-        }
-        if (isset($this->pageSize)) {
-            $data['page_size'] = $this->pageSize;
-        }
-        
-        return $data;
+        return [
+            'dir' => $this->dir,
+            'page' => $this->page,
+            'pageSize' => $this->pageSize,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class Pagination implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

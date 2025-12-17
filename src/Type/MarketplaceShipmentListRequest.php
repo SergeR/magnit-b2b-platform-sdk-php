@@ -21,41 +21,41 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
     /**
      * @var int
      */
-    private $pageSize;
+    private int $pageSize;
 
     /**
      * @var string
      */
-    private $pageToken;
+    private string $pageToken;
 
     /**
      * @var MarketplaceSortDirection
      */
-    private $dir;
+    private MarketplaceSortDirection $dir;
 
     /**
      * @var string[]
      */
-    private $shipmentId;
+    private array $shipmentId;
 
     /**
      * @var MarketplaceFilterDateTime
      */
-    private $confirmedAt;
+    private MarketplaceFilterDateTime $confirmedAt;
 
     /**
      * @var MarketplaceShipmentStatus
      */
-    private $status;
+    private MarketplaceShipmentStatus $status;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
         int $pageSize,
         string $pageToken,
         MarketplaceSortDirection $dir,
-        string[] $shipmentId,
+        array $shipmentId,
         MarketplaceFilterDateTime $confirmedAt,
         MarketplaceShipmentStatus $status
     ) {
@@ -66,24 +66,8 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
         $this->confirmedAt = $confirmedAt;
         $this->status = $status;
     }
-        if (isset($data['page_token'])) {
-            $this->pageToken = $data['page_token'];
-        }
-        if (isset($data['dir'])) {
-            $this->dir = $data['dir'];
-        }
-        if (isset($data['shipment_id'])) {
-            $this->shipmentId = $data['shipment_id'];
-        }
-        if (isset($data['confirmed_at'])) {
-            $this->confirmedAt = $data['confirmed_at'];
-        }
-        if (isset($data['status'])) {
-            $this->status = $data['status'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -92,25 +76,13 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['page_size'],
-            $data['page_token'],
+            $data['pageSize'],
+            $data['pageToken'],
             MarketplaceSortDirection::fromArray($data['dir']),
-            $data['shipment_id'],
-            MarketplaceFilterDateTime::fromArray($data['confirmed_at']),
+            $data['shipmentId'],
+            MarketplaceFilterDateTime::fromArray($data['confirmedAt']),
             MarketplaceShipmentStatus::fromArray($data['status'])
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -118,7 +90,7 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
      *
      * @return int
      */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return $this->pageSize;
     }
@@ -128,7 +100,7 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
      *
      * @return string
      */
-    public function getPageToken()
+    public function getPageToken(): string
     {
         return $this->pageToken;
     }
@@ -138,7 +110,7 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
      *
      * @return MarketplaceSortDirection
      */
-    public function getDir()
+    public function getDir(): MarketplaceSortDirection
     {
         return $this->dir;
     }
@@ -148,7 +120,7 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
      *
      * @return string[]
      */
-    public function getShipmentId()
+    public function getShipmentId(): array
     {
         return $this->shipmentId;
     }
@@ -158,7 +130,7 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
      *
      * @return MarketplaceFilterDateTime
      */
-    public function getConfirmedAt()
+    public function getConfirmedAt(): MarketplaceFilterDateTime
     {
         return $this->confirmedAt;
     }
@@ -168,42 +140,26 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
      *
      * @return MarketplaceShipmentStatus
      */
-    public function getStatus()
+    public function getStatus(): MarketplaceShipmentStatus
     {
         return $this->status;
     }
 
     /**
-     * Преобразовать в массив
+     * Пре��бразовать в массив
      *
      * @return array
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->pageSize)) {
-            $data['page_size'] = $this->pageSize;
-        }
-        if (isset($this->pageToken)) {
-            $data['page_token'] = $this->pageToken;
-        }
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->shipmentId)) {
-            $data['shipment_id'] = array_map(function($item) {
-                return $item instanceof \JsonSerializable ? $item->jsonSerialize() : $item;
-            }, $this->shipmentId);
-        }
-        if (isset($this->confirmedAt)) {
-            $data['confirmed_at'] = $this->confirmedAt;
-        }
-        if (isset($this->status)) {
-            $data['status'] = $this->status;
-        }
-        
-        return $data;
+        return [
+            'pageSize' => $this->pageSize,
+            'pageToken' => $this->pageToken,
+            'dir' => $this->dir,
+            'shipmentId' => $this->shipmentId,
+            'confirmedAt' => $this->confirmedAt,
+            'status' => $this->status,
+        ];
     }
 
     /**
@@ -214,25 +170,5 @@ class MarketplaceShipmentListRequest implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

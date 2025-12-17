@@ -21,19 +21,19 @@ class KeySetPagination implements \JsonSerializable
     /**
      * @var string
      */
-    private $dir;
+    private string $dir;
 
     /**
      * @var int
      */
-    private $lastKey;
+    private int $lastKey;
 
     /**
      * @var int
      */
-    private $limit;
+    private int $limit;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class KeySetPagination implements \JsonSerializable
         $this->lastKey = $lastKey;
         $this->limit = $limit;
     }
-        if (isset($data['last_key'])) {
-            $this->lastKey = $data['last_key'];
-        }
-        if (isset($data['limit'])) {
-            $this->limit = $data['limit'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -63,21 +56,9 @@ class KeySetPagination implements \JsonSerializable
     {
         return new self(
             $data['dir'],
-            $data['last_key'],
+            $data['lastKey'],
             $data['limit']
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -85,7 +66,7 @@ class KeySetPagination implements \JsonSerializable
      *
      * @return string
      */
-    public function getDir()
+    public function getDir(): string
     {
         return $this->dir;
     }
@@ -95,7 +76,7 @@ class KeySetPagination implements \JsonSerializable
      *
      * @return int
      */
-    public function getLastKey()
+    public function getLastKey(): int
     {
         return $this->lastKey;
     }
@@ -105,7 +86,7 @@ class KeySetPagination implements \JsonSerializable
      *
      * @return int
      */
-    public function getLimit()
+    public function getLimit(): int
     {
         return $this->limit;
     }
@@ -117,19 +98,11 @@ class KeySetPagination implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->dir)) {
-            $data['dir'] = $this->dir;
-        }
-        if (isset($this->lastKey)) {
-            $data['last_key'] = $this->lastKey;
-        }
-        if (isset($this->limit)) {
-            $data['limit'] = $this->limit;
-        }
-        
-        return $data;
+        return [
+            'dir' => $this->dir,
+            'lastKey' => $this->lastKey,
+            'limit' => $this->limit,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class KeySetPagination implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

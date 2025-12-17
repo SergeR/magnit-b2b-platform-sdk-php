@@ -21,19 +21,19 @@ class Promo implements \JsonSerializable
     /**
      * @var PromoTypeEnum
      */
-    private $type;
+    private PromoTypeEnum $type;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $value;
+    private string $value;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -45,15 +45,8 @@ class Promo implements \JsonSerializable
         $this->name = $name;
         $this->value = $value;
     }
-        if (isset($data['name'])) {
-            $this->name = $data['name'];
-        }
-        if (isset($data['value'])) {
-            $this->value = $data['value'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -69,23 +62,11 @@ class Promo implements \JsonSerializable
     }
 
     /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
-    }
-
-    /**
      * Gets type
      *
      * @return PromoTypeEnum
      */
-    public function getType()
+    public function getType(): PromoTypeEnum
     {
         return $this->type;
     }
@@ -95,7 +76,7 @@ class Promo implements \JsonSerializable
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -105,7 +86,7 @@ class Promo implements \JsonSerializable
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -117,19 +98,11 @@ class Promo implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->type)) {
-            $data['type'] = $this->type;
-        }
-        if (isset($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (isset($this->value)) {
-            $data['value'] = $this->value;
-        }
-        
-        return $data;
+        return [
+            'type' => $this->type,
+            'name' => $this->name,
+            'value' => $this->value,
+        ];
     }
 
     /**
@@ -140,25 +113,5 @@ class Promo implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }

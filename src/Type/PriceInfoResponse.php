@@ -21,49 +21,49 @@ class PriceInfoResponse implements \JsonSerializable
     /**
      * @var float
      */
-    private $commissionAmount;
+    private float $commissionAmount;
 
     /**
      * @var string
      */
-    private $commissionCurrencyCode;
+    private string $commissionCurrencyCode;
 
     /**
      * @var int
      */
-    private $commissionPercent;
+    private int $commissionPercent;
 
     /**
      * @var string
      */
-    private $currencyCode;
+    private string $currencyCode;
 
     /**
      * @var float
      */
-    private $oldPrice;
+    private float $oldPrice;
 
     /**
      * @var float
      */
-    private $price;
+    private float $price;
 
     /**
      * @var string
      */
-    private $sellerSkuId;
+    private string $sellerSkuId;
 
     /**
      * @var int
      */
-    private $skuId;
+    private int $skuId;
 
     /**
      * @var \DateTime
      */
-    private $timestamp;
+    private \DateTime $timestamp;
 
-            /**
+    /**
      * Constructor
      */
     public function __construct(
@@ -87,33 +87,8 @@ class PriceInfoResponse implements \JsonSerializable
         $this->skuId = $skuId;
         $this->timestamp = $timestamp;
     }
-        if (isset($data['commission_currency_code'])) {
-            $this->commissionCurrencyCode = $data['commission_currency_code'];
-        }
-        if (isset($data['commission_percent'])) {
-            $this->commissionPercent = $data['commission_percent'];
-        }
-        if (isset($data['currency_code'])) {
-            $this->currencyCode = $data['currency_code'];
-        }
-        if (isset($data['old_price'])) {
-            $this->oldPrice = $data['old_price'];
-        }
-        if (isset($data['price'])) {
-            $this->price = $data['price'];
-        }
-        if (isset($data['seller_sku_id'])) {
-            $this->sellerSkuId = $data['seller_sku_id'];
-        }
-        if (isset($data['sku_id'])) {
-            $this->skuId = $data['sku_id'];
-        }
-        if (isset($data['timestamp'])) {
-            $this->timestamp = $data['timestamp'];
-        }
-    }
 
-            /**
+    /**
      * Создать из массива
      *
      * @param array $data
@@ -122,28 +97,16 @@ class PriceInfoResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['commission_amount'],
-            $data['commission_currency_code'],
-            $data['commission_percent'],
-            $data['currency_code'],
-            $data['old_price'],
+            $data['commissionAmount'],
+            $data['commissionCurrencyCode'],
+            $data['commissionPercent'],
+            $data['currencyCode'],
+            $data['oldPrice'],
             $data['price'],
-            $data['seller_sku_id'],
-            $data['sku_id'],
-            \DateTime::fromArray($data['timestamp'])
+            $data['sellerSkuId'],
+            $data['skuId'],
+            new \DateTime("@{$data['timestamp']}")
         );
-    }
-
-    /**
-     * Создать из JSON
-     *
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson(string $json): self
-    {
-        $data = json_decode($json, true);
-        return new self($data ?? []);
     }
 
     /**
@@ -151,7 +114,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return float
      */
-    public function getCommissionAmount()
+    public function getCommissionAmount(): float
     {
         return $this->commissionAmount;
     }
@@ -161,7 +124,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getCommissionCurrencyCode()
+    public function getCommissionCurrencyCode(): string
     {
         return $this->commissionCurrencyCode;
     }
@@ -171,7 +134,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getCommissionPercent()
+    public function getCommissionPercent(): int
     {
         return $this->commissionPercent;
     }
@@ -181,7 +144,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->currencyCode;
     }
@@ -191,7 +154,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return float
      */
-    public function getOldPrice()
+    public function getOldPrice(): float
     {
         return $this->oldPrice;
     }
@@ -201,7 +164,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return float
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
@@ -211,7 +174,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return string
      */
-    public function getSellerSkuId()
+    public function getSellerSkuId(): string
     {
         return $this->sellerSkuId;
     }
@@ -221,7 +184,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return int
      */
-    public function getSkuId()
+    public function getSkuId(): int
     {
         return $this->skuId;
     }
@@ -231,7 +194,7 @@ class PriceInfoResponse implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getTimestamp()
+    public function getTimestamp(): \DateTime
     {
         return $this->timestamp;
     }
@@ -243,37 +206,17 @@ class PriceInfoResponse implements \JsonSerializable
      */
     public function toArray(): array
     {
-        $data = [];
-        
-        if (isset($this->commissionAmount)) {
-            $data['commission_amount'] = $this->commissionAmount;
-        }
-        if (isset($this->commissionCurrencyCode)) {
-            $data['commission_currency_code'] = $this->commissionCurrencyCode;
-        }
-        if (isset($this->commissionPercent)) {
-            $data['commission_percent'] = $this->commissionPercent;
-        }
-        if (isset($this->currencyCode)) {
-            $data['currency_code'] = $this->currencyCode;
-        }
-        if (isset($this->oldPrice)) {
-            $data['old_price'] = $this->oldPrice;
-        }
-        if (isset($this->price)) {
-            $data['price'] = $this->price;
-        }
-        if (isset($this->sellerSkuId)) {
-            $data['seller_sku_id'] = $this->sellerSkuId;
-        }
-        if (isset($this->skuId)) {
-            $data['sku_id'] = $this->skuId;
-        }
-        if (isset($this->timestamp)) {
-            $data['timestamp'] = $this->timestamp instanceof \JsonSerializable ? $this->timestamp->jsonSerialize() : $this->timestamp;
-        }
-        
-        return $data;
+        return [
+            'commissionAmount' => $this->commissionAmount,
+            'commissionCurrencyCode' => $this->commissionCurrencyCode,
+            'commissionPercent' => $this->commissionPercent,
+            'currencyCode' => $this->currencyCode,
+            'oldPrice' => $this->oldPrice,
+            'price' => $this->price,
+            'sellerSkuId' => $this->sellerSkuId,
+            'skuId' => $this->skuId,
+            'timestamp' => $this->timestamp,
+        ];
     }
 
     /**
@@ -284,25 +227,5 @@ class PriceInfoResponse implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->toArray();
-    }
-
-    /**
-     * Преобразовать в JSON строку
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
-    /**
-     * Строковое представление
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
     }
 }
