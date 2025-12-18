@@ -14,6 +14,7 @@ namespace SergeR\MagintB2BPlatformSDK;
 
 use SergeR\MagintB2BPlatformSDK\Api\OrdersApi;
 use SergeR\MagintB2BPlatformSDK\Api\MagnitPostApi;
+use SergeR\MagintB2BPlatformSDK\Api\MagnitMarketApi;
 use SergeR\MagintB2BPlatformSDK\Api\LastMileApi;
 
 /**
@@ -24,6 +25,7 @@ use SergeR\MagintB2BPlatformSDK\Api\LastMileApi;
  * 
  * @property-read OrdersApi $orders API для работы с заказами
  * @property-read MagnitPostApi $magnitPost API для работы с Магнит Пост
+ * @property-read MagnitMarketApi $market API для работы с Магнит Маркетплейс
  * @property-read LastMileApi $lastMile API для работы с доставкой последней мили
  */
 class MagnitApi
@@ -31,6 +33,7 @@ class MagnitApi
     private MagnitClient $client;
     private ?OrdersApi $ordersApi = null;
     private ?MagnitPostApi $magnitPostApi = null;
+    private ?MagnitMarketApi $magnitMarketApi = null;
     private ?LastMileApi $lastMileApi = null;
 
     /**
@@ -70,6 +73,19 @@ class MagnitApi
     }
 
     /**
+     * Получить API для работы с Магнит Маркетплейс
+     *
+     * @return MagnitMarketApi
+     */
+    public function market(): MagnitMarketApi
+    {
+        if ($this->magnitMarketApi === null) {
+            $this->magnitMarketApi = new MagnitMarketApi($this->client);
+        }
+        return $this->magnitMarketApi;
+    }
+
+    /**
      * Получить API для работы с доставкой последней мили
      *
      * @return LastMileApi
@@ -86,7 +102,7 @@ class MagnitApi
      * Magic getter для доступа к API через свойства
      *
      * @param string $name
-     * @return OrdersApi|MagnitPostApi|LastMileApi
+     * @return OrdersApi|MagnitPostApi|MagnitMarketApi|LastMileApi
      * @throws \InvalidArgumentException
      */
     public function __get(string $name)
@@ -96,6 +112,8 @@ class MagnitApi
                 return $this->orders();
             case 'magnitPost':
                 return $this->magnitPost();
+            case 'market':
+                return $this->market();
             case 'lastMile':
                 return $this->lastMile();
             default:
