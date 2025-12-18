@@ -19,9 +19,9 @@ namespace SergeR\MagintB2BPlatformSDK\Type;
 class Event implements \JsonSerializable
 {
     /**
-     * @var EventEnum
+     * @var string Тип события: 'store_blocked', 'store_unblocked', 'store_collect_queue_updated_v1', 'store_status_updated_v1'
      */
-    private EventEnum $type;
+    private string $type;
 
     /**
      * @var EventPayload
@@ -37,7 +37,7 @@ class Event implements \JsonSerializable
      * Constructor
      */
     public function __construct(
-        EventEnum $type,
+        string $type,
         EventPayload $payload,
         string $createdAt
     ) {
@@ -55,7 +55,7 @@ class Event implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            EventEnum::fromArray($data['type']),
+            $data['type'],
             EventPayload::fromArray($data['payload']),
             $data['createdAt']
         );
@@ -64,9 +64,9 @@ class Event implements \JsonSerializable
     /**
      * Gets type
      *
-     * @return EventEnum
+     * @return string Тип события: 'store_blocked', 'store_unblocked', 'store_collect_queue_updated_v1', 'store_status_updated_v1'
      */
-    public function getType(): EventEnum
+    public function getType(): string
     {
         return $this->type;
     }

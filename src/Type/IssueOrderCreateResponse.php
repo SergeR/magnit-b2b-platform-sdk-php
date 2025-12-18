@@ -19,9 +19,9 @@ namespace SergeR\MagintB2BPlatformSDK\Type;
 class IssueOrderCreateResponse implements \JsonSerializable
 {
     /**
-     * @var IssueStrategyEnum
+     * @var string Стратегия выдачи: 'eac_taker_to_collect'
      */
-    private IssueStrategyEnum $strategy;
+    private string $strategy;
 
     /**
      * @var IssueOrderCreateResponsePayload
@@ -32,7 +32,7 @@ class IssueOrderCreateResponse implements \JsonSerializable
      * Constructor
      */
     public function __construct(
-        IssueStrategyEnum $strategy,
+        string $strategy,
         IssueOrderCreateResponsePayload $payload
     ) {
         $this->strategy = $strategy;
@@ -48,7 +48,7 @@ class IssueOrderCreateResponse implements \JsonSerializable
     public static function fromArray(array $data): self
     {
         return new self(
-            IssueStrategyEnum::fromArray($data['strategy']),
+            $data['strategy'],
             IssueOrderCreateResponsePayload::fromArray($data['payload'])
         );
     }
@@ -56,9 +56,9 @@ class IssueOrderCreateResponse implements \JsonSerializable
     /**
      * Gets strategy
      *
-     * @return IssueStrategyEnum
+     * @return string Стратегия выдачи: 'eac_taker_to_collect'
      */
-    public function getStrategy(): IssueStrategyEnum
+    public function getStrategy(): string
     {
         return $this->strategy;
     }

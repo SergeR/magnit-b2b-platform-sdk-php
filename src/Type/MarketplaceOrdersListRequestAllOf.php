@@ -34,9 +34,9 @@ class MarketplaceOrdersListRequestAllOf implements \JsonSerializable
     private MarketplaceFilterDateTime $createdAt;
 
     /**
-     * @var MarketplaceOrderStatus
+     * @var string Статус сборочного задания: 'NEW', 'IN_ASSEMBLY', 'ASSEMBLED', 'CANCELED'
      */
-    private MarketplaceOrderStatus $status;
+    private string $status;
 
     /**
      * Constructor
@@ -45,7 +45,7 @@ class MarketplaceOrdersListRequestAllOf implements \JsonSerializable
         MarketplaceSortDirection $dir,
         array $orderId,
         MarketplaceFilterDateTime $createdAt,
-        MarketplaceOrderStatus $status
+        string $status
     ) {
         $this->dir = $dir;
         $this->orderId = $orderId;
@@ -65,7 +65,7 @@ class MarketplaceOrdersListRequestAllOf implements \JsonSerializable
             MarketplaceSortDirection::fromArray($data['dir']),
             $data['orderId'],
             MarketplaceFilterDateTime::fromArray($data['createdAt']),
-            MarketplaceOrderStatus::fromArray($data['status'])
+            $data['status']
         );
     }
 
@@ -102,9 +102,9 @@ class MarketplaceOrdersListRequestAllOf implements \JsonSerializable
     /**
      * Gets status
      *
-     * @return MarketplaceOrderStatus
+     * @return string Статус сборочного задания: 'NEW', 'IN_ASSEMBLY', 'ASSEMBLED', 'CANCELED'
      */
-    public function getStatus(): MarketplaceOrderStatus
+    public function getStatus(): string
     {
         return $this->status;
     }

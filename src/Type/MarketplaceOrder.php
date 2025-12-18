@@ -24,9 +24,9 @@ class MarketplaceOrder implements \JsonSerializable
     private string $orderId;
 
     /**
-     * @var MarketplaceOrderStatus
+     * @var string Статус сборочного задания: 'NEW', 'IN_ASSEMBLY', 'ASSEMBLED', 'CANCELED'
      */
-    private MarketplaceOrderStatus $status;
+    private string $status;
 
     /**
      * @var \DateTime
@@ -43,7 +43,7 @@ class MarketplaceOrder implements \JsonSerializable
      */
     public function __construct(
         string $orderId,
-        MarketplaceOrderStatus $status,
+        string $status,
         \DateTime $cutoffTime,
         array $items
     ) {
@@ -64,7 +64,7 @@ class MarketplaceOrder implements \JsonSerializable
     {
         return new self(
             $data['orderId'],
-            MarketplaceOrderStatus::fromArray($data['status']),
+            $data['status'],
             new \DateTime($data['cutoffTime']),
             isset($data['items']) ? array_map(fn($item) => MarketplaceOrderItem::fromArray($item), $data['items']) : []
         );
@@ -83,9 +83,9 @@ class MarketplaceOrder implements \JsonSerializable
     /**
      * Gets status
      *
-     * @return MarketplaceOrderStatus
+     * @return string Статус сборочного задания: 'NEW', 'IN_ASSEMBLY', 'ASSEMBLED', 'CANCELED'
      */
-    public function getStatus(): MarketplaceOrderStatus
+    public function getStatus(): string
     {
         return $this->status;
     }
