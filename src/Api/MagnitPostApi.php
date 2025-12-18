@@ -132,6 +132,7 @@ class MagnitPostApi extends AbstractApi
      * @return DeliveryOrdersResponse
      * @throws ApiException
      * @throws GuzzleException
+     * @throws \Exception
      */
     public function getOrders(
         ?int $page = null,
@@ -160,12 +161,12 @@ class MagnitPostApi extends AbstractApi
             $query_params['status'] = $status;
         }
         if ($createdFrom !== null) {
-            $createdFrom = clone $createdFrom;
+            $createdFrom = new \DateTimeImmutable($createdFrom->format(\DateTimeInterface::ATOM));
             $createdFrom = $createdFrom->setTimezone(new \DateTimeZone('UTC'));
             $query_params['createdFrom'] = $createdFrom->format('Y-m-d\TH:i:s.v\Z');
         }
         if ($createdTo !== null) {
-            $createdTo = clone $createdTo;
+            $createdTo = new \DateTimeImmutable($createdTo->format(\DateTimeInterface::ATOM));
             $createdTo = $createdTo->setTimezone(new \DateTimeZone('UTC'));
             $query_params['createdTo'] = $createdTo->format('Y-m-d\TH:i:s.v\Z');
         }
