@@ -24,11 +24,14 @@ class PickupPoint implements \JsonSerializable
     private string $name;
     private string $type;
     private string $address;
+    private ?string $shortAddress;
     private string $region;
     private string $city;
     private ?string $index;
     /** @var string[] */
     private array $phones;
+    /** @var string[] */
+    private array $paymentMethod;
     /** @var DayWorkHours[] */
     private array $workHours;
     private ?PickupPointCoordinates $coordinates;
@@ -40,10 +43,12 @@ class PickupPoint implements \JsonSerializable
      * @param string $name Название
      * @param string $type Тип
      * @param string $address Адрес
+     * @param string|null $shortAddress Краткий адрес
      * @param string $region Регион
      * @param string $city Город
      * @param string|null $index Индекс
      * @param string[] $phones Телефоны
+     * @param string[] $paymentMethod Способы оплаты
      * @param DayWorkHours[] $workHours Часы работы
      * @param PickupPointCoordinates|null $coordinates Координаты
      */
@@ -52,10 +57,12 @@ class PickupPoint implements \JsonSerializable
         string $name,
         string $type,
         string $address,
+        ?string $shortAddress,
         string $region,
         string $city,
         ?string $index,
         array $phones,
+        array $paymentMethod,
         array $workHours,
         ?PickupPointCoordinates $coordinates
     ) {
@@ -63,10 +70,12 @@ class PickupPoint implements \JsonSerializable
         $this->name = $name;
         $this->type = $type;
         $this->address = $address;
+        $this->shortAddress = $shortAddress;
         $this->region = $region;
         $this->city = $city;
         $this->index = $index;
         $this->phones = $phones;
+        $this->paymentMethod = $paymentMethod;
         $this->workHours = $workHours;
         $this->coordinates = $coordinates;
     }
@@ -91,10 +100,12 @@ class PickupPoint implements \JsonSerializable
             $data['name'],
             $data['type'],
             $data['address'],
+            $data['short_address'] ?? null,
             $data['region'],
             $data['city'],
             $data['index'] ?? null,
             $data['phones'] ?? [],
+            $data['payment_method'] ?? [],
             $workHours,
             isset($data['coordinates']) ? PickupPointCoordinates::fromArray($data['coordinates']) : null
         );
@@ -141,6 +152,16 @@ class PickupPoint implements \JsonSerializable
     }
 
     /**
+     * Gets shortAddress
+     *
+     * @return string|null
+     */
+    public function getShortAddress(): ?string
+    {
+        return $this->shortAddress;
+    }
+
+    /**
      * Gets region
      *
      * @return string
@@ -181,6 +202,16 @@ class PickupPoint implements \JsonSerializable
     }
 
     /**
+     * Gets paymentMethod
+     *
+     * @return string[]
+     */
+    public function getPaymentMethod(): array
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
      * Gets workHours
      *
      * @return DayWorkHours[]
@@ -212,10 +243,12 @@ class PickupPoint implements \JsonSerializable
             'name' => $this->name,
             'type' => $this->type,
             'address' => $this->address,
+            'short_address' => $this->shortAddress,
             'region' => $this->region,
             'city' => $this->city,
             'index' => $this->index,
             'phones' => $this->phones,
+            'payment_method' => $this->paymentMethod,
             'work_hours' => array_map(fn($item) => $item->toArray(), $this->workHours),
             'coordinates' => $this->coordinates ? $this->coordinates->toArray() : null,
         ];
